@@ -51,6 +51,24 @@ public class Pessoa {
     protected Pessoa() {
     }
 
+    // por ta sendo utilizado no hash e tbm existir um email em 'Usuario', o email em 'Pessoa' n é atualizável
+    // TODO: encontrar uma solucao p/ modificar essa regra de negócio
+    public void atualizarDados(String nome, String telefone, LocalDate dataNascimento) {
+        if (nome != null && !nome.isBlank()) {
+            this.nome = nome;
+        }
+        if (telefone != null && !telefone.isBlank()) {
+            this.telefone = telefone;
+        }
+        if (dataNascimento != null) {
+            this.dataNascimento = dataNascimento;
+        }
+    }
+
+    public void vincularEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
     public void vincularUsuario(Usuario usuario) {
         this.usuario = usuario;
         usuario.setPessoa(this);
@@ -65,15 +83,6 @@ public class Pessoa {
     public void reativarAcesso() {
         if (this.usuario != null) {
             this.usuario.reativar();
-        }
-    }
-
-    public void atualizarDados(String nome, String telefone) {
-        if (nome != null && !nome.isBlank()) {
-            this.nome = nome;
-        }
-        if (telefone != null && !telefone.isBlank()) {
-            this.telefone = telefone;
         }
     }
 

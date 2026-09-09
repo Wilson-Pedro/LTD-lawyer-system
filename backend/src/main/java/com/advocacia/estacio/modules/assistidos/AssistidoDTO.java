@@ -1,27 +1,52 @@
 package com.advocacia.estacio.modules.assistidos;
 
 import com.advocacia.estacio.modules.pessoas.EstadoCivil;
+import com.advocacia.estacio.modules.pessoas.Pessoa;
+import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface AssistidoDTO {
+    @Schema(name = "AssistidoCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
             @Email String email,
-            @Pattern(regexp = "^\\d{9,11}$", message = "Telefone deve ter entre 9 e 11 dígitos numéricos") String telefone,
-            @NotBlank(message = "A matrícula é obrigatória") String matricula,
+            @Pattern(regexp = "^\\d{9,11}$", message = "Telefone deve ter entre 9 e 11 dígitos numéricos")
+            String telefone,
+            String matricula,
             String profissao,
             String nacionalidade,
             String naturalidade,
             EstadoCivil estadoCivil,
             @Valid EnderecoDTO.Request endereco
-    ) {}
+    ) {
+        public Assistido toEntity(Endereco endereco) {
+            Pessoa pessoa = Pessoa.builder()
+                    .nome(this.nome())
+                    .email(this.email())
+                    .telefone(this.telefone())
+                    .endereco(endereco)
+                    .build();
 
+            return Assistido.builder()
+                    .pessoa(pessoa)
+                    .matricula(this.matricula())
+                    .estadoCivil(this.estadoCivil())
+                    .nacionalidade(this.nacionalidade())
+                    .naturalidade(this.naturalidade())
+                    .profissao(this.profissao())
+                    .build();
+        }
+    }
+
+    @Schema(name = "AssistidoResponse")
     record Response(
             Long id,
             String matricula,
@@ -52,11 +77,11 @@ public interface AssistidoDTO {
         }
     }
 
+    @Schema(name = "AssistidoListResponse")
     record ListResponse(
             Long id,
             String matricula,
             String nome,
-            String email,
             String telefone
     ) {
         public ListResponse (Assistido assistido){
@@ -64,23 +89,25 @@ public interface AssistidoDTO {
                     assistido.getId(),
                     assistido.getMatricula(),
                     assistido.getPessoa().getNome(),
-                    assistido.getPessoa().getEmail(),
                     assistido.getPessoa().getTelefone()
             );
         }
     }
 
-    record ListResponseFilter(
-            String nome,
-            String matricula,
-            String telefone
+    @Schema(name = "AssistidoSearchFilter")
+    record SearchFilter(
+            String termo
     ){}
 
+    @Schema(name = "AssistidoUpdateRequest")
     record UpdateRequest(
             String nome,
-            @Email String email,
+//            @Email String email,
             @Pattern(regexp = "^\\d{9,11}$") String telefone,
+            LocalDate dataNascimento,
             String profissao,
+            String nacionalidade,
+            String naturalidade,
             EstadoCivil estadoCivil,
             @Valid EnderecoDTO.Request endereco
     ) {}

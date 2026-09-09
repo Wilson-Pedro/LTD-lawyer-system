@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -40,6 +41,26 @@ public class Assistido implements Serializable {
 	
 	protected Assistido() {
 	}
+
+	public void atualizarDados(String nome, String telefone, LocalDate dataNascimento, String profissao,
+							   String nacionalidade, String naturalidade, EstadoCivil estadoCivil) {
+
+		this.pessoa.atualizarDados(nome, telefone, dataNascimento);
+
+		if (profissao != null && !profissao.isBlank()) {
+			this.profissao = profissao;
+		}
+		if (nacionalidade != null && !nacionalidade.isBlank()) {
+			this.nacionalidade = nacionalidade;
+		}
+		if (naturalidade != null && !naturalidade.isBlank()) {
+			this.naturalidade = naturalidade;
+		}
+		if (estadoCivil != null) {
+			this.estadoCivil = estadoCivil;
+		}
+	}
+
 	// TODO: falta fazer hashCode() e equals()
 //	@Override
 //	public int hashCode() {

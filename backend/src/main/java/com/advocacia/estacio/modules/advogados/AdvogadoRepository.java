@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.Optional;
 
 interface AdvogadoRepository extends JpaRepository<Advogado, Long> {
@@ -21,23 +21,25 @@ interface AdvogadoRepository extends JpaRepository<Advogado, Long> {
     @Query("""
         SELECT a FROM Advogado a
         JOIN a.pessoa p
-        LEFT JOIN p.usuario u
-        WHERE (:nome IS NULL OR LOWER(a.pessoa.nome) LIKE LOWER(CONCAT('%', :nome, '%')))
-        AND (:status IS NULL OR a.pessoa.usuario.status = :status)
+        JOIN p.usuario u
+        WHERE (:nome IS NULL OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%')))
+        AND (:status IS NULL OR u.status = :status)
     """)
-    Page<Advogado> pesquisarComFiltros(
+    Page<Advogado> buscarComFiltros(
             @Param("nome") String nome,
             @Param("status") UsuarioStatus status,
             Pageable pageable
     );
 
-    @EntityGraph(attributePaths = {"pessoa"})
     @Query("""
-        SELECT a FROM Advogado a
-        WHERE LOWER(a.pessoa.nome) LIKE LOWER(CONCAT('%', :nome, '%'))
-        AND a.pessoa.usuario.status = :status
+        SELECT new com.advocacia.estacio.modules.advogados.AdvogadoDTO$OptionResponse(a.id, p.nome)
+        FROM Advogado a
+        JOIN a.pessoa p
+        JOIN p.usuario u
+        WHERE (:nome IS NULL OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%')))
+        AND u.status = :status
     """)
-    Page<Advogado> buscarAtivosPorNome(
+    List<AdvogadoDTO.OptionResponse> buscarAtivosPorNome(
             @Param("nome") String nome,
             @Param("status") UsuarioStatus status,
             Pageable pageable

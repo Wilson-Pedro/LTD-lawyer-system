@@ -7,13 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/assistidos")
@@ -24,25 +19,37 @@ public class AssistidoController {
 
 	@PostMapping
 	public ResponseEntity<AssistidoDTO.Response> cadastrar(
-			@RequestBody @Valid AssistidoDTO.CreateRequest dados) {
-		var dto = assistidoService.cadastrar(dados);
-		return ResponseEntity.status(201).body(dto);
+			@RequestBody @Valid AssistidoDTO.CreateRequest request, UriComponentsBuilder uriBuilder) {
+		AssistidoDTO.Response response = assistidoService.cadastrar(request);
+		var uri = uriBuilder.path("/assistidos/{id}").buildAndExpand(response.id()).toUri();
+		return ResponseEntity.created(uri).body(response);
 	}
 
 	@GetMapping
 	public ResponseEntity<Page<AssistidoDTO.ListResponse>> listar(
-			@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
-			AssistidoDTO.ListResponseFilter filtro
+			@RequestParam(required = false) AssistidoDTO.SearchFilter filtro,
+			@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 	) {
-		var pages = assistidoService.listar(pageable);
-		return ResponseEntity.ok(pages);
+		var filtroSeguro = (filtro != null && filtro.termo() != null) ? filtro : new AssistidoDTO.SearchFilter(null);
+		var page = assistidoService.listar(filtroSeguro, pageable);
+		return ResponseEntity.ok(page);
 	}
+
+	// TODO: Criar método GET "/opcoes" para dropdowns
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<AssistidoDTO.Response> buscarPorId(@PathVariable Long id) {
-		var dto = assistidoService.buscarPorId(id);
-		return ResponseEntity.ok(dto);
+		AssistidoDTO.Response response = assistidoService.buscarPorId(id);
+		return ResponseEntity.ok(response);
 	}
+
+//	@PutMapping("/{id}")
+//	public ResponseEntity<AssistidoDTO.Response> atualizar(
+//			@PathVariable Long id, @RequestBody @Valid AssistidoDTO.UpdateRequest request
+//	) {
+//		AssistidoDTO.Response response = assistidoService.atualizar(id, request);
+//		return ResponseEntity.ok(response);
+//	}
 
 	// TODO: ENTENDER ONDE ISSO É USADO NO FRONT
 //	@GetMapping("/estadosCivis")
@@ -51,23 +58,4 @@ public class AssistidoController {
 //		return ResponseEntity.ok(estadoCivis);
 //	}
 
-
-	//	@GetMapping("/buscar/{nome}")
-//	public ResponseEntity<PageResponseDto<AssistidoDto>> buscarAssistido(
-//			@PathVariable String nome,
-//			@RequestParam(defaultValue = "0") int page,
-//			@RequestParam(defaultValue = "20") int size) {
-//		Page<AssistidoDto> dtos = assistidoService.buscarAssistidoPorNome(nome, page, size)
-//				.map(AssistidoDto::new);
-//		return ResponseEntity.ok(new PageResponseDto<>(dtos));
-//	}
-
-	
-//	@PutMapping("/{id}")
-//	public ResponseEntity<Void> atualizarAssistido(
-//			@PathVariable Long id,
-//			@RequestBody AssistidoDto assistidoDto) {
-//		assistidoService.atualizar(id, assistidoDto);
-//		return ResponseEntity.noContent().build();
-//	}
 }

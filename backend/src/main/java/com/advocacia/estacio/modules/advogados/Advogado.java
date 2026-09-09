@@ -2,6 +2,7 @@ package com.advocacia.estacio.modules.advogados;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import jakarta.persistence.*;
@@ -26,13 +27,11 @@ public class Advogado implements Serializable {
 	protected Advogado() {
 	}
 
-	public void atualizarDados(String nome, String telefone) {
-		this.pessoa.atualizarDados(nome, telefone);
+	public void atualizarDados(String nome, String telefone, LocalDate dataNascimento) {
+		this.pessoa.atualizarDados(nome, telefone, dataNascimento);
 	}
 
 	public void desativar() {
-		// TODO: verificar necessidade de regras específicas
-		// caso o advogado tenha processos ou demandas ativas, por exemplo.
 		this.pessoa.desativarAcesso();
 	}
 

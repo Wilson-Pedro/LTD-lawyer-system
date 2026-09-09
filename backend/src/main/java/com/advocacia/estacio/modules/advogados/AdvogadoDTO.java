@@ -27,10 +27,10 @@ public interface AdvogadoDTO {
     ) {
         public Advogado toEntity(Usuario usuario, Endereco endereco ) {
             Pessoa pessoa = Pessoa.builder()
-                    .nome(this.nome())
-                    .email(this.email())
-                    .telefone(this.telefone())
-                    .dataNascimento(this.dataNascimento())
+                    .nome(nome)
+                    .email(email)
+                    .telefone(telefone)
+                    .dataNascimento(dataNascimento)
                     .endereco(endereco)
                     .build();
 
@@ -42,12 +42,13 @@ public interface AdvogadoDTO {
         }
     }
 
+    @Schema(name = "AdvogadoResponse")
     record Response(
             Long id,
             String nome,
             String email,
             String telefone,
-            LocalDate DataNascimento,
+            LocalDate dataNascimento,
             EnderecoDTO.Response endereco,
             String usuarioStatus,
             LocalDateTime criadoEm,
@@ -68,6 +69,7 @@ public interface AdvogadoDTO {
         }
     }
 
+    @Schema(name = "AdvogadoListResponse")
     record ListResponse(
             Long id,
             String nome,
@@ -86,25 +88,20 @@ public interface AdvogadoDTO {
         }
     }
 
-    record Filter(
+    @Schema(name = "AdvogadoSearchFilter")
+    record SearchFilter(
             String nome,
             UsuarioStatus status){}
 
-    record AutocompleteResponse(
+    @Schema(name = "AdvogadoOptionResponse")
+    record OptionResponse(
             Long id,
             String nome
-    ) {
-        public AutocompleteResponse(Advogado advogado) {
-            this(
-                    advogado.getId(),
-                    advogado.getPessoa().getNome()
-            );
-        }
-    }
+    ) {}
 
+    @Schema(name = "AdvogadoUpdateRequest")
     record UpdateRequest(
             String nome,
-            // String email,
             @Pattern(regexp = "^\\d{9,11}$") String telefone,
             // TODO: n aceitar datas irreais
             LocalDate dataNascimento,

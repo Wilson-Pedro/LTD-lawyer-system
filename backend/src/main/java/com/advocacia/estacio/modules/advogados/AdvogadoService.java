@@ -9,12 +9,15 @@ import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class AdvogadoService {
 
 	@Transactional
 	public AdvogadoDTO.Response cadastrar(AdvogadoDTO.CreateRequest req) {
-		Endereco endereco = enderecoService.cadastrarEndereco(req.endereco());
+		Endereco endereco = enderecoService.cadastrar(req.endereco());
 		Usuario usuario = usuarioService.cadastrar(req.email(), req.senha(), UsuarioRole.ADVOGADO);
 		Advogado advogado = req.toEntity(usuario, endereco);
 		advogado = advogadoRepository.save(advogado);
@@ -34,15 +37,15 @@ public class AdvogadoService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<AdvogadoDTO.ListResponse> listar(AdvogadoDTO.Filter filtro, Pageable pageable) {
-		return advogadoRepository.pesquisarComFiltros(filtro.nome(), filtro.status(), pageable)
+	public Page<AdvogadoDTO.ListResponse> listar(AdvogadoDTO.SearchFilter filtro, Pageable pageable) {
+		return advogadoRepository.buscarComFiltros(filtro.nome(), filtro.status(), pageable)
 				.map(AdvogadoDTO.ListResponse::new);
 	}
 
 	@Transactional(readOnly = true)
-	public Page<AdvogadoDTO.AutocompleteResponse> listarResumo(String nome, Pageable pageable) {
-		return advogadoRepository.buscarAtivosPorNome(
-				nome, UsuarioStatus.ATIVO, pageable).map(AdvogadoDTO.AutocompleteResponse::new);
+	public List<AdvogadoDTO.OptionResponse> listarOpcoes(String nome) {
+		Pageable limite = PageRequest.of(0, 20);
+		return  advogadoRepository.buscarAtivosPorNome(nome, UsuarioStatus.ATIVO, limite);
 	}
 
 	@Transactional(readOnly = true)
@@ -55,7 +58,15 @@ public class AdvogadoService {
 	@Transactional
 	public AdvogadoDTO.Response atualizar(Long id, AdvogadoDTO.UpdateRequest req) {
 		Advogado advogado = buscarAdvogadoPorId(id);
-		advogado.atualizarDados(req.nome(), req.telefone());
+		advogado.atualizarDados(req.nome(), req.telefone(), req.dataNascimento());
+
+		if(req.endereco() != null) {
+			Endereco endereco = enderecoService.cadastrarOuAtualizar(
+					advogado.getPessoa().getEndereco(),
+					req.endereco());
+			advogado.getPessoa().vincularEndereco(endereco);
+		}
+
 		return new AdvogadoDTO.Response(advogado);
 	}
 

@@ -1,6 +1,5 @@
 package com.advocacia.estacio.modules.advogados;
 
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/advogados")
@@ -30,21 +31,19 @@ public class AdvogadoController {
 
 	@GetMapping
 	public ResponseEntity<Page<AdvogadoDTO.ListResponse>> listar(
-			@RequestParam(required = false) AdvogadoDTO.Filter filtro,
+			@RequestParam(required = false) AdvogadoDTO.SearchFilter filtro,
 			@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-		var filtroSeguro = (filtro != null) ? filtro : new AdvogadoDTO.Filter(null, null);
+		var filtroSeguro = (filtro != null) ? filtro : new AdvogadoDTO.SearchFilter(null, null);
 		var page = advogadoService.listar(filtroSeguro, pageable);
 		return ResponseEntity.ok(page);
 	}
 
-	@GetMapping("/autocomplete")
-	public ResponseEntity<Page<AdvogadoDTO.AutocompleteResponse>> listarResumo(
-			@RequestParam String nome,
-			@PageableDefault(size = 10, sort = "pessoa.nome") Pageable pageable) {
-
-		var page = advogadoService.listarResumo(nome, pageable);
-		return ResponseEntity.ok(page);
+	@GetMapping("/opcoes")
+	public ResponseEntity<List<AdvogadoDTO.OptionResponse>> listarOpcoes(
+			@RequestParam(defaultValue = "") String nome) {
+		var response = advogadoService.listarOpcoes(nome);
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}")
