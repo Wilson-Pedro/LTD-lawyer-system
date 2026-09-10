@@ -3,9 +3,9 @@ package com.advocacia.estacio.modules.advogados;
 
 import com.advocacia.estacio.modules.usuarios.UsuarioService;
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoService;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -60,26 +60,10 @@ public class AdvogadoService {
 		Advogado advogado = buscarAdvogadoPorId(id);
 		advogado.atualizarDados(req.nome(), req.telefone(), req.dataNascimento());
 
-		if(req.endereco() != null) {
-			Endereco endereco = enderecoService.cadastrarOuAtualizar(
-					advogado.getPessoa().getEndereco(),
-					req.endereco());
-			advogado.getPessoa().vincularEndereco(endereco);
-		}
+		Endereco endereco = enderecoService.cadastrarOuAtualizar(advogado.getPessoa().getEndereco(), req.endereco());
+		advogado.getPessoa().vincularEndereco(endereco);
 
 		return new AdvogadoDTO.Response(advogado);
-	}
-
-	@Transactional
-	public void desativar(Long id) {
-		Advogado advogado = buscarAdvogadoPorId(id);
-		advogado.desativar();
-	}
-
-	@Transactional
-	public void reativar(Long id) {
-		Advogado advogado = buscarAdvogadoPorId(id);
-		advogado.reativar();
 	}
 
 	/**

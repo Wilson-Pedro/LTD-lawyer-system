@@ -1,6 +1,5 @@
 package com.advocacia.estacio.modules.estagiarios;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Tag(name = "Estagiarios", description = "Operações relacionadas ao estagiário")
+import java.util.List;
+
 @RestController
 @RequestMapping("/estagiarios")
 @RequiredArgsConstructor
@@ -21,74 +21,52 @@ public class EstagiarioController {
 	private final EstagiarioService estagiarioService;
 
 	@PostMapping()
-	public ResponseEntity<EstagiarioDTO.Response> cadastrar(@RequestBody @Valid EstagiarioDTO.CreateRequest request,
-			UriComponentsBuilder uriBuilder)
-	 {
-		Estagiario estagiario = estagiarioService.cadastrar(request);
-		var response = new EstagiarioDTO.Response(estagiario);
+	public ResponseEntity<EstagiarioDTO.Response> cadastrar(
+			@RequestBody @Valid EstagiarioDTO.CreateRequest request, UriComponentsBuilder uriBuilder
+	) {
+		EstagiarioDTO.Response response = estagiarioService.cadastrar(request);
 		var uri = uriBuilder.path("/estagiarios/{id}").buildAndExpand(response.id()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 
-	@GetMapping("")
-	public ResponseEntity<Page<EstagiarioDTO.ListResponse>> listar(
-			@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-			) {
-		var estagiarios = estagiarioService.listar(pageable).map(EstagiarioDTO.ListResponse::new);
-		return ResponseEntity.ok(estagiarios);
+//	@GetMapping
+//	public ResponseEntity<Page<EstagiarioDTO.ListResponse>> listar(
+//			@RequestParam(required = false) EstagiarioDTO.SearchFilter filtro,
+//			@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+//	) {
+//		var filtroSeguro = (filtro != null) ? filtro : new EstagiarioDTO.SearchFilter(null, null);
+//		var page = estagiarioService.listar(filtroSeguro, pageable);
+//		return ResponseEntity.ok(page);
+//	}
+
+	@GetMapping("/opcoes")
+	public ResponseEntity<List<EstagiarioDTO.OptionResponse>> listarOpcoes(
+			@RequestParam(defaultValue = "") String nome
+	) {
+		var response = estagiarioService.listarOpcoes(nome);
+		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<EstagiarioDTO.Response> buscarPorId(@PathVariable Long id) {
-		var estagiario = estagiarioService.buscarPorId(id);
-		var response = new EstagiarioDTO.Response(estagiario);
+		EstagiarioDTO.Response response = estagiarioService.buscarPorId(id);
 		return ResponseEntity.ok(response);
 	}
-	
-//	@GetMapping("/buscar/{nome}")
-//	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarEstagiario(
-//			@PathVariable String nome,
-//			@RequestParam(defaultValue = "0") int page,
-//			@RequestParam(defaultValue = "20") int size) {
-//		Page<Estagiario> pages = estagiarioService.buscarEstagiario(nome, page, size);
-//		Page<EstagiarioDto> pagesDto = pages.map(EstagiarioDto::new);
-//		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+
+//	@PutMapping("/{id}")
+//	public ResponseEntity<EstagiarioDTO.Response> atualizar(
+//			@PathVariable Long id, @RequestBody @Valid EstagiarioDTO.UpdateRequest request
+//	) {
+//		EstagiarioDTO.Response response = estagiarioService.atualizar(id, request);
+//		return ResponseEntity.ok(response);
 //	}
+
+	// TODO: Método separado p/ alterar o Período de Estágio
+
 	
 //	@GetMapping("/buscarId/email/{email}")
 //	public ResponseEntity<EntidadeMinDto> buscarIdPorEmail(@PathVariable String email) {
 //		EntidadeMinDto dto = estagiarioService.buscarIdPorEmail(email);
 //		return ResponseEntity.ok(dto);
-//	}
-	
-//	@PutMapping("/{id}")
-//	public ResponseEntity<Void> atualizarAssistido(
-//			@PathVariable Long id,
-//			@RequestBody EstagiarioDto estagiarioDto) {
-//		estagiarioService.atualizar(id, estagiarioDto);
-//		return ResponseEntity.noContent().build();
-//	}
-
-//	@PutMapping("/data/{id}/ativarDesativar/")
-//	public ResponseEntity<Void> definirDataParaAtivarDesativar(
-//			@RequestBody DesativarAtivarUsuarioPorDataDto dto,
-//			@PathVariable Long id
-//	) {
-//		this.estagiarioService.definirDataDeDesativacao(id, dto.getDataDeDesativacao());
-//		return  ResponseEntity.noContent().build();
-//	}
-
-//	@PatchMapping("/desativar/usuarios")
-//	public ResponseEntity<Void> desativarUsuarios(@RequestBody RequestIds ids) {
-//		this.estagiarioService.desativarEstagiarios(ids);
-//		return ResponseEntity.noContent().build();
-//	}
-
-//	@PutMapping("/{usuarioStatus}/estagiarios")
-//	public ResponseEntity<Void> desativarAtivarUsuariosPorData(
-//			@PathVariable String usuarioStatus,
-//			@RequestBody DesativarAtivarUsuarioPorDataDto data) {
-//		this.estagiarioService.desativarEstagiariosPorData(data, usuarioStatus);
-//		return  ResponseEntity.noContent().build();
 //	}
 }

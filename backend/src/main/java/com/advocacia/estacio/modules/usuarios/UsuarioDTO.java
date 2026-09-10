@@ -1,19 +1,19 @@
 package com.advocacia.estacio.modules.usuarios;
 
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
 public interface UsuarioDTO {
 
-    // N será possível usar agora devido o jeito atual que os users são criados.
+    @Schema(name = "UsuarioCreateRequest")
     record CreateRequest(
             @NotBlank String login,
             @NotBlank String password
-    ) { }
+    ) {}
 
+    @Schema(name = "UsuarioResponse")
     record Response(
             Long id,
             String login,
@@ -38,5 +38,10 @@ public interface UsuarioDTO {
             String login,
             UsuarioRole role,
             UsuarioStatus status
+    ) {}
+
+    record ResetPasswordRequest(
+            @NotBlank String login,
+            @NotBlank String novaSenha
     ) {}
 }

@@ -1,4 +1,4 @@
-package com.advocacia.estacio.modules.usuarios.enums;
+package com.advocacia.estacio.modules.usuarios;
 
 public enum UsuarioStatus {
 

@@ -54,12 +54,8 @@ public class AssistidoService {
 				req.estadoCivil()
 		);
 
-		if(req.endereco() != null) {
-			Endereco endereco = enderecoService.cadastrarOuAtualizar(
-					assistido.getPessoa().getEndereco(),
-					req.endereco());
-			assistido.getPessoa().vincularEndereco(endereco);
-		}
+		Endereco endereco = enderecoService.cadastrarOuAtualizar(assistido.getPessoa().getEndereco(), req.endereco());
+		assistido.getPessoa().vincularEndereco(endereco);
 
 		return new AssistidoDTO.Response(assistido);
 	}

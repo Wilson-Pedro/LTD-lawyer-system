@@ -1,15 +1,18 @@
 package com.advocacia.estacio.modules.estagiarios;
 
 import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.usuarios.UsuarioService;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,26 +22,35 @@ public class EstagiarioService {
 	private final UsuarioService usuarioService;
 
 	@Transactional
-	public Estagiario cadastrar(EstagiarioDTO.CreateRequest dados) {
-		Usuario user = usuarioService.cadastrar(dados.email(), dados.senha(), UsuarioRole.ESTAGIARIO);
-		Estagiario estagiario = dados.toEntity(user);
-		return estagiarioRepository.save(estagiario);
+	public EstagiarioDTO.Response cadastrar(EstagiarioDTO.CreateRequest req) {
+		Usuario user = usuarioService.cadastrar(req.email(), req.senha(), UsuarioRole.ESTAGIARIO);
+		Estagiario estagiario = req.toEntity(user);
+		estagiario = estagiarioRepository.save(estagiario);
+		return new EstagiarioDTO.Response(estagiario);
 	}
 
-	public Page<Estagiario> listar(Pageable pageable) {
-		return estagiarioRepository.findAll(pageable);
+//	@Transactional(readOnly = true)
+//	public Page<EstagiarioDTO.ListResponse> listar(EstagiarioDTO.SearchFilter filtro, Pageable pageable) {
+//		return estagiarioRepository.findAll(
+//				filtro.nome(),
+//				filtro.matricula(),
+//				filtro.periodoEstagio(),
+//				filtro.usuarioStatus(),
+//				pageable).map(EstagiarioDTO.ListResponse::new);
+//	}
+
+	@Transactional(readOnly = true)
+	public List<EstagiarioDTO.OptionResponse> listarOpcoes(String nome) {
+		Pageable limite = PageRequest.of(0, 20);
+		return  estagiarioRepository.buscarAtivosPorNome(nome, UsuarioStatus.ATIVO, limite);
 	}
 
-
-	public Estagiario buscarPorId(Long id) {
-		return estagiarioRepository.findById(id)
+	public EstagiarioDTO.Response buscarPorId(Long id) {
+		Estagiario estagiario = estagiarioRepository.buscarDetalhesPorId(id)
 				.orElseThrow(() -> new EntityNotFoundException("Estagiário não encontrado"));
+		return new EstagiarioDTO.Response(estagiario);
 	}
 
-//	public Page<Estagiario> listarPorNome(String nome, int page, int size) {
-//		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
-//		return estagiarioRepository.findByNomeContainingIgnoreCase(nome, pageable);
-//	} // List<Pessoa> findTop10ByNomeContainingIgnoreCase(String pedacoDoNome);
 
 	/**
 	 * Retorna apenas a referência (Proxy) da entidade Estagiario para uso em chaves estrangeiras.

@@ -1,6 +1,6 @@
 package com.advocacia.estacio;
 
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.usuarios.UsuarioService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

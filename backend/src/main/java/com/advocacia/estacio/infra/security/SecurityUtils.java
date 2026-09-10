@@ -8,7 +8,7 @@ import org.springframework.security.access.AccessDeniedException;
 @Component
 public class SecurityUtils {
 
-    public CustomUserDetails getUsuarioLogado() {
+    private CustomUserDetails getUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails customUser) {

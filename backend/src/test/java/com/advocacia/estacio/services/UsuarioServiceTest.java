@@ -1,7 +1,7 @@
 package com.advocacia.estacio.services;
 
-import static com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus.ATIVO;
-import static com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus.INATIVO;
+import static com.advocacia.estacio.modules.usuarios.UsuarioStatus.ATIVO;
+import static com.advocacia.estacio.modules.usuarios.UsuarioStatus.INATIVO;
 import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -23,8 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.LoginResponseDto;
 import com.advocacia.estacio.domain.records.RegistroDto;

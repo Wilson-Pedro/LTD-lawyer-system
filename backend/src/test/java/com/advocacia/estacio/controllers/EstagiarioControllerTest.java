@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import org.junit.jupiter.api.*;

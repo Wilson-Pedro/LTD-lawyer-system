@@ -2,7 +2,7 @@ package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import com.advocacia.estacio.modules.advogados.AdvogadoService;
 import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import org.junit.jupiter.api.*;

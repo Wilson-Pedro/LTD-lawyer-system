@@ -1,31 +1,35 @@
 package com.advocacia.estacio.modules.estagiarios;
 
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.advogados.AdvogadoDTO;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
 
 interface EstagiarioRepository extends JpaRepository<Estagiario, Long> {
-	
-//	Page<Estagiario> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 
-//	@Query("""
-//			SELECT new com.advocacia.estacio.domain.records.EntidadeMinDto(
-//					e.id,
-//					e.nome
-//			)
-//			FROM Estagiario e WHERE e.email = :email
-//			""")
-//	Optional<EntidadeMinDto> buscarEstagiarioMinPorEmail(@Param("email") String email);
-//
-//	@Query("""
-//			SELECT new com.advocacia.estacio.modules.estagiarios.Estagiario(
-//				est.id,
-//				est.nome,
-//				est.email,
-//				est.telefone,
-//				est.matricula,
-//				est.periodo,
-//				est.usuario
-//			)
-//			FROM Estagiario est
-//			""")
-//	Page<Estagiario> buscarTodos(Pageable pageable);
+    @EntityGraph(attributePaths = {"pessoa", "pessoa.usuario"})
+    @Query("SELECT e FROM Estagiario e WHERE e.id = :id")
+    Optional<Estagiario> buscarDetalhesPorId(@Param("id") Long id);
+
+    @Query("""
+        SELECT new com.advocacia.estacio.modules.estagiarios.EstagiarioDTO$OptionResponse(e.id, p.nome)
+        FROM Estagiario e
+        JOIN e.pessoa p
+        JOIN p.usuario u
+        WHERE (:nome IS NULL OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%')))
+        AND u.status = :status
+    """)
+    List<EstagiarioDTO.OptionResponse> buscarAtivosPorNome(
+            @Param("nome") String nome,
+            @Param("status") UsuarioStatus status,
+            Pageable pageable
+    );
 }

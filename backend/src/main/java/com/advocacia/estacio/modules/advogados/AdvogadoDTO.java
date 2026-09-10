@@ -4,7 +4,7 @@ import com.advocacia.estacio.modules.pessoas.Pessoa;
 import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoDTO;
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -18,9 +18,9 @@ public interface AdvogadoDTO {
     @Schema(name = "AdvogadoCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @Email String email,
+            @Email(message = "Informe um email válido") String email,
             String senha,
-            @Pattern(regexp = "^\\d{9,11}$", message = "Telefone deve ter entre 9 e 11 dígitos numéricos")
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido")
             String telefone,
             LocalDate dataNascimento,
             @Valid EnderecoDTO.Request endereco

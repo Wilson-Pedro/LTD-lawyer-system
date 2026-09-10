@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import com.advocacia.estacio.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.modules.estagiarios.Estagiario;
 import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
 import com.advocacia.estacio.modules.usuarios.UsuarioRepository;

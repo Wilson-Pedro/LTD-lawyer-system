@@ -2,7 +2,8 @@ package com.advocacia.estacio.modules.estagiarios;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 public interface EstagiarioDTO {
+    @Schema(name = "EstagiarioCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
             @Email String email,
@@ -34,6 +36,7 @@ public interface EstagiarioDTO {
         }
     }
 
+    @Schema(name = "EstagiarioResponse")
     record Response(
             Long id,
             String matricula,
@@ -56,6 +59,7 @@ public interface EstagiarioDTO {
         }
     }
 
+    @Schema(name = "EstagiarioListResponse")
     record ListResponse(
             Long id,
             String matricula,
@@ -74,19 +78,25 @@ public interface EstagiarioDTO {
         }
     }
 
-    record ListFilterResponse(
+    @Schema(name = "EstagiarioOptionResponse")
+    record OptionResponse(
+            Long id,
+            String nome
+    ) {}
+
+    @Schema(name = "EstagiarioSearchFilter")
+    record SearchFilter(
             String nome,
             String matricula,
             String periodoEstagio,
             String usuarioStatus
-    ) {
-        public ListFilterResponse(Estagiario estagiario) {
-            this(
-                    estagiario.getPessoa().getNome(),
-                    estagiario.getMatricula(),
-                    PeriodoEstagio.obterDescricao(estagiario.getPeriodo()),
-                    UsuarioStatus.obterDescricao(estagiario.getPessoa().getUsuario().getStatus())
-            );
-        }
-    }
+    ) {}
+
+    @Schema(name = "EstagiarioUpdateRequest")
+    record UpdateRequest(
+            String nome,
+            @Pattern(regexp = "^\\d{9,11}$") String telefone,
+            @NotBlank String matricula,
+            PeriodoEstagio periodoEstagio
+    ) {}
 }

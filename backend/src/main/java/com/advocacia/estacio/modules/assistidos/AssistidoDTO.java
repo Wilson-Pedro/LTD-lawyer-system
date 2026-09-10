@@ -17,8 +17,8 @@ public interface AssistidoDTO {
     @Schema(name = "AssistidoCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @Email String email,
-            @Pattern(regexp = "^\\d{9,11}$", message = "Telefone deve ter entre 9 e 11 dígitos numéricos")
+            @Email(message = "Informe um email válido") String email,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido")
             String telefone,
             String matricula,
             String profissao,

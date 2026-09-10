@@ -4,7 +4,7 @@ import com.advocacia.estacio.modules.advogados.Advogado;
 import com.advocacia.estacio.modules.professores.Professor;
 import com.advocacia.estacio.modules.demandas.enums.EtapaDemanda;
 import com.advocacia.estacio.modules.demandas.enums.Tempestividade;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.advogados.AdvogadoService;
 import com.advocacia.estacio.modules.demandas.services.DemandaService;
 import com.advocacia.estacio.modules.estagiarios.EstagiarioService;

@@ -1,11 +1,10 @@
 package com.advocacia.estacio.modules.usuarios;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Getter
 @Table(name = "TBL_USUARIO")
-public class Usuario {
+public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Setter
@@ -69,6 +68,10 @@ public class Usuario {
 	public void reativar() {
 		this.status = UsuarioStatus.ATIVO;
 		this.desativadoEm = null;
+	}
+
+	public void bloquear() {
+		this.status = UsuarioStatus.BLOQUEADO;
 	}
 
 	@Override

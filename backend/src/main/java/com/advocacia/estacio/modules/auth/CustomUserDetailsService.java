@@ -2,8 +2,8 @@ package com.advocacia.estacio.modules.auth;
 
 import com.advocacia.estacio.modules.parametros.ConfiguracaoSistema;
 import com.advocacia.estacio.modules.usuarios.Usuario;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import com.advocacia.estacio.infra.security.CustomUserDetails;
 import com.advocacia.estacio.modules.parametros.ConfigSistemaRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
-public class AuthorizationService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
 	private final UsuarioRepository usuarioRepository;
 	private final ConfigSistemaRepository configSistemaRepository;

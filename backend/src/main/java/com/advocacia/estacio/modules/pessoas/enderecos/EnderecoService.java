@@ -17,8 +17,9 @@ public class EnderecoService {
 		return enderecoRepository.save(endereco);
 	}
 
-	public void atualizar(Endereco enderecoAtual, EnderecoDTO.Request req) {
-		if (req == null || enderecoAtual == null) return;
+	// TODO: relacionamento de Pessoa com Endereco deve ser revisto.
+	private void atualizar(Endereco enderecoAtual, EnderecoDTO.Request req) {
+		if (enderecoAtual == null) return;
 
 		enderecoAtual.atualizarDados(
 				req.cep(),
@@ -31,17 +32,12 @@ public class EnderecoService {
 	}
 
 	public Endereco cadastrarOuAtualizar(Endereco enderecoAtual, EnderecoDTO.Request req) {
+		// seta null no endereço da Pessoa caso não tiver dados na req (exclusão do endereço)
+		if (req == null) return null;
 		if (enderecoAtual != null) {
 			this.atualizar(enderecoAtual, req);
 			return enderecoAtual;
 		}
 		return this.cadastrar(req);
 	}
-
-	public EnderecoDTO.Response buscarPorId(Long id) {
-		var endereco = enderecoRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado"));
-		return EnderecoDTO.Response.from(endereco);
-	}
-
 }

@@ -8,7 +8,7 @@ import com.advocacia.estacio.modules.pessoas.EstadoCivil;
 import com.advocacia.estacio.modules.processos.AreaDoDireito;
 import com.advocacia.estacio.modules.processos.ProcessoStatus;
 import com.advocacia.estacio.modules.processos.Tribunal;
-import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
