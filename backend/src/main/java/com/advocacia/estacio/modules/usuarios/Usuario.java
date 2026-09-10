@@ -12,7 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Getter
-@Table(name = "TBL_USUARIO")
+@Table(name = "tbl_usuario")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

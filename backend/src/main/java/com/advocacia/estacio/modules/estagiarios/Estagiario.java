@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +30,16 @@ public class Estagiario implements Serializable {
     private PeriodoEstagio periodo;
 
     protected Estagiario() {
+    }
+
+    public void atualizarDados(String nome, String telefone, String matricula, PeriodoEstagio periodo) {
+        this.pessoa.atualizarDados(nome, telefone, null);
+        if (matricula != null && !matricula.isBlank()) {
+            this.matricula = matricula;
+        }
+        if (periodo != null) {
+            this.periodo = periodo;
+        }
     }
 
     @Override

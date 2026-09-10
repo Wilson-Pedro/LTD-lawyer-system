@@ -1,5 +1,8 @@
 package com.advocacia.estacio.modules.estagiarios;
 
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.advogados.AdvogadoDTO;
+import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.usuarios.UsuarioService;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,15 +33,11 @@ public class EstagiarioService {
 		return new EstagiarioDTO.Response(estagiario);
 	}
 
-//	@Transactional(readOnly = true)
-//	public Page<EstagiarioDTO.ListResponse> listar(EstagiarioDTO.SearchFilter filtro, Pageable pageable) {
-//		return estagiarioRepository.findAll(
-//				filtro.nome(),
-//				filtro.matricula(),
-//				filtro.periodoEstagio(),
-//				filtro.usuarioStatus(),
-//				pageable).map(EstagiarioDTO.ListResponse::new);
-//	}
+	@Transactional(readOnly = true)
+	public Page<EstagiarioDTO.ListResponse> listar(EstagiarioDTO.SearchFilter filtro, Pageable pageable) {
+		Specification<Estagiario> spec = EstagiarioSpecs.usandoFiltro(filtro);
+		return estagiarioRepository.findAll(spec, pageable).map(EstagiarioDTO.ListResponse::new);
+	}
 
 	@Transactional(readOnly = true)
 	public List<EstagiarioDTO.OptionResponse> listarOpcoes(String nome) {
@@ -48,6 +48,14 @@ public class EstagiarioService {
 	public EstagiarioDTO.Response buscarPorId(Long id) {
 		Estagiario estagiario = estagiarioRepository.buscarDetalhesPorId(id)
 				.orElseThrow(() -> new EntityNotFoundException("Estagiário não encontrado"));
+		return new EstagiarioDTO.Response(estagiario);
+	}
+
+	@Transactional
+	public EstagiarioDTO.Response atualizar(Long id, EstagiarioDTO.UpdateRequest req) {
+		Estagiario estagiario = estagiarioRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Estagiário não encontrado"));
+		estagiario.atualizarDados(req.nome(), req.telefone(), req.matricula(), req.periodoEstagio());
 		return new EstagiarioDTO.Response(estagiario);
 	}
 
@@ -69,23 +77,7 @@ public class EstagiarioService {
 
 
 	
-//	@Override
-//	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
-//		Estagiario estagiario = buscarPorId(id);
-//		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus());
-//		usuarioAuthService.atualizarLogin(
-//				estagiario.getEmail(),
-//				estagiarioDto.getEmail(),
-//				estagiarioDto.getSenha(),
-//				usuarioStatus);
-//		estagiario.setId(id);
-//		estagiario.setNome(estagiarioDto.getNome());
-//		estagiario.setEmail(estagiarioDto.getEmail());
-//		estagiario.setTelefone(estagiarioDto.getTelefone());
-//		estagiario.setMatricula(estagiarioDto.getMatricula());
-//		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
-//		return estagiarioRepository.save(estagiario);
-//	}
+
 
 
 //	public List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids) {

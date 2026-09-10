@@ -29,15 +29,14 @@ public class EstagiarioController {
 		return ResponseEntity.created(uri).body(response);
 	}
 
-//	@GetMapping
-//	public ResponseEntity<Page<EstagiarioDTO.ListResponse>> listar(
-//			@RequestParam(required = false) EstagiarioDTO.SearchFilter filtro,
-//			@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
-//	) {
-//		var filtroSeguro = (filtro != null) ? filtro : new EstagiarioDTO.SearchFilter(null, null);
-//		var page = estagiarioService.listar(filtroSeguro, pageable);
-//		return ResponseEntity.ok(page);
-//	}
+	@GetMapping
+	public ResponseEntity<Page<EstagiarioDTO.ListResponse>> listar(
+			EstagiarioDTO.SearchFilter filtro,
+			@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+	) {
+		var page = estagiarioService.listar(filtro, pageable);
+		return ResponseEntity.ok(page);
+	}
 
 	@GetMapping("/opcoes")
 	public ResponseEntity<List<EstagiarioDTO.OptionResponse>> listarOpcoes(
@@ -53,13 +52,13 @@ public class EstagiarioController {
 		return ResponseEntity.ok(response);
 	}
 
-//	@PutMapping("/{id}")
-//	public ResponseEntity<EstagiarioDTO.Response> atualizar(
-//			@PathVariable Long id, @RequestBody @Valid EstagiarioDTO.UpdateRequest request
-//	) {
-//		EstagiarioDTO.Response response = estagiarioService.atualizar(id, request);
-//		return ResponseEntity.ok(response);
-//	}
+	@PutMapping("/{id}")
+	public ResponseEntity<EstagiarioDTO.Response> atualizar(
+			@PathVariable Long id, @RequestBody @Valid EstagiarioDTO.UpdateRequest request
+	) {
+		EstagiarioDTO.Response response = estagiarioService.atualizar(id, request);
+		return ResponseEntity.ok(response);
+	}
 
 	// TODO: Método separado p/ alterar o Período de Estágio
 

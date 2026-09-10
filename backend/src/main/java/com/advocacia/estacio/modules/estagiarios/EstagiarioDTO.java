@@ -28,6 +28,8 @@ public interface EstagiarioDTO {
                     .telefone(this.telefone)
                     .build();
 
+            pessoa.vincularUsuario(usuario);
+
             return Estagiario.builder()
                     .pessoa(pessoa)
                     .matricula(this.matricula)
@@ -44,7 +46,8 @@ public interface EstagiarioDTO {
             String email,
             String telefone,
             String periodoEstagio,
-            LocalDateTime criacao
+            LocalDateTime criacao,
+            String usuarioStatus
     ) {
         public Response(Estagiario estagiario) {
             this(
@@ -54,7 +57,8 @@ public interface EstagiarioDTO {
                     estagiario.getPessoa().getEmail(),
                     estagiario.getPessoa().getTelefone(),
                     PeriodoEstagio.obterDescricao(estagiario.getPeriodo()),
-                    estagiario.getPessoa().getCriadoEm()
+                    estagiario.getPessoa().getCriadoEm(),
+                    UsuarioStatus.obterDescricao(estagiario.getPessoa().getUsuario().getStatus())
             );
         }
     }
@@ -86,17 +90,16 @@ public interface EstagiarioDTO {
 
     @Schema(name = "EstagiarioSearchFilter")
     record SearchFilter(
-            String nome,
-            String matricula,
-            String periodoEstagio,
-            String usuarioStatus
+            String termo,
+            PeriodoEstagio periodo,
+            UsuarioStatus usuarioStatus
     ) {}
 
     @Schema(name = "EstagiarioUpdateRequest")
     record UpdateRequest(
             String nome,
             @Pattern(regexp = "^\\d{9,11}$") String telefone,
-            @NotBlank String matricula,
+            String matricula,
             PeriodoEstagio periodoEstagio
     ) {}
 }
