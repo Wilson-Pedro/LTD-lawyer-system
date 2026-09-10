@@ -1,11 +1,14 @@
 package com.advocacia.estacio.infra.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,59 +21,55 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfigurations {
-	
-	@Autowired
-	SecurityFilter securityFilter;
+
+	private final SecurityFilter securityFilter;
+	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
-				.cors(cors -> {})
+				.cors(Customizer.withDefaults())
 				.csrf(csrf -> csrf.disable())
 				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+				.exceptionHandling(exception -> exception
+						.authenticationEntryPoint(customAuthenticationEntryPoint)
+						.accessDeniedHandler(customAccessDeniedHandler)
+				)
+
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("/h2-console/**").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/docs/**").permitAll()
+
 						// AUTH
-						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/auth/usuarioStatus").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/auth/definir/data/ativarDesativar").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
 
-						// ATORES
-						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/atores/buscarId/email/{email}").hasRole("PROFESSOR")
-						.requestMatchers(HttpMethod.GET, "/atores/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/atores/desativar/usuarios").hasRole("ADMIN")
-
-						// ADVOGADOS
-						.requestMatchers(HttpMethod.POST, "/advogados/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/{id}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/buscarId/email/{email}").hasRole("ADVOGADO")
-						.requestMatchers(HttpMethod.PATCH, "/advogados/desativar/usuarios").hasRole("ADMIN")
-
-						// ASSISTIDOS
-						.requestMatchers(HttpMethod.POST, "/assistidos/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/assistidos/buscar/{nome}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/assistidos/estadosCivis").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/assistidos/{id}").hasRole("ADMIN")
 
 						// DEMANDAS
 						//.requestMatchers(HttpMethod.GET, "/demandas/**").hasRole("ESTAGIARIO")
 						.requestMatchers(HttpMethod.PATCH, "/demandas/{demandaId}/change").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.POST, "/demandas/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/demandas/role/{role}").hasAnyRole("ADMIN", "ADVOGADO", "PROFESSOR")
-						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").hasRole("ESTAGIARIO")
-						.requestMatchers(HttpMethod.GET, "/demandas/advogado/{advogadoId}").hasRole("ADVOGADO")
-						.requestMatchers(HttpMethod.GET, "/demandas/professor/{professorId}").hasRole("PROFESSOR")
+
+						.requestMatchers(HttpMethod.GET, "/demandas/me").hasAnyRole("ESTAGIARIO", "PROFESSOR", "ADVOGADO")
+						.requestMatchers(HttpMethod.GET, "/demandas/pessoa/{pessoaId}").hasAnyRole("ADMIN")
+
+//						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").hasRole("ESTAGIARIO")
+//						.requestMatchers(HttpMethod.GET, "/demandas/advogado/{advogadoId}").hasRole("ADVOGADO")
+//						.requestMatchers(HttpMethod.GET, "/demandas/professor/{professorId}").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ESTAGIARIO")
 						.requestMatchers("/demandas/responde/**").hasRole("PROFESSOR")
 
 						// ESTAGIÁRIOS
-						.requestMatchers(HttpMethod.POST, "/estagiarios/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/estagiarios").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/{id}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/periodos").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/buscar/{nome}").hasRole("ADMIN")
@@ -104,19 +103,19 @@ public class SecurityConfigurations {
 	}
 	
 	@Bean
-	PasswordEncoder passworddEncoder() {
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
-	WebMvcConfigurer corsConfig() {
-		return new WebMvcConfigurer() {
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**")
-				.allowedOrigins("http://localhost:3000")
-				.allowedMethods("*")
-				.allowCredentials(true);
-			}
-		};
-	}
+//	@Bean
+//	WebMvcConfigurer corsConfig() {
+//		return new WebMvcConfigurer() {
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**")
+//				.allowedOrigins("http://localhost:3000")
+//				.allowedMethods("*")
+//				.allowCredentials(true);
+//			}
+//		};
+//	}
 }
