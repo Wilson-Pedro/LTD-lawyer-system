@@ -1,8 +1,5 @@
 package com.advocacia.estacio.modules.estagiarios;
 
-import com.advocacia.estacio.modules.advogados.Advogado;
-import com.advocacia.estacio.modules.advogados.AdvogadoDTO;
-import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.usuarios.UsuarioService;
@@ -67,55 +64,4 @@ public class EstagiarioService {
 	public Estagiario obterReferecia(Long id) {
 		return estagiarioRepository.getReferenceById(id);
 	}
-
-
-//	public EntidadeMinDto buscarIdPorEmail(String email) {
-//		return estagiarioRepository.buscarEstagiarioMinPorEmail(email)
-//				.orElseThrow(EntityNotFoundException::new);
-//	}
-
-
-
-	
-
-
-
-//	public List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids) {
-//		return ids.stream()
-//				.map(id -> this.buscarPorId(id).getUsuarioAuth())
-//				.toList();
-//	}
-
-
-//	public List<UsuarioAuth> buscarUsuariosAuthPorUsuarioStatus(UsuarioStatus usuarioStatus) {
-//		return estagiarioRepository.findAll().stream()
-//				.map(Estagiario::getUsuarioAuth)
-//				.filter(u -> u.getUsuarioStatus() == usuarioStatus)
-//				.toList();
-//	}
-
-//    @Override
-//    public List<PeriodoEstagio> getPeriodos() {
-//        return Arrays.stream(PeriodoEstagio.values()).toList();
-//    }
-
-
-
-//	public void desativarEstagiarios(RequestIds requestIds) {
-//		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
-//		this.usuarioAuthService.desativarAtivarUsuarios(usuariosAuth, UsuarioStatus.INATIVO);
-//	}
-
-//	@Override
-//	public void desativarEstagiariosPorData(DesativarAtivarUsuarioPorDataDto dto, String usuarioStatus) {
-//		List<UsuarioAuth> usuariosAuth = this.usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
-//		LocalDate dataDesativacao = Utils.localDateToString(dto.getDataDeDesativacao());
-//		UsuarioStatus status = UsuarioStatus.toEnum(usuarioStatus);
-//		this.usuarioAuthService.desativarAtivarUsuariosPorData(dataDesativacao, usuariosAuth, status);
-//	}
-
-//	@Override
-//	public void definirDataDeDesativacao(Long id, String data) {
-//		this.usuarioAuthService.definirDataParaAtivarDesativar(id, data);
-//	}
 }

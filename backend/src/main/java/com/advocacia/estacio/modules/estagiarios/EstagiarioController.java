@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,7 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estagiarios")
+@RequestMapping("/api/v1/estagiarios")
+@PreAuthorize("hasRole('ADMIN')")
 @RequiredArgsConstructor
 public class EstagiarioController {
 	
@@ -61,11 +63,4 @@ public class EstagiarioController {
 	}
 
 	// TODO: Método separado p/ alterar o Período de Estágio
-
-	
-//	@GetMapping("/buscarId/email/{email}")
-//	public ResponseEntity<EntidadeMinDto> buscarIdPorEmail(@PathVariable String email) {
-//		EntidadeMinDto dto = estagiarioService.buscarIdPorEmail(email);
-//		return ResponseEntity.ok(dto);
-//	}
 }

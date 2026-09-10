@@ -1,5 +1,6 @@
 package com.advocacia.estacio.infra.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,19 +21,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfigurations {
 
 	private final SecurityFilter securityFilter;
 	private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 	private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-	public SecurityConfigurations(SecurityFilter securityFilter, CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-								  CustomAccessDeniedHandler customAccessDeniedHandler) {
-
-		this.securityFilter = securityFilter;
-		this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
-		this.customAccessDeniedHandler = customAccessDeniedHandler;
-	}
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -53,25 +50,8 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.GET, "/docs/**").permitAll()
 
 						// AUTH
-						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/auth/usuarioStatus").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/auth/definir/data/ativarDesativar").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
 
-
-						// ADVOGADOS
-						.requestMatchers(HttpMethod.POST, "/advogados").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/{id}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/autocomplete").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/buscarId/email/{email}").hasRole("ADVOGADO")
-						.requestMatchers(HttpMethod.PATCH, "/advogados/{id}/desativar").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/advogados/{id}/reativar").hasRole("ADMIN")
-
-						// ASSISTIDOS
-						.requestMatchers(HttpMethod.POST, "/assistidos/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/assistidos/buscar/{nome}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/assistidos/estadosCivis").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/assistidos/{id}").hasRole("ADMIN")
 
 						// DEMANDAS
 						//.requestMatchers(HttpMethod.GET, "/demandas/**").hasRole("ESTAGIARIO")
