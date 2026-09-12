@@ -1,3 +1,4 @@
+import exp from 'constants';
 import {
   FaEye,
   FaEyeSlash,
@@ -31,6 +32,17 @@ import {
   FaEllipsisV,
   FaBell,
   FaExclamationTriangle,
+  FaAngleDown,
+  FaAngleUp,
+  FaClipboardList,
+  FaBan,
+  FaBalanceScale,
+  FaAddressBook,
+  FaPhone,
+  FaAddressCard,
+  FaBriefcase,
+  FaGlobe,
+  FaCalendarDay,
 } from 'react-icons/fa';
 
 import { FaFileCirclePlus } from 'react-icons/fa6';
@@ -74,5 +86,32 @@ export const FilterIcon = FaFilter as React.FC<{ className?: string }>;
 export const EllipsisVIcon = FaEllipsisV as React.FC<{ className?: string }>;
 export const BellIcon = FaBell as React.FC<{ className?: string }>;
 export const ExclamationTriangleIcon = FaExclamationTriangle as React.FC<{
+  className?: string;
+}>;
+export const AngleDownIcon = FaAngleDown as React.FC<{ className?: string }>;
+export const AngleUpIcon = FaAngleUp as React.FC<{ className?: string }>;
+export const ClipboardListIcon = FaClipboardList as React.FC<{
+  className?: string;
+}>;
+export const BanIcon = FaBan as React.FC<{ className?: string }>;
+export const BalanceScaleIcon = FaBalanceScale as React.FC<{
+  className?: string;
+}>;
+export const AddressBookIcon = FaAddressBook as React.FC<{
+  className?: string;
+}>;
+export const PhoneIcon = FaPhone as React.FC<{
+  className?: string;
+}>;
+export const AddressCardIcon = FaAddressCard as React.FC<{
+  className?: string;
+}>;
+export const BriefcaseIcon = FaBriefcase as React.FC<{
+  className?: string;
+}>;
+export const GlobeIcon = FaGlobe as React.FC<{
+  className?: string;
+}>;
+export const CalendarDayIcon = FaCalendarDay as React.FC<{
   className?: string;
 }>;
