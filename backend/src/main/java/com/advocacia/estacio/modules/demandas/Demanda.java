@@ -1,14 +1,12 @@
 package com.advocacia.estacio.modules.demandas;
 
 import com.advocacia.estacio.modules.advogados.Advogado;
-import com.advocacia.estacio.modules.demandas.movimentacoes.DemandaMovimentacao;
 import com.advocacia.estacio.modules.estagiarios.Estagiario;
 import com.advocacia.estacio.modules.professores.Professor;
-import com.advocacia.estacio.modules.demandas.EtapaDemanda;
-import com.advocacia.estacio.modules.demandas.Tempestividade;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -39,20 +37,21 @@ public class Demanda implements Serializable {
     @JoinColumn(name = "professor_id")
     private Professor professor;
 
-    @Column(name = "descricao_demanda", nullable = false, columnDefinition = "TEXT")
-    private String descricaoDemanda;
+    @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
+    private String descricao;
 
     private LocalDate prazo;
 
     @Column(name = "prazo_documentos")
     private LocalDate prazoDocumentos;
 
-    // para evitar buscas ao banco
+    @Setter
     @Enumerated(EnumType.STRING)
-    private EtapaDemanda statusAtual = EtapaDemanda.AGUARDANDO_ALUNO;
+    @Column(name = "etapa_atual")
+    private EtapaDemanda etapaAtual = EtapaDemanda.ELABORACAO;
 
     @OneToMany(mappedBy = "demanda", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DemandaMovimentacao> movimentacoes = new ArrayList<>();
+    private List<DemandaTramitacao> tramitacoes = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Tempestividade tempestividade = Tempestividade.DENTRO_DO_PRAZO;
@@ -71,22 +70,23 @@ public class Demanda implements Serializable {
 
     @Builder
     public Demanda(Advogado advogado, Estagiario estagiario, Professor professor,
-                   String descricaoDemanda, LocalDate prazo, LocalDate prazoDocumentos,
-                   EtapaDemanda statusAtual, List<DemandaMovimentacao> movimentacoes,
+                   String descricao, LocalDate prazo, LocalDate prazoDocumentos,
+                   EtapaDemanda etapaAtual, List<DemandaTramitacao> tramitacoes,
                    Tempestividade tempestividade, LocalDateTime dataAbertura,
                    LocalDateTime ultimaAtualizacao) {
 
         this.advogado = advogado;
         this.estagiario = estagiario;
         this.professor = professor;
-        this.descricaoDemanda = descricaoDemanda;
+        this.descricao = descricao;
         this.prazo = prazo;
-        this.statusAtual = statusAtual;
         this.prazoDocumentos = prazoDocumentos;
-        this.movimentacoes = movimentacoes;
-        this.tempestividade = tempestividade;
         this.dataAbertura = dataAbertura;
         this.ultimaAtualizacao = ultimaAtualizacao;
+
+        this.etapaAtual = etapaAtual != null ? etapaAtual : EtapaDemanda.ELABORACAO;
+        this.tempestividade = tempestividade != null ? tempestividade : Tempestividade.DENTRO_DO_PRAZO;
+        this.tramitacoes = tramitacoes != null ? tramitacoes : new ArrayList<>();
     }
 
     // ===============================================
@@ -94,12 +94,14 @@ public class Demanda implements Serializable {
     // ===============================================
 
     /**
-     * Adiciona uma movimentação à Demanda e sincroniza o estado de ambos.
+     * Adiciona uma tramitação à Demanda e sincroniza o estado de ambos.
      */
-    public void adicionarMovimentacao(DemandaMovimentacao movimentacao) {
-        this.movimentacoes.add(movimentacao);
-        movimentacao.setDemanda(this);
-        this.statusAtual = movimentacao.getEtapa();
+    public void adicionarTramitacao(DemandaTramitacao tramitacao) {
+        this.tramitacoes.add(tramitacao);
+        tramitacao.setDemanda(this);
+        if (tramitacao.getTipoTramitacao().getEtapaDestino() != null) {
+            this.etapaAtual = tramitacao.getTipoTramitacao().getEtapaDestino();
+        }
         this.ultimaAtualizacao = LocalDateTime.now();
     }
 

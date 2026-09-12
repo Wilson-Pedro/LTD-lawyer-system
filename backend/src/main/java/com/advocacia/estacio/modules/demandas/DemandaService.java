@@ -1,8 +1,9 @@
 package com.advocacia.estacio.modules.demandas;
 
+import com.advocacia.estacio.infra.exceptions.RegraDeNegocioException;
+import com.advocacia.estacio.infra.security.AuthorizationUtils;
+import com.advocacia.estacio.infra.security.CustomUserDetails;
 import com.advocacia.estacio.modules.advogados.Advogado;
-
-import com.advocacia.estacio.modules.demandas.movimentacoes.DemandaMovimentacao;
 
 import com.advocacia.estacio.modules.estagiarios.Estagiario;
 import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
@@ -16,11 +17,11 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class DemandaService {
 	private final AdvogadoService advogadoService;
 	private final PessoaService pessoaService;
 	private final SecurityUtils securityUtils;
+	private final AuthorizationUtils authz;
 
 
 	/**
@@ -40,37 +42,51 @@ public class DemandaService {
 	 *
 	 */
 	@Transactional
-	public DemandaDTO.Response cadastrar(DemandaDTO.Request dados, Long autorId) {
-		Estagiario estagiario = estagiarioService.obterReferecia(dados.estagiarioId());
-		Professor professor = professorService.obterReferencia(dados.professorId());
-		Advogado advogado = advogadoService.obterReferencia(dados.advogadoId());
+	public DemandaDTO.Response cadastrar(DemandaDTO.Request req, Long pessoaLogadaId) {
+		Demanda demanda = req.toEntity(
+				advogadoService.obterReferencia(req.advogadoId()),
+				estagiarioService.obterReferecia(req.estagiarioId()),
+				professorService.obterReferencia(req.professorId())
+		);
 
-		LocalDate prazoFinal = dados.prazoDocumentos().plusDays(dados.diasAdicionais());
+		return finalizarCriacaoDemanda(
+				demanda,
+				pessoaLogadaId,
+				TipoTramitacao.ABERTURA,
+				"Demanda cadastrada e iniciada no sistema."
+		);
+	}
 
-		Demanda demanda = Demanda.builder()
-				.estagiario(estagiario)
-				.professor(professor)
-				.advogado(advogado)
-				.descricaoDemanda(dados.descricaoDemanda())
-				.prazo(prazoFinal)
-				.prazoDocumentos(dados.prazoDocumentos())
+	@Transactional
+	public DemandaDTO.Response importarRetroativo(DemandaDTO.ImportacaoRequest req, Long pessoaLogadaId) {
+		Estagiario estagiario = estagiarioService.obterReferecia(req.estagiarioId());
+		Professor professor = professorService.obterReferencia(req.professorId());
+		Advogado advogado = advogadoService.obterReferencia(req.advogadoId());
+
+		Demanda demanda = req.toEntity(advogado, estagiario, professor);
+
+		return finalizarCriacaoDemanda(
+				demanda,
+				pessoaLogadaId,
+				TipoTramitacao.CADASTRO_RETROATIVO,
+				"Demanda importada para o sistema já na etapa: " + req.etapaAtual().getDescricao()
+		);
+	}
+
+	private DemandaDTO.Response finalizarCriacaoDemanda(Demanda demanda, Long pessoaLogadaId, TipoTramitacao tipo, String observacao) {
+		Pessoa responsavel = pessoaService.obterReferencia(pessoaLogadaId);
+
+//		if (!tipo.podeSerExecutadaPor(roleLogada)) {
+//			throw new AccessDeniedException("Você não tem permissão para iniciar essa demanda.");
+//		}
+
+		DemandaTramitacao tramitacaoInicial = DemandaTramitacao.builder()
+				.responsavel(responsavel)
+				.tipoTramitacao(tipo)
+				.observacoes(observacao)
 				.build();
 
-		// TODO: Com a adoção do sistema, talvez já exista demandas em andamento
-		// dessa forma seria interessante verificar como vai funcionar a adição do
-		// DemandaStatus ao cadastrar essas demandas.
-
-		// TODO: Descobrir quem cadastra as demandas (coordenador, secretário ou admin).
-		Long idPessoaAutor = securityUtils.getIdPessoaLogada();
-		Pessoa autorPessoa = pessoaService.obterReferencia(idPessoaAutor);
-
-		DemandaMovimentacao movimentaoInicial = DemandaMovimentacao.builder()
-				.autor(autorPessoa)
-				.observacoes("Demanda iniciada e enviada para análise do estagiário.")
-				.etapa(EtapaDemanda.AGUARDANDO_ALUNO)
-				.build();
-
-		demanda.adicionarMovimentacao(movimentaoInicial);
+		demanda.adicionarTramitacao(tramitacaoInicial);
 		var demandaSalva = demandaRepository.save(demanda);
 		return new DemandaDTO.Response(demandaSalva);
 	}
@@ -81,13 +97,59 @@ public class DemandaService {
 		return new DemandaDTO.Response(demanda);
 	}
 
-	public Page<DemandaDTO.ListResponse> listar(Pageable pageable) {
-		return demandaRepository.findAll(pageable).map(DemandaDTO.ListResponse::new);
+	public Page<DemandaDTO.ListResponse> listar(DemandaDTO.SearchFilter filtro, Pageable pageable) {
+		boolean isAdmin = authz.isAdmin();
+		Specification<Demanda> spec = DemandaSpecs.comFiltros(filtro);
+
+		if(!isAdmin) {
+			Long pessoaId = securityUtils.getIdPessoaLogada();
+			spec = spec.and(DemandaSpecs.envolvePessoa(pessoaId));
+		}
+
+		return demandaRepository.findAll(spec, pageable).map(DemandaDTO.ListResponse::new);
 	}
 
-	public Page<DemandaDTO.ListResponse> buscarTodosPorPessoa(Long pessoaId, Pageable pageable) {
-		Page<Demanda> demandas = demandaRepository.buscarDemandasPorPessoa(pessoaId, pageable);
-		return demandas.map(DemandaDTO.ListResponse::new);
+//	public Page<DemandaDTO.ListResponse> buscarTodosPorPessoa(Long pessoaId, Pageable pageable) {
+//		Page<Demanda> demandas = demandaRepository.buscarDemandasPorPessoa(pessoaId, pageable);
+//		return demandas.map(DemandaDTO.ListResponse::new);
+//	}
+
+	@Transactional
+	public DemandaTramitacaoDTO.Response tramitar(
+			Long demandaId, DemandaTramitacaoDTO.CreateRequest req, CustomUserDetails usuarioLogado
+	) {
+		Demanda demanda = buscarDemandaPorId(demandaId);
+		TipoTramitacao acao = req.tipoTramitacao();
+
+		if (demanda.getEtapaAtual().isFinalizada()) {
+			throw new RegraDeNegocioException("Não é possível tramitar uma demanda já concluída ou arquivada.");
+		}
+		if (!acao.podeSerExecutadaPor(usuarioLogado.getRole())) {
+			throw new AccessDeniedException("Você não tem permissão para executar esta tramitação.");
+		}
+		if (!acao.podeSerExecutadaNa(demanda.getEtapaAtual())) {
+			throw new RegraDeNegocioException(
+					"A tramitação '" + acao.name() + "' não pode ser executada enquanto a demanda estiver na etapa '" + demanda.getEtapaAtual().name() + "'."
+			);
+		}
+
+		Pessoa responsavel = pessoaService.obterReferencia(usuarioLogado.getPessoaId());
+		DemandaTramitacao tramitacao = req.toEntity(responsavel);
+		demanda.adicionarTramitacao(tramitacao);
+
+		demandaRepository.saveAndFlush(demanda);
+		return new DemandaTramitacaoDTO.Response(tramitacao);
+	}
+
+	// --- MÉTODOS PRIVADOS (Auxiliares internos) ---
+
+	/**
+	 * Centraliza a busca e a regra de "Não Encontrado",
+	 * evitando duplicação de código.
+	 */
+	private Demanda buscarDemandaPorId(Long id) {
+		return demandaRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Demanda não encontrada"));
 	}
 	
 //	@Override

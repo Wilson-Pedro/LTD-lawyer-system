@@ -5,10 +5,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.security.access.AccessDeniedException;
 
+/**
+ * Utilitário responsável exclusivamente por extrair informações do contexto de segurança do Spring.
+ * Responde à pergunta: "Quem está logado agora?"
+ */
 @Component
 public class SecurityUtils {
 
-    private CustomUserDetails getUsuarioLogado() {
+    public CustomUserDetails getUsuarioLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails customUser) {

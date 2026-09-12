@@ -1,6 +1,5 @@
 package com.advocacia.estacio.modules.demandas;
 
-import com.advocacia.estacio.modules.demandas.DemandaService;
 import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.infra.security.CustomUserDetails;
 import jakarta.validation.Valid;
@@ -8,13 +7,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
-@RequestMapping("/demandas")
+@RequestMapping("/api/v1/demandas")
 @RestController
 public class DemandaController {
 	
@@ -24,51 +24,68 @@ public class DemandaController {
 		this.demandaService = demandaService;
 	}
 
-	// TODO: add Uri
 	@PostMapping
 	public ResponseEntity<DemandaDTO.Response> cadastrar(
-			@RequestBody @Valid DemandaDTO.Request dados,
-			@AuthenticationPrincipal CustomUserDetails usuarioLogado,
-			UriComponentsBuilder uriBuilder) {
+			@RequestBody @Valid DemandaDTO.Request dados, @AuthenticationPrincipal CustomUserDetails usuarioLogado,
+			UriComponentsBuilder uriBuilder
+	) {
+		DemandaDTO.Response response = demandaService.cadastrar(dados, usuarioLogado.getPessoaId());
+		var uri = uriBuilder.path("/api/v1/demandas/{id}").buildAndExpand(response.id()).toUri();
+		return ResponseEntity.created(uri).body(response);
+	}
 
-		var dto = demandaService.cadastrar(dados, usuarioLogado.getId());
-		var uri = uriBuilder.path("/demandas/{id}").buildAndExpand(dto.id()).toUri();
+	@PostMapping("/importar")
+	public ResponseEntity<DemandaDTO.Response> importarRetroativo(
+			@RequestBody @Valid DemandaDTO.ImportacaoRequest req,
+			@AuthenticationPrincipal CustomUserDetails usuarioLogado) {
 
-		return ResponseEntity.created(uri).body(dto);
+		var response = demandaService.importarRetroativo(req, usuarioLogado.getPessoaId());
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@GetMapping
 	public ResponseEntity<Page<DemandaDTO.ListResponse>> listar(
+			DemandaDTO.SearchFilter filtro,
 			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable
 	) {
-		var pages = demandaService.listar(pageable);
+		var pages = demandaService.listar(filtro, pageable);
 		return ResponseEntity.ok(pages);
 	}
 
-    @GetMapping("/{demandaId}")
+    @GetMapping("/{id}")
     public ResponseEntity<DemandaDTO.Response> buscarPorId(@PathVariable Long demandaId) {
         var dto = demandaService.buscarPorId(demandaId);
         return ResponseEntity.ok(dto);
     }
 
-	@GetMapping("/me")
-	public ResponseEntity<Page<DemandaDTO.ListResponse>> buscarMinhasDemandas(
-			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable,
-			@AuthenticationPrincipal Usuario usuarioLogado
-			) {
-		Long meuId = usuarioLogado.getId();
-		var pages = demandaService.buscarTodosPorPessoa(meuId, pageable);
-		return ResponseEntity.ok(pages);
+	@PostMapping("/{demandaId}/tramitar")
+	public ResponseEntity<DemandaTramitacaoDTO.Response> tramitar(
+			@PathVariable Long demandaId,
+			@RequestBody @Valid DemandaTramitacaoDTO.CreateRequest req,
+			@AuthenticationPrincipal CustomUserDetails usuarioLogado
+	) {
+		var response = demandaService.tramitar(demandaId, req, usuarioLogado);
+		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/pessoa/{pessoaId}")
-	public ResponseEntity<Page<DemandaDTO.ListResponse>> buscarDemandasPorPessoa(
-			@PathVariable Long pessoaId,
-			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable) {
+//	@GetMapping("/me")
+//	public ResponseEntity<Page<DemandaDTO.ListResponse>> buscarMinhasDemandas(
+//			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable,
+//			@AuthenticationPrincipal Usuario usuarioLogado
+//			) {
+//		Long meuId = usuarioLogado.getId();
+//		var pages = demandaService.buscarTodosPorPessoa(meuId, pageable);
+//		return ResponseEntity.ok(pages);
+//	}
 
-		var pages = demandaService.buscarTodosPorPessoa(pessoaId, pageable);
-		return ResponseEntity.ok(pages);
-	}
+//	@GetMapping("/pessoa/{pessoaId}")
+//	public ResponseEntity<Page<DemandaDTO.ListResponse>> buscarDemandasPorPessoa(
+//			@PathVariable Long pessoaId,
+//			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable) {
+//
+//		var pages = demandaService.buscarTodosPorPessoa(pessoaId, pageable);
+//		return ResponseEntity.ok(pages);
+//	}
 
 //	@GetMapping("/role/{role}")
 //	public ResponseEntity<List<String>> buscarDemandaStatus(@PathVariable String role) {

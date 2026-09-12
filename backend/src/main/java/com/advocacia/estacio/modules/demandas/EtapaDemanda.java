@@ -1,31 +1,24 @@
 package com.advocacia.estacio.modules.demandas;
 
-public enum EtapaDemanda {
-	CORRIGIDO( "Corrigido"),
-	EM_CORRECAO( "Em Correção"),
-	DEVOLVIDO("Devolvido"),
-//	DENTRO_DO_PRAZO("Dentro do Prazo"),
-//	FORA_DO_PRAZO("Fora do Prazo"),
-	RECEBIDO ("Recebido"),
-	PROTOCOLADO("Protocolado"),
-	AGUARDANDO_PROFESSOR( "Aguardando Professor"),
-	AGUARDANDO_ADVOGADO("Aguardando Advogado"),
-	AGUARDANDO_ALUNO("Aguardando Aluno");
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.RequiredArgsConstructor;
 
-//  TODO: verificar possível uso
-//	TRIAGEM("Em Triagem"),
-//	AGUARDANDO_DOCUMENTOS("Aguardando Documentos"),
-//	EM_ANALISE("Em Análise"),
-//	RESOLVIDO_EXTRAJUDICIAL("Resolvido Extrajudicialmente"),
-//	ORIENTACAO_FINALIZADA("Orientação Finalizada"),
-//	JUDICIALIZADO("Ajuizado / Virou Processo"),
-//	ENCERRADO("Encerrado / Arquivado");
+// estado/posse
+@RequiredArgsConstructor
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum EtapaDemanda {
+
+	ELABORACAO("Em Elaboração pelo Estagiário"),
+	REVISAO_PROFESSOR("Em Revisão pelo Professor"),
+	VALIDACAO_ADVOGADO("Aguardando Validação do Advogado"),
+	PROTOCOLADA("Protocolada"),
+	ARQUIVADA("Arquivada");
+
+	public boolean isFinalizada() {
+		return this == PROTOCOLADA || this == ARQUIVADA;
+	}
 
 	private final String descricao;
-	
-	EtapaDemanda(String descricao) {
-		this.descricao = descricao;
-	}
 
 	public String getDescricao() {
 		return descricao;

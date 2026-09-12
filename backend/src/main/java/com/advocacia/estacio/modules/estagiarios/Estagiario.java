@@ -20,6 +20,7 @@ public class Estagiario implements Serializable {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @MapsId
     @JoinColumn(name = "pessoa_id", unique = true, nullable = false)
     private Pessoa pessoa;
 
