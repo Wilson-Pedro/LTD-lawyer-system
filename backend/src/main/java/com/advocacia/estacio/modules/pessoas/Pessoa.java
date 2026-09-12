@@ -32,6 +32,7 @@ public class Pessoa {
     @Column(nullable = false)
     private String nome;
 
+    // TODO: para um 'Assistido' nao faria sentido e email ser único
     @Column(unique = true)
     // TODO: add
     //  @Column(nullable = false, unique = true, updatable = false)

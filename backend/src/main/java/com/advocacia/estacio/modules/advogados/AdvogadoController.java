@@ -28,7 +28,7 @@ public class AdvogadoController {
 			@RequestBody @Valid AdvogadoDTO.CreateRequest request, UriComponentsBuilder uriBuilder
 	) {
 		AdvogadoDTO.Response response = advogadoService.cadastrar(request);
-		var uri = uriBuilder.path("/advogados/{id}").buildAndExpand(response.id()).toUri();
+		var uri = uriBuilder.path("/api/v1/advogados/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
 	}
 

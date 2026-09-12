@@ -25,7 +25,7 @@ public class ProfessorController {
     public ResponseEntity<ProfessorDTO.Response> cadastrar(
             @RequestBody @Valid ProfessorDTO.CreateRequest request, UriComponentsBuilder uriBuilder) {
         ProfessorDTO.Response response = professorService.cadastrar(request);
-        var uri = uriBuilder.path("/professores/{id}").buildAndExpand(response.id()).toUri();
+        var uri = uriBuilder.path("/api/v1/professores/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
     }
 

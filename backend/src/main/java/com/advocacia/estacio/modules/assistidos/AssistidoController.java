@@ -23,7 +23,7 @@ public class AssistidoController {
 	public ResponseEntity<AssistidoDTO.Response> cadastrar(
 			@RequestBody @Valid AssistidoDTO.CreateRequest request, UriComponentsBuilder uriBuilder) {
 		AssistidoDTO.Response response = assistidoService.cadastrar(request);
-		var uri = uriBuilder.path("/assistidos/{id}").buildAndExpand(response.id()).toUri();
+		var uri = uriBuilder.path("/api/v1/assistidos/{id}").buildAndExpand(response.id()).toUri();
 		return ResponseEntity.created(uri).body(response);
 	}
 

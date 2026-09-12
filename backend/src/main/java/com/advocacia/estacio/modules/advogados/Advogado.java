@@ -21,6 +21,7 @@ public class Advogado implements Serializable {
 	private Long id;
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, optional = false)
+	@MapsId
 	@JoinColumn(name = "pessoa_id", unique = true, nullable = false)
 	private Pessoa pessoa;
 
