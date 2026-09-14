@@ -1,0 +1,11 @@
+export const ROLE = {
+  ADMIN: 'ADMIN',
+  COORDENADOR_DO_CURSO: 'COORDENADOR_DO_CURSO',
+  SECRETARIO: 'SECRETARIO',
+  PROFESSOR: 'PROFESSOR',
+  ADVOGADO: 'ADVOGADO',
+  ESTAGIARIO: 'ESTAGIARIO',
+  ASSISTIDO: 'ASSISTIDO',
+} as const;
+
+export type Role = (typeof ROLE)[keyof typeof ROLE];

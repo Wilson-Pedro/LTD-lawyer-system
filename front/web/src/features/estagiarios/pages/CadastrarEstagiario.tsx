@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Toast, ToastContainer } from 'react-bootstrap';
-import { Form } from '../../../components/Form/Form';
+import { Form } from '../../../components/ui/Form/Form';
 import {
   estagiariosService,
   EstagiarioRequest,
@@ -12,13 +12,13 @@ import {
 // import { meuSchemaZod } from "../schemas/estagiariosSchemas";
 
 // import { scrollToTop } from "./../../utils/Utils";
-import { Input } from '../../../components/Form/Input';
-import { Select } from '../../../components/Form/Select';
-import { Button } from '../../../components/Form/Button';
+import { Input } from '../../../components/ui/Form/Input';
+import { Select } from '../../../components/ui/Form/Select';
+import { Button } from '../../../components/ui/Button';
 
 import { UseFormSetError } from 'react-hook-form';
 import { tratarErrosBackend } from '../../../utils/errorHelper';
-import { Container } from '../../../components/Form/Container';
+import { Container } from '../../../components/ui/Form/Container';
 
 export default function CadastrarEstagiario() {
   const navigate = useNavigate();

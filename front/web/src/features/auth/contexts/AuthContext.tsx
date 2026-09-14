@@ -1,68 +1,60 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 
-import { api } from '../../../config/api';
-import { User } from '../types/Auth';
+import { Usuario } from '../types';
+import { clearToken, getToken, setToken } from '@/lib/storage/tokenStorage';
+import { authService } from '../services/authService';
+import { LoginRequest } from '../types';
 
 interface AuthContextData {
-  user: User | null;
+  user: Usuario | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (token: string, userData: User) => void;
+  login: (dados: LoginRequest) => Promise<void>;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextData | undefined>(undefined);
+export const AuthContext = createContext<AuthContextData | undefined>(
+  undefined,
+);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  // isLoading começa como true para evitar redirecionamento p/ tela de login
-  // antes do React ler o localStorage
+  const [user, setUser] = useState<Usuario | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Verficica se já tem uma sessão salva no localStorage
-    const carregarSessao = async () => {
-      const storedToken = localStorage.getItem('@AppJuridico:token');
+    async function carregarUsuario() {
+      const token = getToken();
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
 
-      if (storedToken) {
-        try {
-          const response = await api.get('/auth/me');
-          setUser(response.data);
-        } catch (error) {
-          setUser(null);
-        }
+      try {
+        const usuario = await authService.me();
+        setUser(usuario);
+      } catch {
+        clearToken();
+        setUser(null);
+      } finally {
         setIsLoading(false);
       }
-    };
-
-    carregarSessao();
+    }
+    carregarUsuario();
   }, []);
 
-  const login = (token: string, userData: User) => {
-    localStorage.setItem('@AppJuridico:token', token);
+  async function login(dados: LoginRequest) {
+    const { token, tipo, expiraEm } = await authService.login(dados);
+    setToken(token, tipo, expiraEm);
 
-    setUser(userData);
-  };
+    const usuario = await authService.me();
+    setUser(usuario);
+  }
 
-  const logout = () => {
-    localStorage.removeItem('@SeuApp:token');
-    // TODO: Verificar se é necessário deslogar no servidor também. Se sim, descomentar o código abaixo.
-    // try {
-    //   await api.post('/auth/logout');
-    // } catch (error) {
-    //   console.error('Erro ao deslogar no servidor', error);
-    // } finally {
-    //   localStorage.removeItem('@SeuApp:token');
-    // }
+  function logout() {
+    clearToken();
+    // await authService.logout();
     setUser(null);
-  };
+  }
 
   return (
     <AuthContext.Provider
@@ -77,14 +69,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-
-  if (context === undefined) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
-  }
-
-  return context;
 };

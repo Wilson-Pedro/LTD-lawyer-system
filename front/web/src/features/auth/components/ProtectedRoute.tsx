@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Role } from '../../../config/roles';
+import { Role } from '../../../constants/roles';
 import { SideBar } from '../../../components/SideBar/SideBar';
 
 interface ProtectedRouteProps {
