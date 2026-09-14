@@ -17,8 +17,8 @@ public interface UsuarioDTO {
     record Response(
             Long id,
             String login,
-            String role,
-            String usuarioStatus,
+            UsuarioRole role,
+            UsuarioStatus usuarioStatus,
             LocalDateTime criadoEm,
             LocalDateTime desativadoEm
     ) {
@@ -26,8 +26,8 @@ public interface UsuarioDTO {
             this(
                     usuario.getId(),
                     usuario.getLogin(),
-                    UsuarioRole.obterDescricao(usuario.getRole()),
-                    UsuarioStatus.obterDescricao(usuario.getStatus()),
+                    usuario.getRole(),
+                    usuario.getStatus(),
                     usuario.getCriadoEm(),
                     usuario.getDesativadoEm()
             );
