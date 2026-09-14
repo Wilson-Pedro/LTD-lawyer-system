@@ -1,9 +1,6 @@
 package com.advocacia.estacio.modules.estagiarios;
 
-import com.advocacia.estacio.modules.advogados.Advogado;
-import com.advocacia.estacio.modules.advogados.AdvogadoDTO;
 import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;

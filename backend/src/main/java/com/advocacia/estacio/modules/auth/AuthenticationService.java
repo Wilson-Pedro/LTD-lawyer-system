@@ -2,6 +2,7 @@ package com.advocacia.estacio.modules.auth;
 
 import com.advocacia.estacio.infra.security.CustomUserDetails;
 import com.advocacia.estacio.infra.security.TokenService;
+import com.advocacia.estacio.modules.usuarios.UsuarioDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,9 +28,7 @@ public class AuthenticationService {
         return new AuthDTO.LoginResponse(
                 token,
                 "Bearer",
-                customUser.getId(),
-                customUser.getUsername(),
-                customUser.getRole(),
-                expiracao);
+                expiracao
+        );
     }
 }
