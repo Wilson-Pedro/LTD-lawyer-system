@@ -1,5 +1,5 @@
-import { Pessoa } from "@/types/pessoa";
-import { Usuario } from "../auth/types";
+import { Pessoa } from '@/types/pessoa';
+import { Usuario } from '../auth/types';
 
 export enum PeriodoEstagio {
   ESTAGIO_I = 'ESTAGIO_I',
@@ -22,17 +22,6 @@ export interface Estagiario {
   periodo: string;
   pessoa: Pessoa;
   usuario: Usuario;
-}
-
-export interface CriarEstagiarioRequest {
-  id: number;
-  nome: string;
-  email: string;
-  telefone: string;
-  matricula: string;
-  periodoEstagio: PeriodoEstagio;
-  usuarioStatus: string;
-  senha: string;
 }
 
 export interface EstagiarioListItem {

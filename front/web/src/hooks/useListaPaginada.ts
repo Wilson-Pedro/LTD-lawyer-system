@@ -22,6 +22,8 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
+  const refetch = () => setRefetchTrigger((prev) => prev + 1);
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -59,7 +61,12 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
     return () => {
       ativo = false;
     };
-  }, [pagination.pageIndex, pagination.pageSize, filtroDebounced]);
+  }, [
+    pagination.pageIndex,
+    pagination.pageSize,
+    filtroDebounced,
+    refetchTrigger,
+  ]);
 
   return {
     dados,

@@ -1,3 +1,4 @@
+import { notifications } from '@mantine/notifications';
 import { clearToken } from '../storage/tokenStorage';
 import { api } from './axios';
 
@@ -10,8 +11,13 @@ api.interceptors.response.use(
     }
 
     if (error.response?.status === 403) {
-      // usuário autenticado mas sem permissão
-      // redirecionar pra tela de "acesso negado"
+      const detail = error.response?.data?.detail;
+
+      notifications.show({
+        title: error.response?.data?.title ?? 'Acesso negado',
+        message: detail ?? 'Você não tem permissão para isso.',
+        color: 'red',
+      });
     }
 
     return Promise.reject(error);

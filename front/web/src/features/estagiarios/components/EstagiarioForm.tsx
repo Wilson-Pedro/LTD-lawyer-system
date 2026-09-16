@@ -1,19 +1,15 @@
-import { CriarEstagiarioRequest } from '../types';
-
 import { Form } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 
-import { useForm, UseFormSetError } from 'react-hook-form';
 import { Fieldset, Stack } from '@mantine/core';
+import { useZodForm } from '@/hooks/useZodForm';
+import { CriarEstagiarioRequest, criarEstagiarioSchema } from '../schema';
 
 interface EstagiarioFormProps {
   valoresIniciais?: Partial<CriarEstagiarioRequest>;
-  onSubmit: (
-    dados: CriarEstagiarioRequest,
-    setError: UseFormSetError<CriarEstagiarioRequest>,
-  ) => Promise<void>;
+  onSubmit: (dados: CriarEstagiarioRequest) => Promise<void>;
   modo: 'criar' | 'editar';
   periodos: Array<{ value: string; label: string }>;
 }
@@ -24,9 +20,8 @@ export function EstagiarioForm({
   modo,
   periodos,
 }: EstagiarioFormProps) {
-  const methods = useForm<CriarEstagiarioRequest>({
+  const methods = useZodForm(criarEstagiarioSchema, {
     defaultValues: valoresIniciais,
-    // resolver: zodResolver(estagiarioSchema)
   });
 
   return (
