@@ -16,7 +16,7 @@ export interface Usuario {
   id: number;
   login: string;
   role: Role;
-  usuarioStatus: UsuarioStatus;
+  status: UsuarioStatus;
   criadoEm: string;
   desativadoEm: string;
 }

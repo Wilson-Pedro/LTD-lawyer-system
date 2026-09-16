@@ -31,7 +31,7 @@ public class ProfessorService {
 
     @Transactional(readOnly = true)
     public Page<ProfessorDTO.ListResponse> listar(ProfessorDTO.SearchFilter filtro, Pageable pageable) {
-        return professorRepository.buscarComFiltros(filtro.nome(), filtro.status(), pageable)
+        return professorRepository.buscarComFiltros(filtro.nome(), filtro.usuarioStatus(), pageable)
                 .map(ProfessorDTO.ListResponse::new);
     }
 

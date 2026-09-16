@@ -1,7 +1,9 @@
 package com.advocacia.estacio.modules.professores;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
+import com.advocacia.estacio.modules.pessoas.PessoaDTO;
 import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.UsuarioDTO;
 import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -37,22 +39,14 @@ public interface ProfessorDTO {
     @Schema(name = "ProfessorResponse")
     record Response(
             Long id,
-            String nome,
-            String email,
-            String telefone,
-            String usuarioStatus,
-            LocalDateTime criadoEm,
-            LocalDateTime desativadoEm
+            PessoaDTO.Response pessoa,
+            UsuarioDTO.Response usuario
     ) {
         public Response (Professor professor) {
             this(
                     professor.getId(),
-                    professor.getPessoa().getNome(),
-                    professor.getPessoa().getEmail(),
-                    professor.getPessoa().getTelefone(),
-                    UsuarioStatus.obterDescricao(professor.getPessoa().getUsuario().getStatus()),
-                    professor.getPessoa().getCriadoEm(),
-                    professor.getPessoa().getUsuario().getDesativadoEm()
+                    new PessoaDTO.Response( professor.getPessoa()),
+                    new UsuarioDTO.Response(professor.getPessoa().getUsuario())
             );
         }
     }
@@ -63,7 +57,7 @@ public interface ProfessorDTO {
             String nome,
             String email,
             String telefone,
-            String status
+            UsuarioStatus usuarioStatus
     ) {
         public ListResponse(Professor professor) {
             this(
@@ -71,7 +65,7 @@ public interface ProfessorDTO {
                     professor.getPessoa().getNome(),
                     professor.getPessoa().getEmail(),
                     professor.getPessoa().getTelefone(),
-                    UsuarioStatus.obterDescricao(professor.getPessoa().getUsuario().getStatus())
+                    professor.getPessoa().getUsuario().getStatus()
             );
         }
     }
@@ -79,7 +73,7 @@ public interface ProfessorDTO {
     @Schema(name = "ProfessorSearchFilter")
     record SearchFilter(
             String nome,
-            UsuarioStatus status){}
+            UsuarioStatus usuarioStatus){}
 
     @Schema(name = "ProfessorOptionResponse")
     record OptionResponse(

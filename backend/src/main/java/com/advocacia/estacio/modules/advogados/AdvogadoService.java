@@ -38,7 +38,7 @@ public class AdvogadoService {
 
 	@Transactional(readOnly = true)
 	public Page<AdvogadoDTO.ListResponse> listar(AdvogadoDTO.SearchFilter filtro, Pageable pageable) {
-		return advogadoRepository.buscarComFiltros(filtro.nome(), filtro.status(), pageable)
+		return advogadoRepository.buscarComFiltros(filtro.nome(), filtro.usuarioStatus(), pageable)
 				.map(AdvogadoDTO.ListResponse::new);
 	}
 

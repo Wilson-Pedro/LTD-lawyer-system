@@ -1,9 +1,11 @@
 package com.advocacia.estacio.modules.advogados;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
+import com.advocacia.estacio.modules.pessoas.PessoaDTO;
 import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoDTO;
 import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.UsuarioDTO;
 import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
@@ -45,26 +47,18 @@ public interface AdvogadoDTO {
     @Schema(name = "AdvogadoResponse")
     record Response(
             Long id,
-            String nome,
-            String email,
-            String telefone,
             LocalDate dataNascimento,
             EnderecoDTO.Response endereco,
-            String usuarioStatus,
-            LocalDateTime criadoEm,
-            LocalDateTime desativadoEm
+            PessoaDTO.Response pessoa,
+            UsuarioDTO.Response usuario
     ) {
         public Response (Advogado advogado) {
             this(
                     advogado.getId(),
-                    advogado.getPessoa().getNome(),
-                    advogado.getPessoa().getEmail(),
-                    advogado.getPessoa().getTelefone(),
                     advogado.getPessoa().getDataNascimento(),
                     EnderecoDTO.Response.from(advogado.getPessoa().getEndereco()),
-                    UsuarioStatus.obterDescricao(advogado.getPessoa().getUsuario().getStatus()),
-                    advogado.getPessoa().getCriadoEm(),
-                    advogado.getPessoa().getUsuario().getDesativadoEm()
+                    new PessoaDTO.Response(advogado.getPessoa()),
+                    new UsuarioDTO.Response(advogado.getPessoa().getUsuario())
             );
         }
     }
@@ -75,7 +69,7 @@ public interface AdvogadoDTO {
             String nome,
             String email,
             String telefone,
-            String status
+            UsuarioStatus usuarioStatus
     ) {
         public ListResponse(Advogado advogado) {
             this(
@@ -83,7 +77,7 @@ public interface AdvogadoDTO {
                     advogado.getPessoa().getNome(),
                     advogado.getPessoa().getEmail(),
                     advogado.getPessoa().getTelefone(),
-                    UsuarioStatus.obterDescricao(advogado.getPessoa().getUsuario().getStatus())
+                    advogado.getPessoa().getUsuario().getStatus()
             );
         }
     }
@@ -91,7 +85,7 @@ public interface AdvogadoDTO {
     @Schema(name = "AdvogadoSearchFilter")
     record SearchFilter(
             String nome,
-            UsuarioStatus status){}
+            UsuarioStatus usuarioStatus){}
 
     @Schema(name = "AdvogadoOptionResponse")
     record OptionResponse(

@@ -36,8 +36,8 @@ public class EstagiarioSpecs {
                 predicates.add(cb.or(buscaPorNome, buscaPorMatricula));
             }
 
-            if (filtro.periodo() != null) {
-                predicates.add(cb.equal(root.get("periodo"), filtro.periodo()));
+            if (filtro.periodoEstagio() != null) {
+                predicates.add(cb.equal(root.get("periodo"), filtro.periodoEstagio()));
             }
             if (filtro.usuarioStatus() != null) {
                 Join<Pessoa, Usuario> usuarioJoin = pessoaJoin.join("usuario", JoinType.INNER);

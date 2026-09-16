@@ -1,7 +1,9 @@
 package com.advocacia.estacio.modules.estagiarios;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
+import com.advocacia.estacio.modules.pessoas.PessoaDTO;
 import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.UsuarioDTO;
 import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -42,23 +44,17 @@ public interface EstagiarioDTO {
     record Response(
             Long id,
             String matricula,
-            String nome,
-            String email,
-            String telefone,
-            String periodo,
-            LocalDateTime criacao,
-            String usuarioStatus
+            PeriodoEstagio periodoEstagio,
+            PessoaDTO.Response pessoa,
+            UsuarioDTO.Response usuario
     ) {
         public Response(Estagiario estagiario) {
             this(
                     estagiario.getId(),
                     estagiario.getMatricula(),
-                    estagiario.getPessoa().getNome(),
-                    estagiario.getPessoa().getEmail(),
-                    estagiario.getPessoa().getTelefone(),
-                    PeriodoEstagio.obterDescricao(estagiario.getPeriodo()),
-                    estagiario.getPessoa().getCriadoEm(),
-                    UsuarioStatus.obterDescricao(estagiario.getPessoa().getUsuario().getStatus())
+                    estagiario.getPeriodo(),
+                    new PessoaDTO.Response(estagiario.getPessoa()),
+                    new UsuarioDTO.Response(estagiario.getPessoa().getUsuario())
             );
         }
     }
@@ -68,7 +64,7 @@ public interface EstagiarioDTO {
             Long id,
             String matricula,
             String nome,
-            String periodoEstagio,
+            PeriodoEstagio periodoEstagio,
             UsuarioStatus usuarioStatus
     ) {
         public ListResponse(Estagiario estagiario) {
@@ -76,7 +72,7 @@ public interface EstagiarioDTO {
                     estagiario.getId(),
                     estagiario.getMatricula(),
                     estagiario.getPessoa().getNome(),
-                    PeriodoEstagio.obterDescricao(estagiario.getPeriodo()),
+                    estagiario.getPeriodo(),
                     estagiario.getPessoa().getUsuario().getStatus()
             );
         }
@@ -91,7 +87,7 @@ public interface EstagiarioDTO {
     @Schema(name = "EstagiarioSearchFilter")
     record SearchFilter(
             String termo,
-            PeriodoEstagio periodo,
+            PeriodoEstagio periodoEstagio,
             UsuarioStatus usuarioStatus
     ) {}
 

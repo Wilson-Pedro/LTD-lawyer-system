@@ -1,7 +1,7 @@
 package com.advocacia.estacio.modules.pessoas;
 
 public enum EstadoCivil {
-	SOLTERIO ("Solteiro(a)"),
+	SOLTEIRO ("Solteiro(a)"),
 	CASADO("Casado(a)"),
 	DIVORCIADO("Divorciado(a)"),
 	VIUVO("Viuvo(a)"),

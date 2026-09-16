@@ -1,3 +1,6 @@
+import { Pessoa } from "@/types/pessoa";
+import { Usuario } from "../auth/types";
+
 export enum PeriodoEstagio {
   ESTAGIO_I = 'ESTAGIO_I',
   ESTAGIO_II = 'ESTAGIO_II',
@@ -15,14 +18,10 @@ export const periodoEstagioLabel: Record<PeriodoEstagio, string> = {
 
 export interface Estagiario {
   id: number;
-  nome: string;
   matricula: string;
-  email: string;
-  telefone: string;
   periodo: string;
-  usuarioStatus: string;
-  senha: string;
-  criacao: string;
+  pessoa: Pessoa;
+  usuario: Usuario;
 }
 
 export interface CriarEstagiarioRequest {

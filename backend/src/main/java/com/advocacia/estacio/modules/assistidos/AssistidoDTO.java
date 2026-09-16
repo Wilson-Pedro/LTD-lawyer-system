@@ -2,6 +2,7 @@ package com.advocacia.estacio.modules.assistidos;
 
 import com.advocacia.estacio.modules.pessoas.EstadoCivil;
 import com.advocacia.estacio.modules.pessoas.Pessoa;
+import com.advocacia.estacio.modules.pessoas.PessoaDTO;
 import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,29 +51,25 @@ public interface AssistidoDTO {
     record Response(
             Long id,
             String matricula,
-            String nome,
-            String email,
-            String telefone,
             String profissao,
             String nacionalidade,
             String naturalidade,
-            String estadoCivil,
+            EstadoCivil estadoCivil,
+            LocalDateTime criadoEm,
             EnderecoDTO.Response endereco,
-            LocalDateTime criacao
+            PessoaDTO.Response pessoa
     ) {
         public Response(Assistido assistido) {
             this(
                     assistido.getId(),
                     assistido.getMatricula(),
-                    assistido.getPessoa().getNome(),
-                    assistido.getPessoa().getEmail(),
-                    assistido.getPessoa().getTelefone(),
                     assistido.getProfissao(),
                     assistido.getNacionalidade(),
-                    EstadoCivil.obterDescricao(assistido.getEstadoCivil()),
                     assistido.getNaturalidade(),
+                    assistido.getEstadoCivil(),
+                    assistido.getPessoa().getCriadoEm(),
                     EnderecoDTO.Response.from(assistido.getPessoa().getEndereco()),
-                    assistido.getPessoa().getCriadoEm()
+                    new PessoaDTO.Response(assistido.getPessoa())
             );
         }
     }

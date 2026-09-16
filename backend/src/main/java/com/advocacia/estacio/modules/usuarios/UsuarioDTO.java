@@ -18,7 +18,7 @@ public interface UsuarioDTO {
             Long id,
             String login,
             UsuarioRole role,
-            UsuarioStatus usuarioStatus,
+            UsuarioStatus status,
             LocalDateTime criadoEm,
             LocalDateTime desativadoEm
     ) {
