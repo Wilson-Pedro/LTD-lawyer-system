@@ -1,0 +1,32 @@
+.wrapper {
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--mantine-color-gray-2);
+}
+
+.header {
+  background-color: var(--mantine-color-institucional-0);
+}
+
+.headerCell {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--mantine-color-institucional-8);
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  user-select: none;
+}
+
+.headerCell:hover {
+  background-color: var(--mantine-color-institucional-1);
+}
+
+.row {
+  transition: background-color 0.1s ease;
+}
+
+.emptyState {
+  padding: 48px 0;
+}
