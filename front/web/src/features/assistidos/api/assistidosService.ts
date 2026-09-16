@@ -1,8 +1,16 @@
-import { api } from '../../../config/api';
-import { AssistidoRequest } from '../types/Assistido';
+import { api } from '@/lib/api/axios';
+import { Assistido, AssistidoRequest } from '../types';
 
 export const assistidosService = {
-  cadastrar: async (dados: AssistidoRequest): Promise<void> => {
-    await api.post('/assistidos/', dados);
+  criar: async (dados: AssistidoRequest): Promise<void> => {
+    await api.post('/api/v1/assistidos/', dados);
+  },
+  listar: async (): Promise<Assistido[]> => {
+    const { data } = await api.get('/api/v1/assistidos');
+    return data;
+  },
+  buscarPorId: async (id: number): Promise<Assistido> => {
+    const { data } = await api.get(`/api/v1/assistidos/${id}`);
+    return data;
   },
 };

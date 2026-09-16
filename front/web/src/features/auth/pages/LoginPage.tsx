@@ -1,19 +1,26 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { UseFormSetError } from 'react-hook-form';
+import { useForm, UseFormSetError } from 'react-hook-form';
 import { notifications } from '@mantine/notifications';
-import { Paper, Title, Stack } from '@mantine/core';
+import { Paper, Title, Stack, Image } from '@mantine/core';
 
-import { Input, Button, Form } from '@/components/ui/Form';
+import { Form } from '@/components/ui/Form';
 import { tratarErrosBackend } from '@/utils/errorHelper';
 import { paths } from '@/routes/paths';
+import balancaLogo from '@/assets/images/Balanca-da-justica.png';
 
 import { useAuth } from '../hooks/useAuth';
 import { LoginRequest } from '../types';
+import { Input } from '@/components/ui/Input';
+import { Button } from '@/components/ui/Button';
 
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const methods = useForm<LoginRequest>({
+    // resolver: zodResolver(estagiarioSchema)
+  });
 
   const from =
     (location.state as { from?: Location })?.from?.pathname || paths.home;
@@ -37,12 +44,20 @@ export default function LoginPage() {
 
   return (
     <Stack align="center" justify="center" mih="100vh" bg="gray.0">
-      <Paper withBorder shadow="sm" p="xl" w={360} radius="md">
+      <Paper shadow="sm" p="xl" w={360} radius="md">
+        <Image
+          src={balancaLogo}
+          alt="Balança da Justiça"
+          w={80}
+          mx="auto"
+          mb="md"
+          radius="md"
+        />
         <Title order={3} ta="center" mb="lg">
           Núcleo Jurídico
         </Title>
 
-        <Form<LoginRequest> onSubmit={handleSalvar}>
+        <Form methods={methods} onSubmit={handleSalvar}>
           <Input name="login" label="Email" />
           <Input name="password" label="Senha" type="password" />
 

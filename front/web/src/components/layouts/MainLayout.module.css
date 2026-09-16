@@ -1,0 +1,22 @@
+.navLink {
+  color: var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-sm);
+}
+
+.navLink:hover {
+  background-color: var(--mantine-color-institucional-7);
+  color: white;
+}
+
+.navLinkActive {
+  background-color: var(--mantine-color-institucional-6) !important;
+  color: white !important;
+}
+
+.navLinkActive:hover {
+  background-color: var(--mantine-color-institucional-6) !important;
+}
+
+.logo {
+  letter-spacing: 0.02em;
+}

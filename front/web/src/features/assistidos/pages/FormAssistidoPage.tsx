@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import { Form } from '../../../components/ui/Form';
-import { processosService, ProcessoRequest } from '../';
+import { assistidosService } from '../api/assistidosService';
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { meuSchemaZod } from "../schemas/estagiariosSchemas";
 
@@ -14,8 +14,9 @@ import { Container } from '../../../components/ui/Form/Container';
 
 import { UseFormSetError } from 'react-hook-form';
 import { tratarErrosBackend } from '../../../utils/errorHelper';
+import { AssistidoRequest } from '../types';
 
-export default function CadastrarProcesso() {
+export default function CadastrarAssistido() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const [toast, setToast] = useState({
@@ -36,15 +37,15 @@ export default function CadastrarProcesso() {
   if (!token) return <Navigate to="/login" />;
 
   const handleSalvar = async (
-    dados: ProcessoRequest,
-    setError: UseFormSetError<ProcessoRequest>,
+    dados: AssistidoRequest,
+    setError: UseFormSetError<AssistidoRequest>,
   ) => {
     try {
-      await processosService.cadastrar(dados);
+      await assistidosService.criar(dados);
       // Se deu certo: mostra sucesso e volta para a página anterior após 2 segundos
       setToast({
         mostrar: true,
-        mensagem: 'Processo cadastrado com sucesso!',
+        mensagem: 'Assistido cadastrado com sucesso!',
         variante: 'success',
       });
       setTimeout(() => navigate(-1), 2000);
@@ -62,12 +63,11 @@ export default function CadastrarProcesso() {
 
   return (
     <Container>
-      <h2 className="mb-4 text-center">Cadastrar Processo</h2>
+      <h2 className="mb-4 text-center">Cadastrar Assistido</h2>
 
-      <Form<ProcessoRequest> onSubmit={handleSalvar}>
-        <Input name="numeroDoProcesso" label="Número do Processo" />
-        <Input name="assunto" label="Assunto" />
-        <Input name="vara" label="Vara" />
+      <Form<AssistidoRequest> onSubmit={handleSalvar}>
+        <Input name="nome" label="Nome Completo" />
+        <Input name="email" label="Email" type="email" />
 
         {/*  <Select
                         name="periodo"
@@ -75,10 +75,15 @@ export default function CadastrarProcesso() {
                         options={periodosOptions}
                     />
                   */}
-        <Input name="responsavel" label="Responsável" />
-        <Input name="areaDoDireito" label="Área do Direito" />
-        <Input name="tribunal" label="Tribunal" />
-        <Input name="prazo" label="Prazo" />
+        <Input name="telefone" label="Telefone" />
+        <Input name="dataDeNascimento" label="Data de Nascimento" type="date" />
+        <Input name="cidade" label="Cidade" />
+        <Input name="bairro" label="Bairro" />
+        <Input name="rua" label="Rua" />
+        <Input name="numeroDaCasa" label="Número da Casa" type="number" />
+        <Input name="cep" label="CEP" />
+        <Input name="usuarioStatus" label="Status do Usuário" />
+        <Input name="senha" label="Senha" type="password" />
 
         <Button type="submit">Enviar Cadastro</Button>
       </Form>

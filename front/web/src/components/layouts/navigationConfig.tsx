@@ -1,54 +1,81 @@
-// components/layout/navigationConfig.tsx
 import {
   IconLayoutDashboard,
   IconUsers,
   IconFileText,
   IconClipboardList,
   IconSettings,
+  IconSchool,
+  IconGavel,
+  IconBriefcase,
 } from '@tabler/icons-react';
-import { ROLE, Role } from '@/constants/roles';
+import { Role } from '@/constants/roles';
 import { paths } from '@/routes/paths';
+import { can, PermissionAction } from '@/permissions/permissions';
 
 interface NavItem {
   label: string;
   icon: React.ReactNode;
   to: string;
-  roles: readonly Role[];
+  requiredAction?: PermissionAction; // se omitido, qualquer um pode acessar
 }
 
+const size = 20
 const allNavItems: NavItem[] = [
   {
     label: 'Dashboard',
-    icon: <IconLayoutDashboard size={18} />,
+    icon: <IconLayoutDashboard size={size} />,
     to: paths.home,
-    roles: Object.values(ROLE),
   },
   {
     label: 'Processos',
-    icon: <IconFileText size={18} />,
+    icon: <IconFileText size={size} />,
     to: paths.processos.lista,
-    roles: Object.values(ROLE),
   },
   {
     label: 'Demandas',
-    icon: <IconClipboardList size={18} />,
+    icon: <IconClipboardList size={size} />,
     to: paths.demandas.lista,
-    roles: Object.values(ROLE),
   },
   {
-    label: 'Usuários',
-    icon: <IconUsers size={18} />,
-    to: paths.usuarios,
-    roles: [ROLE.ADMIN, ROLE.COORDENADOR_DO_CURSO, ROLE.SECRETARIO],
+    label: 'Estagiários',
+    icon: <IconSchool size={size} />,
+    to: paths.estagiarios.lista,
+    requiredAction: 'estagiarios:visualizar',
+  },
+  {
+    label: 'Professores',
+    icon: <IconUsers size={size} />,
+    to: paths.professores.lista,
+    requiredAction: 'professores:visualizar',
+  },
+  {
+    label: 'Assistidos',
+    icon: <IconUsers size={size} />,
+    to: paths.assistidos.lista,
+    requiredAction: 'assistidos:visualizar',
+  },
+  {
+    label: 'Advogados',
+    icon: <IconGavel size={size} />,
+    to: paths.advogados.lista,
+    requiredAction: 'advogados:visualizar',
+  },
+  {
+    label: 'Funcionários',
+    icon: <IconBriefcase size={size} />,
+    to: paths.funcionarios.lista,
+    requiredAction: 'usuarios:gerenciar',
   },
   {
     label: 'Configurações',
-    icon: <IconSettings size={18} />,
+    icon: <IconSettings size={size} />,
     to: paths.configuracoes,
-    roles: [ROLE.ADMIN],
+    requiredAction: 'configuracoes:acessar',
   },
 ];
 
 export function getNavItemsForRole(role: Role): NavItem[] {
-  return allNavItems.filter((item) => item.roles.includes(role));
+  return allNavItems.filter(
+    (item) => !item.requiredAction || can(role, item.requiredAction)
+  );
 }

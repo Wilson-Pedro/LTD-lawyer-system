@@ -13,6 +13,8 @@ export const paths = {
   estagiarios: {
     lista: '/estagiarios',
     detalhe: (id: string | number) => `/estagiarios/${id}`,
+    novo: '/estagiarios/novo',
+    editar: (id: string | number) => `/estagiarios/${id}/editar`,
   },
   professores: {
     lista: '/professores',
@@ -22,10 +24,16 @@ export const paths = {
     lista: '/advogados',
     detalhe: (id: string | number) => `/advogados/${id}`,
   },
+  funcionarios: {
+    lista: '/funcionarios',
+  },
+  assistidos: {
+    lista: 'assistidos',
+    novo: 'assistidos/novo'
+  },
   configuracoes: '/configuracoes',
   usuarios: '/usuarios',
   criarUsuario: '/usuarios/criar',
   editarUsuario: '/usuarios/editar/:id',
   perfil: '/perfil',
-    
 } as const;

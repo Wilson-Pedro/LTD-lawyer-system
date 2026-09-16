@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Toast, ToastContainer } from 'react-bootstrap';
-import { Form } from '../../../components/ui/Form/Form';
-import { advogadosService, AdvogadoRequest } from '../';
+import { Form } from '../../../components/ui/Form';
+import { advogadosService, AdvogadoRequest } from '..';
 // import { zodResolver } from "@hookform/resolvers/zod";
 // import { meuSchemaZod } from "../schemas/estagiariosSchemas";
 
 // import { scrollToTop } from "./../../utils/Utils";
-import { Input } from '../../../components/ui/Form/Input';
-import { Select } from '../../../components/ui/Form/Select';
+import { Input } from '../../../components/ui/Input';
+import { Select } from '../../../components/ui/Select';
 import { Button } from '../../../components/ui/Button';
 import { Container } from '../../../components/ui/Form/Container';
 
