@@ -1,0 +1,22 @@
+.card {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--mantine-shadow-md);
+  border-left-color: var(--card-color);
+}
+
+.icon {
+  background-color: var(--mantine-color-institucional-1);
+  border-left-color: var(--card-color);
+}
+
+.title {
+  color: var(--mantine-color-dark-8);
+}
