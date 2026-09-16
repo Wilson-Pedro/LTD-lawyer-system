@@ -15,10 +15,10 @@ public interface EstagiarioDTO {
     @Schema(name = "EstagiarioCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @Email String email,
+            @NotBlank(message = "O email é obrigatório") @Email String email,
             @Pattern(regexp = "^\\d{9,11}$") String telefone,
             String senha,
-            @NotBlank String matricula,
+            @NotBlank(message = "A matrícula é obrigatória") String matricula,
             @NotNull(message = "O período do estágio é obrigatório") PeriodoEstagio periodoEstagio
     ) {
         public Estagiario toEntity(Usuario usuario) {
@@ -45,7 +45,7 @@ public interface EstagiarioDTO {
             String nome,
             String email,
             String telefone,
-            String periodoEstagio,
+            String periodo,
             LocalDateTime criacao,
             String usuarioStatus
     ) {
@@ -69,7 +69,7 @@ public interface EstagiarioDTO {
             String matricula,
             String nome,
             String periodoEstagio,
-            String usuarioStatus
+            UsuarioStatus usuarioStatus
     ) {
         public ListResponse(Estagiario estagiario) {
             this(
@@ -77,7 +77,7 @@ public interface EstagiarioDTO {
                     estagiario.getMatricula(),
                     estagiario.getPessoa().getNome(),
                     PeriodoEstagio.obterDescricao(estagiario.getPeriodo()),
-                    UsuarioStatus.obterDescricao(estagiario.getPessoa().getUsuario().getStatus())
+                    estagiario.getPessoa().getUsuario().getStatus()
             );
         }
     }
