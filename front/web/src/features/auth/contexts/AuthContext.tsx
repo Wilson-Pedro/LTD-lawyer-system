@@ -3,7 +3,7 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import { Usuario } from '../types';
 import { clearToken, getToken, setToken } from '@/lib/storage/tokenStorage';
 import { authService } from '../services/authService';
-import { LoginRequest } from '../types';
+import { LoginRequest } from '../schema';
 
 interface AuthContextData {
   user: Usuario | null;

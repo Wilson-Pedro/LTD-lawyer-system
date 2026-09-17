@@ -1,5 +1,7 @@
 export const paths = {
   login: '/login',
+  esqueciSenha: '/esqueci-senha',
+  redefinirSenha: '/redefinir-senha',
   acessoNegado: '/acesso-negado',
   home: '/',
   processos: {
@@ -29,7 +31,7 @@ export const paths = {
   },
   assistidos: {
     lista: 'assistidos',
-    novo: 'assistidos/novo'
+    novo: 'assistidos/novo',
   },
   configuracoes: '/configuracoes',
   usuarios: '/usuarios',

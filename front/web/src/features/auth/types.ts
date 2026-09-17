@@ -1,11 +1,6 @@
 import { Role } from "@/constants/roles";
 import { UsuarioStatus } from "@/constants/usuarioStatus";
 
-export interface LoginRequest {
-  login: string;
-  password: string;
-}
-
 export interface LoginResponse {
   token: string;
   tipo: string;
