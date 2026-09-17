@@ -15,6 +15,7 @@ import AcessoNegadoPage from '@/features/auth/pages/AcessoNegadoPage';
 import CriarEstagiarioPage from '@/features/estagiarios/pages/CriarEstagiarioPage';
 import NotFoundPage from '@/pages/NotFound/NotFoundPage';
 import ListaEstagiariosPage from '@/features/estagiarios/pages/ListaEstagiarioPage';
+import CriarAdvogadoPage from '@/features/advogados/pages/CriarAdvogadoPage';
 
 // import { ListaProcessosPage } from '@/features/processos/pages/ListaProcessosPage';
 // import { DetalheProcessoPage } from '@/features/processos/pages/DetalheProcessoPage';
@@ -41,6 +42,8 @@ export const router = createBrowserRouter([
           { path: paths.home, element: <DashboardPage /> },
           { path: paths.estagiarios.novo, element: <CriarEstagiarioPage /> },
 
+          // Estagiário
+
           {
             element: <RoleGuard action="estagiarios:visualizar" />,
             children: [
@@ -57,6 +60,18 @@ export const router = createBrowserRouter([
               {
                 path: paths.estagiarios.novo,
                 element: <CriarEstagiarioPage />,
+              },
+            ],
+          },
+
+          // Advogado
+
+          {
+            element: <RoleGuard action="advogados:criar" />,
+            children: [
+              {
+                path: paths.advogados.novo,
+                element: <CriarAdvogadoPage />,
               },
             ],
           },

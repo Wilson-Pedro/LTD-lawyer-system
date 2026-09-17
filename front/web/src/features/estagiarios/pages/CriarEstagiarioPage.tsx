@@ -7,16 +7,15 @@ import { paths } from '@/routes/paths';
 
 import { EstagiarioForm } from '../components/EstagiarioForm';
 import { estagiariosService } from '../services/estagiariosService';
-import { PeriodoEstagio, periodoEstagioLabel } from '../types';
+import { periodoEstagioLabel } from '../types';
 import { CriarEstagiarioRequest } from '../schema';
 
 export default function CriarEstagiarioPage() {
   const navigate = useNavigate();
 
-  const periodosOptions = Object.values(PeriodoEstagio).map((valorEnum) => ({
-    value: valorEnum,
-    label: periodoEstagioLabel[valorEnum as PeriodoEstagio],
-  }));
+  const periodosOptions = Object.entries(periodoEstagioLabel).map(
+    ([value, label]) => ({ value, label }),
+  );
 
   async function handleSalvar(dados: CriarEstagiarioRequest) {
     await estagiariosService.criar(dados);

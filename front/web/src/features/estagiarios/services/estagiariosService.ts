@@ -1,10 +1,7 @@
 import { api } from '@/lib/api/axios';
-import {
-  CriarEstagiarioRequest,
-  Estagiario,
-  EstagiarioListItem,
-} from '../types';
+import { Estagiario, EstagiarioListItem } from '../types';
 import { PageResponse } from '@/types/pageResponse';
+import { CriarEstagiarioRequest } from '../schema';
 
 interface ListarEstagiariosParams {
   pageIndex: number;

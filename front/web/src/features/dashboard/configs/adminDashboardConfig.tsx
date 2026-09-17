@@ -37,7 +37,7 @@ export const adminDashboardConfig: DashboardSection[] = [
         title: 'Advogados',
         description: 'Advogados vinculados ao núcleo',
         icon: <IconGavel size={20} />,
-        to: paths.advogados.lista,
+        to: paths.advogados.novo,
       },
       {
         title: 'Assistidos',

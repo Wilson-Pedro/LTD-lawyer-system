@@ -7,10 +7,14 @@ export const paths = {
   processos: {
     lista: '/processos',
     detalhe: (id: string | number) => `/processos/${id}`,
+    novo: '/processos/novo',
+    editar: (id: string | number) => `/processos/${id}/editar`,
   },
   demandas: {
     lista: '/demandas',
     detalhe: (id: string | number) => `/demandas/${id}`,
+    novo: '/demandas/novo',
+    editar: (id: string | number) => `/demandas/${id}/editar`,
   },
   estagiarios: {
     lista: '/estagiarios',
@@ -21,21 +25,27 @@ export const paths = {
   professores: {
     lista: '/professores',
     detalhe: (id: string | number) => `/professores/${id}`,
+    novo: '/professores/novo',
+    editar: (id: string | number) => `/professores/${id}/editar`,
   },
   advogados: {
     lista: '/advogados',
     detalhe: (id: string | number) => `/advogados/${id}`,
+    novo: '/advogados/novo',
+    editar: (id: string | number) => `/advogados/${id}/editar`,
   },
   funcionarios: {
     lista: '/funcionarios',
+    detalhe: (id: string | number) => `/funcionarios/${id}`,
+    novo: '/funcionarios/novo',
+    editar: (id: string | number) => `/funcionarios/${id}/editar`,
   },
   assistidos: {
-    lista: 'assistidos',
-    novo: 'assistidos/novo',
+    lista: '/assistidos',
+    detalhe: (id: string | number) => `/assistidos/${id}`,
+    novo: '/assistidos/novo',
+    editar: (id: string | number) => `/assistidos/${id}/editar`,
   },
   configuracoes: '/configuracoes',
   usuarios: '/usuarios',
-  criarUsuario: '/usuarios/criar',
-  editarUsuario: '/usuarios/editar/:id',
-  perfil: '/perfil',
 } as const;

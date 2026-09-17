@@ -24,12 +24,15 @@ export function EstagiarioForm({
     defaultValues: valoresIniciais,
   });
 
+  const { isSubmitting } = methods.formState;
+
   return (
     <Form methods={methods} onSubmit={onSubmit}>
       <Stack gap="lg">
         <Fieldset legend="Dados Pessoais">
           <Input name="nome" label="Nome Completo" />
           <Input name="email" label="Email" type="email" />
+          <Input name="telefone" label="Telefone" />
         </Fieldset>
 
         <Fieldset legend="Dados Acadêmicos">
@@ -43,8 +46,12 @@ export function EstagiarioForm({
 
         <Input name="senha" label="Senha" type="password" />
 
-        <Button type="submit">
-          {modo === 'criar' ? 'Cadastrar Estagiário' : 'Salvar Alterações'}
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? 'Salvando...'
+            : modo === 'criar'
+              ? 'Cadastrar Estagiário'
+              : 'Salvar Alterações'}
         </Button>
       </Stack>
     </Form>

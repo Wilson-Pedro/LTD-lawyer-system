@@ -7,18 +7,15 @@ interface InputProps extends Omit<TextInputProps, 'error'> {
 }
 
 export function Input({ name, label, ...rest }: InputProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, formState, getFieldState } = useFormContext();
 
-  const erro = errors[name]?.message as string | undefined;
+  const { error } = getFieldState(name, formState);
 
   return (
     <TextInput
       label={label}
-      error={erro}
       {...register(name)}
+      error={error?.message as string}
       {...rest}
       mb="md"
     />
