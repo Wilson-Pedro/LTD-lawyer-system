@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { notifications } from '@mantine/notifications';
-import { Container, Title } from '@mantine/core';
+import { Container } from '@mantine/core';
 
 import { paths } from '@/routes/paths';
 
@@ -9,6 +9,7 @@ import { EstagiarioForm } from '../components/EstagiarioForm';
 import { estagiariosService } from '../services/estagiariosService';
 import { periodoEstagioLabel } from '../types';
 import { CriarEstagiarioRequest } from '../schema';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function CriarEstagiarioPage() {
   const navigate = useNavigate();
@@ -28,9 +29,7 @@ export default function CriarEstagiarioPage() {
 
   return (
     <Container>
-      <Title order={3} mb="lg">
-        Novo Estagiário
-      </Title>
+      <PageHeader title="Cadastrar Estagiário" />
       <EstagiarioForm
         modo="criar"
         onSubmit={handleSalvar}

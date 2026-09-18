@@ -16,6 +16,7 @@ const permissions = {
   // Assistidos
   'assistidos:criar': [ROLE.ADMIN],
   'assistidos:visualizar': [ROLE.ADMIN],
+  'assistidos:editar': [ROLE.ADMIN],
 
   // Estagiarios
   'estagiarios:criar': [ROLE.ADMIN],

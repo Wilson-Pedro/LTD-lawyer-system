@@ -1,36 +1,34 @@
 import { Form } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
-import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 
 import { Grid, Stack } from '@mantine/core';
 import { useZodForm } from '@/hooks/useZodForm';
-import {
-  AtualizarEstagiarioRequest,
-  atualizarEstagiarioSchema,
-  CriarEstagiarioRequest,
-  criarEstagiarioSchema,
-} from '../schema';
+import { EnderecoFields } from '@/components/ui/EnderecoFields';
 import { FormSection } from '@/components/ui/FormSection';
+import {
+  AtualizarAssistidoRequest,
+  atualizarAssistidoSchema,
+  CriarAssistidoRequest,
+  criarAssistidoSchema,
+} from '../schema';
+import { Select } from '@/components/ui/Select';
 
-interface EstagiarioFormProps {
-  valoresIniciais?: Partial<
-    CriarEstagiarioRequest & AtualizarEstagiarioRequest
-  >;
+interface AssistidoFormProps {
+  valoresIniciais?: Partial<CriarAssistidoRequest & AtualizarAssistidoRequest>;
   onSubmit: (dados: any) => Promise<void>;
   modo: 'criar' | 'editar';
-  periodos: Array<{ value: string; label: string }>;
+  estadosCivis: Array<{ value: string; label: string }>;
 }
 
-export function EstagiarioForm({
+export function AssistidoForm({
   valoresIniciais,
   onSubmit,
   modo,
-  periodos,
-}: EstagiarioFormProps) {
+  estadosCivis,
+}: AssistidoFormProps) {
   const schema =
-    modo === 'criar' ? criarEstagiarioSchema : atualizarEstagiarioSchema;
-
+    modo === 'criar' ? criarAssistidoSchema : atualizarAssistidoSchema;
   const methods = useZodForm(schema, {
     defaultValues: valoresIniciais,
   });
@@ -47,41 +45,46 @@ export function EstagiarioForm({
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 8 }}>
-              <Input name="email" label="Email" type="email" withAsterisk />
+              <Input name="email" label="Email" type="email" />
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 4 }}>
               <Input name="telefone" label="Telefone" />
             </Grid.Col>
-          </Grid>
-        </FormSection>
 
-        <FormSection legend="Dados Acadêmicos">
-          <Grid>
             <Grid.Col span={{ base: 12, md: 4 }}>
               <Input name="matricula" label="Matrícula" withAsterisk />
             </Grid.Col>
 
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <Input name="profissao" label="Profissão" />
+            </Grid.Col>
+
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <Input name="nacionalidade" label="Nacionalidade" />
+            </Grid.Col>
+
+            <Grid.Col span={{ base: 12, md: 4 }}>
+              <Input name="naturalidade" label="Naturalidade" />
+            </Grid.Col>
+
             <Grid.Col span={{ base: 12, md: 8 }}>
               <Select
-                name="periodoEstagio"
-                label="Período do Estágio"
-                options={periodos}
-                withAsterisk
+                name="estadoCivil"
+                label="Estado Civil"
+                options={estadosCivis}
               />
             </Grid.Col>
           </Grid>
         </FormSection>
 
-        {modo === 'criar' && (
-          <Input name="senha" label="Senha" type="password" />
-        )}
+        <EnderecoFields />
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting
             ? 'Salvando...'
             : modo === 'criar'
-              ? 'Cadastrar Estagiário'
+              ? 'Cadastrar Assistido'
               : 'Salvar Alterações'}
         </Button>
       </Stack>

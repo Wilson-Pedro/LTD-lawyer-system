@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
-import { Title, Center, Loader } from '@mantine/core';
+import { Center, Loader } from '@mantine/core';
 import { EstagiarioForm } from '../components/EstagiarioForm';
 import { estagiariosService } from '../services/estagiariosService';
 import { Estagiario, periodoEstagioLabel } from '../types';
 import { paths } from '@/routes/paths';
 import { AtualizarEstagiarioRequest } from '../schema';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 function paraValoresDoForm(estagiario: Estagiario) {
   return {
@@ -49,7 +50,7 @@ export default function EditarEstagiarioPage() {
   if (isLoading) {
     return (
       <Center py={64}>
-        <Loader color="institucional" />
+        <Loader color="institucional" type="dots" />
       </Center>
     );
   }
@@ -60,9 +61,7 @@ export default function EditarEstagiarioPage() {
 
   return (
     <div>
-      <Title order={3} mb="lg">
-        Editar Estagiário
-      </Title>
+      <PageHeader title="Editar Estagiário" />
       <EstagiarioForm
         modo="editar"
         valoresIniciais={paraValoresDoForm(estagiario)}

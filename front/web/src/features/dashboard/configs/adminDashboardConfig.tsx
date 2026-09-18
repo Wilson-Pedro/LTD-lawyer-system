@@ -43,7 +43,7 @@ export const adminDashboardConfig: DashboardSection[] = [
         title: 'Assistidos',
         description: 'Pessoas atendidas pelo núcleo',
         icon: <IconUsers size={20} />,
-        to: paths.assistidos.lista,
+        to: paths.assistidos.novo,
       },
     ],
   },

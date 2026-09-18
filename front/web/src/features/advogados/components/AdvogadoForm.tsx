@@ -4,13 +4,18 @@ import { Button } from '@/components/ui/Button';
 
 import { Fieldset, Grid, Stack } from '@mantine/core';
 import { useZodForm } from '@/hooks/useZodForm';
-import { CriarAdvogadoRequest, criarAdvogadoSchema } from '../schema';
+import {
+  CriarAdvogadoRequest,
+  AtualizarAdvogadoRequest,
+  criarAdvogadoSchema,
+  atualizarAdvogadoSchema,
+} from '../schema';
 import { EnderecoFields } from '@/components/ui/EnderecoFields';
 import { FormSection } from '@/components/ui/FormSection';
 
 interface AdvogadoFormProps {
-  valoresIniciais?: Partial<CriarAdvogadoRequest>;
-  onSubmit: (dados: CriarAdvogadoRequest) => Promise<void>;
+  valoresIniciais?: Partial<CriarAdvogadoRequest & AtualizarAdvogadoRequest>;
+  onSubmit: (dados: any) => Promise<void>;
   modo: 'criar' | 'editar';
 }
 
@@ -19,14 +24,17 @@ export function AdvogadoForm({
   onSubmit,
   modo,
 }: AdvogadoFormProps) {
-  const methods = useZodForm(criarAdvogadoSchema, {
+  const schema =
+    modo === 'criar' ? criarAdvogadoSchema : atualizarAdvogadoSchema;
+
+  const methods = useZodForm(schema, {
     defaultValues: {
       endereco: {},
       ...valoresIniciais,
     },
   });
 
-  const { isSubmitting, errors } = methods.formState;
+  const { isSubmitting } = methods.formState;
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>

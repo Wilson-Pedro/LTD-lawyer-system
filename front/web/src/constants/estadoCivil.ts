@@ -13,6 +13,6 @@ export const estadoCivilLabel: Record<EstadoCivil, string> = {
   [ESTADO_CIVIL.SOLTEIRO]: 'Solteiro(a)',
   [ESTADO_CIVIL.CASADO]: 'Casado(a)',
   [ESTADO_CIVIL.DIVORCIADO]: 'Divorciado(a)',
-  [ESTADO_CIVIL.VIUVO]: 'Viuvo(a)',
+  [ESTADO_CIVIL.VIUVO]: 'Viúvo(a)',
   [ESTADO_CIVIL.SEPARADO_JUDICIALMENTE]: 'Separado(a) Judicialmente',
 };
