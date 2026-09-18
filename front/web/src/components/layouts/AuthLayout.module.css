@@ -1,0 +1,39 @@
+.wrapper {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
+  .brandPanel {
+    display: none;
+  }
+}
+
+.brandPanel {
+  background: linear-gradient(
+    160deg,
+    var(--mantine-color-institucional-9) 0%,
+    var(--mantine-color-institucional-6) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px;
+  color: white;
+}
+
+.formPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.formContent {
+  width: 100%;
+  max-width: 360px;
+}

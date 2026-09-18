@@ -11,7 +11,7 @@ const institucional: MantineColorsTuple = [
   '#6389ad',
   '#4a75a0',
   '#3d6a9a',
-  '#2f5786', // 6 - geralmente o "tom padrão" usado
+  '#2f5786', // 6 - O tom padrão usado
   '#254a78',
   '#173963', // 9 - mais escuro
 ];
@@ -21,6 +21,8 @@ export const theme = createTheme({
   colors: {
     institucional,
   },
+
+  black: '#2b2d31',
 
   fontFamily: 'Inter, sans-serif',
   headings: {

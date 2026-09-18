@@ -19,7 +19,7 @@ export const periodoEstagioLabel: Record<PeriodoEstagio, string> = {
 export interface Estagiario {
   id: number;
   matricula: string;
-  periodo: string;
+  periodoEstagio: string;
   pessoa: Pessoa;
   usuario: Usuario;
 }

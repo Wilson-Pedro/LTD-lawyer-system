@@ -1,16 +1,15 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Paper, Title, Stack, Image, Anchor } from '@mantine/core';
+import { Anchor, Title } from '@mantine/core';
 
+import { AuthLayout } from '@/components/layouts/AuthLayout';
 import { Form } from '@/components/ui/Form';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { useZodForm } from '@/hooks/useZodForm';
 import { paths } from '@/routes/paths';
-import balancaLogo from '@/assets/images/Balanca-da-justica.png';
 
 import { useAuth } from '../hooks/useAuth';
-
 import { LoginRequest, loginSchema } from '../schema';
-import { useZodForm } from '@/hooks/useZodForm';
 
 export default function LoginPage() {
   const methods = useZodForm(loginSchema);
@@ -27,40 +26,34 @@ export default function LoginPage() {
   };
 
   return (
-    <Stack align="center" justify="center" mih="100vh" bg="gray.0">
-      <Paper shadow="sm" p="xl" w={360} radius="md">
-        <Image
-          src={balancaLogo}
-          alt="Balança da Justiça"
-          w={80}
-          mx="auto"
-          mb="md"
-          radius="md"
-        />
-        <Title order={3} ta="center" mb="lg">
-          Núcleo Jurídico
+    <AuthLayout>
+      <Form methods={methods} onSubmit={handleSalvar}>
+        <Title order={4} ta="center" mb={4}>
+          Bem-vindo(a) de volta
         </Title>
+        <Input name="login" label="Email" />
+        <Input name="password" label="Senha" type="password" />
 
-        <Form methods={methods} onSubmit={handleSalvar}>
-          <Input name="login" label="Email" />
-          <Input name="password" label="Senha" type="password" />
+        <Button
+          type="submit"
+          fullWidth
+          mt="sm"
+          loading={methods.formState.isSubmitting}
+        >
+          Entrar
+        </Button>
 
-          <Button type="submit" fullWidth mt="sm">
-            Entrar
-          </Button>
-
-          <Anchor
-            component={Link}
-            to={paths.esqueciSenha}
-            size="sm"
-            ta="center"
-            display="block"
-            mt="md"
-          >
-            Esqueci minha senha
-          </Anchor>
-        </Form>
-      </Paper>
-    </Stack>
+        <Anchor
+          component={Link}
+          to={paths.esqueciSenha}
+          size="sm"
+          ta="center"
+          display="block"
+          mt="md"
+        >
+          Esqueci minha senha
+        </Anchor>
+      </Form>
+    </AuthLayout>
   );
 }

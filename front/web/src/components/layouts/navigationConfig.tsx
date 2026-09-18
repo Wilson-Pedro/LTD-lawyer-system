@@ -14,68 +14,95 @@ import { can, PermissionAction } from '@/permissions/permissions';
 
 interface NavItem {
   label: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   to: string;
   requiredAction?: PermissionAction; // se omitido, qualquer um pode acessar
 }
 
-const size = 20
-const allNavItems: NavItem[] = [
+interface NavGroup {
+  label: string;
+  icon: React.ReactNode;
+  items: NavItem[];
+}
+
+const groupSize = 20;
+
+// itens q ficam soltos, fora de um grupo
+const topLevelItems: NavItem[] = [
   {
     label: 'Dashboard',
-    icon: <IconLayoutDashboard size={size} />,
+    icon: <IconLayoutDashboard size={groupSize} />,
     to: paths.home,
-  },
-  {
-    label: 'Processos',
-    icon: <IconFileText size={size} />,
-    to: paths.processos.lista,
-  },
-  {
-    label: 'Demandas',
-    icon: <IconClipboardList size={size} />,
-    to: paths.demandas.lista,
-  },
-  {
-    label: 'Estagiários',
-    icon: <IconSchool size={size} />,
-    to: paths.estagiarios.lista,
-    requiredAction: 'estagiarios:visualizar',
-  },
-  {
-    label: 'Professores',
-    icon: <IconUsers size={size} />,
-    to: paths.professores.lista,
-    requiredAction: 'professores:visualizar',
-  },
-  {
-    label: 'Assistidos',
-    icon: <IconUsers size={size} />,
-    to: paths.assistidos.lista,
-    requiredAction: 'assistidos:visualizar',
-  },
-  {
-    label: 'Advogados',
-    icon: <IconGavel size={size} />,
-    to: paths.advogados.lista,
-    requiredAction: 'advogados:visualizar',
-  },
-  {
-    label: 'Funcionários',
-    icon: <IconBriefcase size={size} />,
-    to: paths.funcionarios.lista,
-    requiredAction: 'usuarios:gerenciar',
-  },
-  {
-    label: 'Configurações',
-    icon: <IconSettings size={size} />,
-    to: paths.configuracoes,
-    requiredAction: 'configuracoes:acessar',
   },
 ];
 
-export function getNavItemsForRole(role: Role): NavItem[] {
-  return allNavItems.filter(
-    (item) => !item.requiredAction || can(role, item.requiredAction)
+const navGroups: NavGroup[] = [
+  {
+    label: 'Gestão de Pessoas',
+    icon: <IconUsers size={groupSize} />,
+    items: [
+      {
+        label: 'Funcionários',
+        to: paths.usuarios,
+        requiredAction: 'usuarios:gerenciar',
+      },
+      {
+        label: 'Estagiários',
+        to: paths.estagiarios.lista,
+        requiredAction: 'estagiarios:visualizar',
+      },
+      {
+        label: 'Advogados',
+        to: paths.advogados.lista,
+        requiredAction: 'advogados:visualizar',
+      },
+      {
+        label: 'Assistidos',
+        to: paths.assistidos.lista,
+        requiredAction: 'assistidos:visualizar',
+      },
+    ],
+  },
+  {
+    label: 'Trabalho Jurídico',
+    icon: <IconFileText size={groupSize} />,
+    items: [
+      {
+        label: 'Processos',
+        to: paths.processos.lista,
+      },
+      {
+        label: 'Demandas',
+        to: paths.demandas.lista,
+      },
+    ],
+  },
+  {
+    label: 'Sistema',
+    icon: <IconSettings size={groupSize} />,
+    items: [
+      {
+        label: 'Configurações',
+        to: paths.configuracoes,
+        requiredAction: 'configuracoes:acessar',
+      },
+    ],
+  },
+];
+
+function filtrarItens(items: NavItem[], role: Role): NavItem[] {
+  return items.filter(
+    (item) => !item.requiredAction || can(role, item.requiredAction),
   );
+}
+
+export function getNavigationForRole(role: Role) {
+  const grupos = navGroups
+    .map((grupo) => ({ ...grupo, items: filtrarItens(grupo.items, role) }))
+    .filter((grupo) => grupo.items.length > 0); // esconde o grupo inteiro se não sobrar nenhum item
+
+  return {
+    topLevelItems: filtrarItens(topLevelItems, role),
+    navGroups: grupos,
+  };
 }

@@ -17,6 +17,13 @@
   background-color: var(--mantine-color-institucional-6) !important;
 }
 
-.logo {
-  letter-spacing: 0.02em;
+.navGroup {
+  color: var(--mantine-color-gray-3);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  font-weight: 600;
+}
+
+.navGroup:hover {
+  background-color: transparent;
 }

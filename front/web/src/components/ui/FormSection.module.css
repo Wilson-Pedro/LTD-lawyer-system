@@ -1,0 +1,13 @@
+.root {
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-xl);
+  background-color: var(--mantine-color-white);
+}
+
+.legend {
+  font-weight: 600;
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-institucional-8);
+  padding: 0 var(--mantine-spacing-xs);
+}

@@ -5,15 +5,16 @@ import { paths } from './paths';
 
 interface RoleGuardProps {
   action: PermissionAction;
+  children: React.ReactNode;
 }
 
-export function RoleGuard({ action }: RoleGuardProps) {
+export function RoleGuard({ action, children }: RoleGuardProps) {
   const { user } = useAuth();
 
   if (!user) return <Navigate to={paths.login} replace />;
 
   return can(user.role, action) ? (
-    <Outlet />
+    <>{children}</>
   ) : (
     <Navigate to={paths.acessoNegado} replace />
   );

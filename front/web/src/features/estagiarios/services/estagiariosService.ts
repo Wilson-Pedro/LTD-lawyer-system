@@ -1,7 +1,7 @@
 import { api } from '@/lib/api/axios';
 import { Estagiario, EstagiarioListItem } from '../types';
 import { PageResponse } from '@/types/pageResponse';
-import { CriarEstagiarioRequest } from '../schema';
+import { AtualizarEstagiarioRequest, CriarEstagiarioRequest } from '../schema';
 
 interface ListarEstagiariosParams {
   pageIndex: number;
@@ -33,7 +33,7 @@ export const estagiariosService = {
 
   atualizar: async (
     id: number,
-    dados: Partial<CriarEstagiarioRequest>,
+    dados: AtualizarEstagiarioRequest,
   ): Promise<Estagiario> => {
     const { data } = await api.put(`/api/v1/estagiarios/${id}`, dados);
     return data;

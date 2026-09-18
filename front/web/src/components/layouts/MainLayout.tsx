@@ -1,4 +1,10 @@
-import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import {
+  Outlet,
+  NavLink,
+  useNavigate,
+  useLocation,
+  Link,
+} from 'react-router-dom';
 import {
   AppShell,
   Burger,
@@ -10,33 +16,28 @@ import {
   UnstyledButton,
   Divider,
   Badge,
+  ScrollArea,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 import { IconLogout, IconChevronDown, IconScale } from '@tabler/icons-react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
-import { getNavItemsForRole } from './navigationConfig';
+import { getNavigationForRole } from './navigationConfig';
 import { paths } from '@/routes/paths';
 import classes from './MainLayout.module.css';
-import { modals } from '@mantine/modals';
 
 export function MainLayout() {
   const [mobileAberto, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopExpandido, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const navItems = getNavItemsForRole(user!.role);
+  const { topLevelItems, navGroups } = getNavigationForRole(user!.role);
 
   function handleLogout() {
     modals.openConfirmModal({
       title: 'Sair do sistema',
-      children: (
-        <Text size="sm">
-          Tem certeza que deseja sair? Você precisará fazer login novamente para
-          continuar.
-        </Text>
-      ),
+      children: <Text size="sm">Tem certeza que deseja sair?</Text>,
       labels: { confirm: 'Sair', cancel: 'Cancelar' },
       confirmProps: { color: 'red' },
       onConfirm: async () => {
@@ -50,9 +51,9 @@ export function MainLayout() {
     <AppShell
       header={{ height: 64 }}
       navbar={{
-        width: desktopExpandido ? 250 : 72,
+        width: 260,
         breakpoint: 'sm',
-        collapsed: { mobile: !mobileAberto, desktop: false },
+        collapsed: { mobile: !mobileAberto },
       }}
       padding="md"
     >
@@ -65,30 +66,19 @@ export function MainLayout() {
               hiddenFrom="sm"
               size="sm"
             />
-            <Burger
-              opened={desktopExpandido}
-              onClick={toggleDesktop}
-              visibleFrom="sm"
-              size="sm"
-            />
-
-            <Group gap={8}>
-              <IconScale
-                size={22}
-                color="var(--mantine-color-institucional-7)"
-              />
-              <Text
-                fw={700}
-                size="lg"
-                c="institucional.8"
-                className={classes.logo}
-              >
-                Núcleo Jurídico
-              </Text>
-            </Group>
+            <Link to={paths.home} style={{ textDecoration: 'none' }}>
+              <Group gap={8}>
+                <IconScale
+                  size={22}
+                  color="var(--mantine-color-institucional-7)"
+                />
+                <Text fw={700} size="lg" c="institucional.8">
+                  Núcleo Jurídico
+                </Text>
+              </Group>
+            </Link>
           </Group>
 
-          {/* menu do usuário na header */}
           <Menu shadow="md" width={200} position="bottom-end">
             <Menu.Target>
               <UnstyledButton>
@@ -108,7 +98,6 @@ export function MainLayout() {
                 </Group>
               </UnstyledButton>
             </Menu.Target>
-
             <Menu.Dropdown>
               <Menu.Item
                 color="red"
@@ -127,15 +116,16 @@ export function MainLayout() {
         bg="institucional.8"
         style={{ display: 'flex', flexDirection: 'column', border: 'none' }}
       >
-        <div style={{ flex: 1 }}>
-          {navItems.map((item) => {
-            const isActive = location.pathname.startsWith(item.to);
+        <ScrollArea style={{ flex: 1 }} type="hover" scrollbars="y">
+          {/* itens soltos, sem agrupamento (ex: Dashboard) */}
+          {topLevelItems.map((item) => {
+            const isActive = location.pathname === item.to;
             return (
               <MantineNavLink
                 key={item.to}
                 component={NavLink}
                 to={item.to}
-                label={desktopExpandido ? item.label : undefined}
+                label={item.label}
                 leftSection={item.icon}
                 active={isActive}
                 className={classes.navLink}
@@ -146,13 +136,46 @@ export function MainLayout() {
               />
             );
           })}
-        </div>
+
+          {navGroups.length > 0 && <Divider color="institucional.6" my="sm" />}
+
+          {/* grupos expansíveis */}
+          {navGroups.map((grupo) => (
+            <MantineNavLink
+              key={grupo.label}
+              label={grupo.label}
+              leftSection={grupo.icon}
+              childrenOffset={28}
+              defaultOpened
+              className={classes.navGroup}
+              mb={4}
+            >
+              {grupo.items.map((item) => {
+                const isActive = location.pathname.startsWith(item.to);
+                return (
+                  <MantineNavLink
+                    key={item.to}
+                    component={NavLink}
+                    to={item.to}
+                    label={item.label}
+                    leftSection={item.icon}
+                    active={isActive}
+                    className={classes.navLink}
+                    classNames={{
+                      root: isActive ? classes.navLinkActive : undefined,
+                    }}
+                  />
+                );
+              })}
+            </MantineNavLink>
+          ))}
+        </ScrollArea>
 
         <Divider color="institucional.6" mb="sm" />
 
         <MantineNavLink
-          label={desktopExpandido ? 'Sair' : undefined}
-          leftSection={<IconLogout size={20} />}
+          label={'Sair'}
+          leftSection={<IconLogout size={18} />}
           onClick={handleLogout}
           className={classes.navLink}
         />

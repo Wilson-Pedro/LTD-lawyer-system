@@ -1,9 +1,10 @@
 import { Fieldset, Grid } from '@mantine/core';
 import { Input } from './Input';
+import { FormSection } from './FormSection';
 
 export function EnderecoFields() {
   return (
-    <Fieldset legend="Endereço">
+    <FormSection legend="Endereço">
       <Grid>
         <Grid.Col span={8}>
           <Input name="endereco.logradouro" label="Logradouro" />
@@ -33,6 +34,6 @@ export function EnderecoFields() {
           <Input name="endereco.cep" label="CEP" />
         </Grid.Col>
       </Grid>
-    </Fieldset>
+    </FormSection>
   );
 }

@@ -6,6 +6,7 @@ import { Fieldset, Grid, Stack } from '@mantine/core';
 import { useZodForm } from '@/hooks/useZodForm';
 import { CriarAdvogadoRequest, criarAdvogadoSchema } from '../schema';
 import { EnderecoFields } from '@/components/ui/EnderecoFields';
+import { FormSection } from '@/components/ui/FormSection';
 
 interface AdvogadoFormProps {
   valoresIniciais?: Partial<CriarAdvogadoRequest>;
@@ -26,19 +27,18 @@ export function AdvogadoForm({
   });
 
   const { isSubmitting, errors } = methods.formState;
-  console.log('Erros de Validação:', errors);
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
       <Stack gap="lg">
-        <Fieldset legend="Dados Pessoais">
+        <FormSection legend="Dados Pessoais">
           <Grid>
             <Grid.Col>
-              <Input name="nome" label="Nome Completo" />
+              <Input name="nome" label="Nome Completo" withAsterisk />
             </Grid.Col>
 
             <Grid.Col span={8}>
-              <Input name="email" label="Email" type="email" />
+              <Input name="email" label="Email" type="email" withAsterisk />
             </Grid.Col>
 
             <Grid.Col span={4}>
@@ -53,7 +53,7 @@ export function AdvogadoForm({
               />
             </Grid.Col>
           </Grid>
-        </Fieldset>
+        </FormSection>
 
         <EnderecoFields />
 
