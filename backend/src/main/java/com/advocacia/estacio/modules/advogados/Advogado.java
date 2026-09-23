@@ -1,9 +1,6 @@
 package com.advocacia.estacio.modules.advogados;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
-
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -12,15 +9,13 @@ import lombok.Getter;
 @Entity
 @Getter
 @Table(name = "tbl_advogado")
-public class Advogado implements Serializable {
-	@Serial
-    private static final long serialVersionUID = 1L;
-	
+public class Advogado  {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, optional = false)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
 	@MapsId
 	@JoinColumn(name = "pessoa_id", unique = true, nullable = false)
 	private Pessoa pessoa;

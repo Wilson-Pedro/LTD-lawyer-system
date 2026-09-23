@@ -11,7 +11,7 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig {
-    @Value("${api.cors.allowed-origins}")
+    @Value("#{'${api.cors.allowed-origins}'.split(',')}")
     private List<String> allowedOrigins;
 
     @Bean
@@ -20,14 +20,10 @@ public class CorsConfig {
         config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        // Permite o envio de cabeçalhos (como o Authorization com o token JWT)
         config.setAllowedHeaders(List.of("*"));
-
-        // Essencial se o seu frontend for enviar cookies ou credenciais
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Aplica essa regra para todos os endpoints da API
         source.registerCorsConfiguration("/**", config);
 
         return source;

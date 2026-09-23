@@ -18,9 +18,8 @@ public interface AssistidoDTO {
     @Schema(name = "AssistidoCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @Email(message = "Informe um email válido") String email,
-            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido")
-            String telefone,
+            @Email(message = "Informe um formato de email válido") String email,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
             String matricula,
             String profissao,
             String nacionalidade,
@@ -99,8 +98,8 @@ public interface AssistidoDTO {
     @Schema(name = "AssistidoUpdateRequest")
     record UpdateRequest(
             String nome,
-//            @Email String email,
-            @Pattern(regexp = "^\\d{9,11}$") String telefone,
+            @Email(message = "Informe um formato de email válido") String email,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
             LocalDate dataNascimento,
             String profissao,
             String nacionalidade,

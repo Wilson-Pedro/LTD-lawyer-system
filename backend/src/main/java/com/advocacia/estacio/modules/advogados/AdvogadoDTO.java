@@ -7,27 +7,29 @@ import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoDTO;
 import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.modules.usuarios.UsuarioDTO;
 import com.advocacia.estacio.modules.usuarios.UsuarioStatus;
+import com.advocacia.estacio.shared.validations.MaiorDeIdade;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public interface AdvogadoDTO {
     @Schema(name = "AdvogadoCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @Email(message = "Informe um email válido") String email,
-            String senha,
-            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido")
-            String telefone,
-            LocalDate dataNascimento,
+            @NotBlank(message = "O email é obrigatório")
+            @Email(message = "Informe um formato de email válido") String email,
+            @NotBlank(message = "A senha é obrigatória") String senha,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
+            @Past(message = "A data de nascimento deve estar no passado")
+            @MaiorDeIdade(message = "O advogado deve ter no mínimo 18 anos") LocalDate dataNascimento,
             @Valid EnderecoDTO.Request endereco
     ) {
-        public Advogado toEntity(Usuario usuario, Endereco endereco ) {
+        public Advogado toEntity(Usuario usuario, Endereco endereco) {
             Pessoa pessoa = Pessoa.builder()
                     .nome(nome)
                     .email(email)
@@ -52,7 +54,7 @@ public interface AdvogadoDTO {
             PessoaDTO.Response pessoa,
             UsuarioDTO.Response usuario
     ) {
-        public Response (Advogado advogado) {
+        public Response(Advogado advogado) {
             this(
                     advogado.getId(),
                     advogado.getPessoa().getDataNascimento(),
@@ -85,20 +87,22 @@ public interface AdvogadoDTO {
     @Schema(name = "AdvogadoSearchFilter")
     record SearchFilter(
             String nome,
-            UsuarioStatus usuarioStatus){}
+            UsuarioStatus usuarioStatus) {
+    }
 
     @Schema(name = "AdvogadoOptionResponse")
     record OptionResponse(
             Long id,
             String nome
-    ) {}
+    ) {
+    }
 
     @Schema(name = "AdvogadoUpdateRequest")
     record UpdateRequest(
             String nome,
-            @Pattern(regexp = "^\\d{9,11}$") String telefone,
-            // TODO: n aceitar datas irreais
-            LocalDate dataNascimento,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
+            @Past(message = "A data de nascimento deve estar no passado")
+            @MaiorDeIdade(message = "O advogado deve ter no mínimo 18 anos") LocalDate dataNascimento,
             @Valid EnderecoDTO.Request endereco
     ) {}
 }

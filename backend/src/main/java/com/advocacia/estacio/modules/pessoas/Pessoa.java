@@ -24,7 +24,6 @@ public class Pessoa {
     @OneToOne(mappedBy = "pessoa", cascade = CascadeType.ALL)
     private Usuario usuario;
 
-    // TODO: VERIFICAR REALACIONAMENTO - muitas pessoas podem ter o mesmo endereco?
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
@@ -72,7 +71,9 @@ public class Pessoa {
 
     public void vincularUsuario(Usuario usuario) {
         this.usuario = usuario;
-        usuario.setPessoa(this);
+        if (usuario != null) {
+            usuario.setPessoa(this);
+        }
     }
 
     public void desativarAcesso() {

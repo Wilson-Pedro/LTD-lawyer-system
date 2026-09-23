@@ -5,21 +5,18 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Table(name = "tbl_estagiario")
-public class Estagiario implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Estagiario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @MapsId
     @JoinColumn(name = "pessoa_id", unique = true, nullable = false)
     private Pessoa pessoa;

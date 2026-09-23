@@ -1,6 +1,5 @@
 package com.advocacia.estacio.modules.usuarios;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -13,8 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 @Entity
 @Getter
 @Table(name = "tbl_usuario")
-public class Usuario implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Usuario  {
 
 	@Setter
 	@Id

@@ -10,16 +10,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-import java.time.LocalDateTime;
-
 public interface ProfessorDTO {
     @Schema(name = "ProfessorCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @Email(message = "Informe um email válido") String email,
-            String senha,
-            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido")
-            String telefone
+            @NotBlank(message = "O email é obrigatório")
+            @Email(message = "Informe um formato de email válido") String email,
+            @NotBlank(message = "A senha é obrigatória") String senha,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone
     ) {
         public Professor toEntity(Usuario usuario) {
             Pessoa pessoa = Pessoa.builder()
@@ -84,6 +82,6 @@ public interface ProfessorDTO {
     @Schema(name = "ProfessorUpdateRequest")
     record UpdateRequest(
             String nome,
-            @Pattern(regexp = "^\\d{9,11}$") String telefone
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone
     ) {}
 }

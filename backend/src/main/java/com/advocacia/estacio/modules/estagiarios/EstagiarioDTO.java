@@ -11,15 +11,14 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-import java.time.LocalDateTime;
-
 public interface EstagiarioDTO {
     @Schema(name = "EstagiarioCreateRequest")
     record CreateRequest(
             @NotBlank(message = "O nome é obrigatório") String nome,
-            @NotBlank(message = "O email é obrigatório") @Email String email,
-            @Pattern(regexp = "^\\d{9,11}$") String telefone,
-            String senha,
+            @NotBlank(message = "O email é obrigatório")
+            @Email(message = "Informe um formato de email válido") String email,
+            @NotBlank(message = "A senha é obrigatória") String senha,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
             @NotBlank(message = "A matrícula é obrigatória") String matricula,
             @NotNull(message = "O período do estágio é obrigatório") PeriodoEstagio periodoEstagio
     ) {
@@ -94,7 +93,7 @@ public interface EstagiarioDTO {
     @Schema(name = "EstagiarioUpdateRequest")
     record UpdateRequest(
             String nome,
-            @Pattern(regexp = "^\\d{9,11}$") String telefone,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
             String matricula,
             PeriodoEstagio periodoEstagio
     ) {}

@@ -3,7 +3,6 @@ package com.advocacia.estacio.modules.usuarios;
 import com.advocacia.estacio.infra.exceptions.RegraDeNegocioException;
 import com.advocacia.estacio.infra.security.SecurityUtils;
 import com.advocacia.estacio.infra.exceptions.ConflitoDeDadosException;
-import com.auth0.jwt.interfaces.Payload;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,9 +21,7 @@ public class UsuarioService {
 		if (this.usuarioRepository.findByLogin(login).isPresent()) {
 			throw new ConflitoDeDadosException("Já existe um usuário cadastrado com este login.");
 		}
-		String encryptedPassword = passwordEncoder.encode(senha);
-		Usuario user = new Usuario(login, encryptedPassword, role);
-		return this.usuarioRepository.save(user);
+		return new Usuario(login, passwordEncoder.encode(senha), role);
 	}
 
 	@Transactional(readOnly = true)
