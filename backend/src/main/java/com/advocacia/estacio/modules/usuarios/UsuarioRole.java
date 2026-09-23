@@ -18,6 +18,10 @@ public enum UsuarioRole {
 		return descricao;
 	}
 
+	public boolean isAdministrativo() {
+		return this == COORDENADOR_DO_CURSO || this == SECRETARIO;
+	}
+
 	public static String obterDescricao(UsuarioRole usuarioRole) {
 		if (usuarioRole == null) {
 			return null;
