@@ -10,3 +10,5 @@ front/mobile
 
 .vscode/
 .idea/
+
+deploy.sh
