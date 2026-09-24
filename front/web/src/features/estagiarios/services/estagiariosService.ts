@@ -15,19 +15,19 @@ export const estagiariosService = {
     pageSize,
     termo,
   }: ListarEstagiariosParams): Promise<PageResponse<EstagiarioListItem>> => {
-    const { data } = await api.get('/api/v1/estagiarios', {
+    const { data } = await api.get('/estagiarios', {
       params: { page: pageIndex, size: pageSize, termo: termo || undefined },
     });
     return data;
   },
 
   buscarPorId: async (id: number): Promise<Estagiario> => {
-    const { data } = await api.get(`/api/v1/estagiarios/${id}`);
+    const { data } = await api.get(`/estagiarios/${id}`);
     return data;
   },
 
   criar: async (dados: CriarEstagiarioRequest): Promise<Estagiario> => {
-    const { data } = await api.post('/api/v1/estagiarios', dados);
+    const { data } = await api.post('/estagiarios', dados);
     return data;
   },
 
@@ -35,7 +35,7 @@ export const estagiariosService = {
     id: number,
     dados: AtualizarEstagiarioRequest,
   ): Promise<Estagiario> => {
-    const { data } = await api.put(`/api/v1/estagiarios/${id}`, dados);
+    const { data } = await api.put(`/estagiarios/${id}`, dados);
     return data;
   },
 };

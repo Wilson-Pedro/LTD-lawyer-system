@@ -4,7 +4,6 @@ import { z } from 'zod';
 
 export const dadosBaseSchema = z.object({
   nome: z.string().trim().min(3, 'O nome é obrigatório'),
-  senha: z.string().min(8, 'A senha deve ter no mínimo 8 caracteres'),
   telefone: z.preprocess(
     vazioParaUndefined,
     z.string().min(8, 'Telefone inválido').optional(),

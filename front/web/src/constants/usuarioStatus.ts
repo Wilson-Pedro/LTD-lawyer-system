@@ -11,3 +11,9 @@ export const usuarioStatusLabel: Record<UsuarioStatus, string> = {
   [USUARIO_STATUS.INATIVO]: 'Inativo',
   [USUARIO_STATUS.BLOQUEADO]: 'Bloqueado',
 };
+
+export const usuarioStatusColor: Record<UsuarioStatus, string> = {
+  [USUARIO_STATUS.ATIVO]: 'green',
+  [USUARIO_STATUS.INATIVO]: 'yellow',
+  [USUARIO_STATUS.BLOQUEADO]: 'red',
+};

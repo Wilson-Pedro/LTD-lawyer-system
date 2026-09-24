@@ -1,35 +1,53 @@
 import { ROLE, Role } from '@/constants/roles';
 
 const permissions = {
+  // Processos
   'processos:criar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
   'processos:editar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
+  'processos:visualizar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
+  
+  // Demandas
   'demandas:atribuir': [ROLE.COORDENADOR_DO_CURSO, ROLE.PROFESSOR, ROLE.ADMIN],
+  'demandas:visualizar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
+
+  // Usuários
   'usuarios:gerenciar': [
     ROLE.COORDENADOR_DO_CURSO,
     ROLE.SECRETARIO,
     ROLE.ADMIN,
   ],
 
+  // Administrativo (Coordenador e Secretário)
+  'administrativo:criar': [ROLE.ADMIN],
+  'administrativo:editar': [ROLE.ADMIN],
+  'administrativo:visualizar': [
+    ROLE.ADMIN,
+    ROLE.COORDENADOR_DO_CURSO,
+    ROLE.SECRETARIO,
+  ],
+
   // Professores
+  'professores:criar': [ROLE.ADMIN],
+  'professores:editar': [ROLE.ADMIN],
   'professores:visualizar': [ROLE.ADMIN],
 
   // Assistidos
   'assistidos:criar': [ROLE.ADMIN],
-  'assistidos:visualizar': [ROLE.ADMIN],
   'assistidos:editar': [ROLE.ADMIN],
+  'assistidos:visualizar': [ROLE.ADMIN],
 
   // Estagiarios
   'estagiarios:criar': [ROLE.ADMIN],
-  'estagiarios:visualizar': [ROLE.ADMIN],
   'estagiarios:editar': [ROLE.ADMIN],
+  'estagiarios:visualizar': [ROLE.ADMIN],
 
   // Advogados
   'advogados:criar': [ROLE.ADMIN],
-  'advogados:visualizar': [ROLE.ADMIN],
   'advogados:editar': [ROLE.ADMIN],
+  'advogados:visualizar': [ROLE.ADMIN],
 
   // Configurações
-  'configuracoes:acessar': [ROLE.ADMIN],
+  'configuracoes:visualizar': [ROLE.ADMIN],
 } as const satisfies Record<string, readonly Role[]>;
 
 export type PermissionAction = keyof typeof permissions;

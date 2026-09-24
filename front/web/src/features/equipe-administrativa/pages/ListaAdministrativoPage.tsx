@@ -1,17 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import { ListLayout } from '@/components/layouts/ListLayout';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
-import { estagiariosService } from '../services/estagiariosService';
-import { getEstagiariosColumns } from '../components/estagiariosColumns';
+import { administrativoService } from '../service/administrativoService';
+import { getAdministrativoColumns } from '../components/administrativoColumns';
 import { paths } from '@/routes/paths';
+import { ListLayout } from '@/components/layouts/ListLayout';
 import { useMemo } from 'react';
 
-export default function ListaEstagiariosPage() {
+export default function AdministrativoListPage() {
   const navigate = useNavigate();
-  const podeCriar = usePermission('estagiarios:criar');
-  const podeEditar = usePermission('estagiarios:editar');
+  const podeCriar = usePermission('administrativo:criar');
+  const podeEditar = usePermission('administrativo:editar');
 
   const {
     dados,
@@ -20,34 +20,27 @@ export default function ListaEstagiariosPage() {
     totalElements,
     pagination,
     setPagination,
-    filtro,
-    setFiltro,
+    // refetch,
   } = useListaPaginada({
-    fetchFn: estagiariosService.listar,
-    filtroInicial: { termo: '' },
+    fetchFn: administrativoService.listar,
   });
 
- const columns = useMemo(
+  const columns = useMemo(
     () =>
-      getEstagiariosColumns({
-        onEditar: (id) => navigate(paths.estagiarios.editar(id)),
+      getAdministrativoColumns({
+        onEditar: (id) => navigate(paths.administrativo.editar(id)),
         onVerDetalhe: (id) => navigate(paths.estagiarios.detalhe(id)),
         podeEditar,
       }),
-    [navigate, podeEditar]
+    [podeEditar, navigate],
   );
 
   return (
     <ListLayout
-      title="Estagiários"
+      title="Equipe Administrativa"
       canCreate={podeCriar}
-      onCreate={() => navigate(paths.estagiarios.novo)}
-      createButtonText="Novo Estagiário"
-      searchProps={{
-        value: filtro.termo,
-        onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome ou matrícula...',
-      }}
+      createButtonText="Novo Membro"
+      onCreate={() => navigate(paths.administrativo.novo)}
     >
       <DataTable
         data={dados}

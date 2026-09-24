@@ -4,6 +4,11 @@ export const paths = {
   redefinirSenha: '/redefinir-senha',
   acessoNegado: '/acesso-negado',
   home: '/',
+  administrativo: {
+    lista: '/administrativo',
+    novo: '/administrativo/novo',
+    editar: (id: string | number) => `/administrativo/${id}/editar`,
+  },
   processos: {
     lista: '/processos',
     detalhe: (id: string | number) => `/processos/${id}`,

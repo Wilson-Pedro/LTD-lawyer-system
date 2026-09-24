@@ -3,15 +3,16 @@ import { ListLayout } from '@/components/layouts/ListLayout';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
-import { estagiariosService } from '../services/estagiariosService';
-import { getEstagiariosColumns } from '../components/estagiariosColumns';
+
 import { paths } from '@/routes/paths';
 import { useMemo } from 'react';
+import { advogadosService } from '../services/advogadosService';
+import { getAdvogadosColumns } from '../components/advogadosColumns';
 
-export default function ListaEstagiariosPage() {
+export default function ListaAdvogadosPage() {
   const navigate = useNavigate();
-  const podeCriar = usePermission('estagiarios:criar');
-  const podeEditar = usePermission('estagiarios:editar');
+  const podeCriar = usePermission('advogados:criar');
+  const podeEditar = usePermission('administrativo:editar');
 
   const {
     dados,
@@ -23,30 +24,30 @@ export default function ListaEstagiariosPage() {
     filtro,
     setFiltro,
   } = useListaPaginada({
-    fetchFn: estagiariosService.listar,
+    fetchFn: advogadosService.listar,
     filtroInicial: { termo: '' },
   });
 
- const columns = useMemo(
+  const columns = useMemo(
     () =>
-      getEstagiariosColumns({
-        onEditar: (id) => navigate(paths.estagiarios.editar(id)),
-        onVerDetalhe: (id) => navigate(paths.estagiarios.detalhe(id)),
+      getAdvogadosColumns({
+        onEditar: (id) => navigate(paths.advogados.editar(id)),
+        onVerDetalhe: (id) => navigate(paths.advogados.detalhe(id)),
         podeEditar,
       }),
-    [navigate, podeEditar]
+    [navigate, podeEditar],
   );
 
   return (
     <ListLayout
-      title="Estagiários"
+      title="Advogados"
       canCreate={podeCriar}
-      onCreate={() => navigate(paths.estagiarios.novo)}
-      createButtonText="Novo Estagiário"
+      onCreate={() => navigate(paths.advogados.novo)}
+      createButtonText="Novo Advogado"
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome ou matrícula...',
+        placeholder: 'Buscar por nome...',
       }}
     >
       <DataTable

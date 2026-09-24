@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Paper, Title, Text, Stack, Anchor, Center } from '@mantine/core';
-import { Form } from '@/components/ui/Form';
-import { Input } from '@/components/ui/Input';
+import { Form } from '@/components/ui/form/Form';
+import { Input } from '@/components/ui/form/Input';
 import { Button } from '@/components/ui/Button';
 import { notifications } from '@mantine/notifications';
 import { useZodForm } from '@/hooks/useZodForm';

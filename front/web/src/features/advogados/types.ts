@@ -2,7 +2,6 @@ import { Usuario } from '@/features/auth/types';
 import { Endereco } from '@/types/endereco';
 import { Pessoa } from '@/types/pessoa';
 
-
 export interface Advogado {
   id: number;
   dataDeNascimento: string;
@@ -11,10 +10,10 @@ export interface Advogado {
   usuario: Usuario;
 }
 
-export interface AdvogadoListResponse {
+export interface AdvogadoListItem {
   id: number;
   nome: string;
   email: string;
+  telefone: string;
   usuarioStatus: string;
-  registro: string;
 }

@@ -1,18 +1,18 @@
-import { Form } from '@/components/ui/Form';
-import { Input } from '@/components/ui/Input';
+import { Form } from '@/components/ui/form/Form';
+import { Input } from '@/components/ui/form/Input';
 import { Button } from '@/components/ui/Button';
 
 import { Grid, Stack } from '@mantine/core';
 import { useZodForm } from '@/hooks/useZodForm';
-import { EnderecoFields } from '@/components/ui/EnderecoFields';
-import { FormSection } from '@/components/ui/FormSection';
+import { EnderecoFields } from '@/components/ui/form/EnderecoFields';
+import { FormSection } from '@/components/ui/form/FormSection';
 import {
   AtualizarAssistidoRequest,
   atualizarAssistidoSchema,
   CriarAssistidoRequest,
   criarAssistidoSchema,
 } from '../schema';
-import { Select } from '@/components/ui/Select';
+import { Select } from '@/components/ui/form/Select';
 
 interface AssistidoFormProps {
   valoresIniciais?: Partial<CriarAssistidoRequest & AtualizarAssistidoRequest>;

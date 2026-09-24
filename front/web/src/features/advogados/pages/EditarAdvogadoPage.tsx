@@ -57,7 +57,7 @@ export default function EditarAdvogadoPage() {
   if (isLoading) {
     return (
       <Center py={64}>
-        <Loader color="institucional" type='dots'/>
+        <Loader color="institucional" type="dots" />
       </Center>
     );
   }

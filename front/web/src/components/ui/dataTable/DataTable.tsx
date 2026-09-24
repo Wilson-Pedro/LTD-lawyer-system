@@ -7,6 +7,7 @@ import {
   type SortingState,
   type PaginationState,
   Updater,
+  RowData,
 } from '@tanstack/react-table';
 import {
   Table,
@@ -25,9 +26,9 @@ import {
 } from '@tabler/icons-react';
 import classes from './DataTable.module.css';
 
-interface DataTableProps<T extends Record<string, any>> {
-  data: T[];
-  columns: ColumnDef<StockFeatures, T, any>[];
+interface DataTableProps<TData extends RowData> {
+  data: TData[];
+  columns: ColumnDef<StockFeatures, TData, any>[];
   isLoading?: boolean;
   emptyMessage?: string;
   totalElements?: number;

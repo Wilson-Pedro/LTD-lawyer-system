@@ -7,9 +7,10 @@ import { paths } from '@/routes/paths';
 
 import { EstagiarioForm } from '../components/EstagiarioForm';
 import { estagiariosService } from '../services/estagiariosService';
-import { periodoEstagioLabel } from '../types';
+
 import { CriarEstagiarioRequest } from '../schema';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { periodoEstagioLabel } from '../constants';
 
 export default function CriarEstagiarioPage() {
   const navigate = useNavigate();

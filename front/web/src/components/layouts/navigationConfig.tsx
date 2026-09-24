@@ -42,9 +42,14 @@ const navGroups: NavGroup[] = [
     icon: <IconUsers size={groupSize} />,
     items: [
       {
-        label: 'Funcionários',
+        label: 'Equipe Administrativa',
+        to: paths.administrativo.lista,
+        requiredAction: 'administrativo:visualizar',
+      },
+      {
+        label: 'Professores',
         to: paths.usuarios,
-        requiredAction: 'usuarios:gerenciar',
+        requiredAction: 'professores:visualizar',
       },
       {
         label: 'Estagiários',
@@ -70,10 +75,12 @@ const navGroups: NavGroup[] = [
       {
         label: 'Processos',
         to: paths.processos.lista,
+        requiredAction: 'processos:visualizar'
       },
       {
         label: 'Demandas',
         to: paths.demandas.lista,
+        requiredAction: 'demandas:visualizar'
       },
     ],
   },
@@ -84,7 +91,7 @@ const navGroups: NavGroup[] = [
       {
         label: 'Configurações',
         to: paths.configuracoes,
-        requiredAction: 'configuracoes:acessar',
+        requiredAction: 'configuracoes:visualizar',
       },
     ],
   },

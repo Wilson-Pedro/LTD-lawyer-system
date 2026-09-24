@@ -1,4 +1,4 @@
-import { api } from '../../../config/api';
+import { api } from '@/lib/api/axios';
 import { ProcessoRequest } from '../types/Processos';
 
 export const processosService = {

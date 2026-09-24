@@ -7,14 +7,14 @@ interface UseListaPaginadaOptions<T, TFiltro extends Record<string, any>> {
   fetchFn: (
     params: { pageIndex: number; pageSize: number } & TFiltro,
   ) => Promise<PageResponse<T>>;
-  filtroInicial: TFiltro;
+  filtroInicial?: TFiltro;
   pageSizeInicial?: number;
   debounceMs?: number;
 }
 
 export function useListaPaginada<T, TFiltro extends Record<string, any>>({
   fetchFn,
-  filtroInicial,
+  filtroInicial = {} as TFiltro,
   pageSizeInicial = 15,
   debounceMs = 400,
 }: UseListaPaginadaOptions<T, TFiltro>) {

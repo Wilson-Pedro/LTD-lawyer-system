@@ -1,5 +1,5 @@
-import { periodoEstagioLabel } from '../constants';
-import { EstagiarioListItem } from '../types';
+import { usuarioRoleLabel } from '@/constants/roles';
+import { AdministrativoListItem } from '../types';
 import { getTableHelpers } from '@/components/ui/dataTable/columnHelpers';
 
 interface ColunasCallbacks {
@@ -8,19 +8,16 @@ interface ColunasCallbacks {
   podeEditar: boolean;
 }
 
-export function getEstagiariosColumns({
+export function getAdministrativoColumns({
   onEditar,
   onVerDetalhe,
   podeEditar,
 }: ColunasCallbacks) {
-  const helpers = getTableHelpers<EstagiarioListItem>();
+  const helpers = getTableHelpers<AdministrativoListItem>();
 
   return [
     helpers.link('nome', 'Nome', (row) => onVerDetalhe(row.id)),
-
-    { accessorKey: 'matricula', header: 'Matrícula' },
-    
-    helpers.enumMap('periodoEstagio', 'Período', periodoEstagioLabel),
+    helpers.enumMap('role', 'Cargo', usuarioRoleLabel),
     helpers.status('usuarioStatus'),
     ...helpers.edit(onEditar, podeEditar),
   ];

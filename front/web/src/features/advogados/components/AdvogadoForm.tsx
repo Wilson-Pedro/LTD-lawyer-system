@@ -1,5 +1,5 @@
-import { Form } from '@/components/ui/Form';
-import { Input } from '@/components/ui/Input';
+import { Form } from '@/components/ui/form/Form';
+import { Input } from '@/components/ui/form/Input';
 import { Button } from '@/components/ui/Button';
 
 import { Fieldset, Grid, Stack } from '@mantine/core';
@@ -10,8 +10,8 @@ import {
   criarAdvogadoSchema,
   atualizarAdvogadoSchema,
 } from '../schema';
-import { EnderecoFields } from '@/components/ui/EnderecoFields';
-import { FormSection } from '@/components/ui/FormSection';
+import { EnderecoFields } from '@/components/ui/form/EnderecoFields';
+import { FormSection } from '@/components/ui/form/FormSection';
 
 interface AdvogadoFormProps {
   valoresIniciais?: Partial<CriarAdvogadoRequest & AtualizarAdvogadoRequest>;
