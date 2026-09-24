@@ -16,12 +16,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 			value = """
         SELECT u FROM Usuario u
         JOIN FETCH u.pessoa p
-        WHERE u.role = :role
+        WHERE u.role IN :roles
     """,
 			countQuery = """
         SELECT COUNT(u) FROM Usuario u
-        WHERE u.role = :role
+        WHERE u.role IN :roles
     """
 	)
-	Page<Usuario> buscarPorRole(@Param("role") UsuarioRole role, Pageable pageable);
+	Page<Usuario> buscarPorRoles(@Param("roles") List<UsuarioRole> roles, Pageable pageable);
 }

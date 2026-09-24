@@ -2,9 +2,7 @@ package com.advocacia.estacio.modules.administrativo;
 
 import com.advocacia.estacio.infra.exceptions.RegraDeNegocioException;
 import com.advocacia.estacio.modules.pessoas.Pessoa;
-import com.advocacia.estacio.modules.pessoas.PessoaDTO;
 import com.advocacia.estacio.modules.pessoas.PessoaRepository;
-import com.advocacia.estacio.modules.pessoas.PessoaService;
 import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
@@ -12,9 +10,10 @@ import com.advocacia.estacio.modules.usuarios.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Módulo responsável pela gestão de pessoal ADMINISTRATIVO do sistema
@@ -48,7 +47,12 @@ public class AdministrativoService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AdministrativoDTO.ListResponse> listar(UsuarioRole role, Pageable pageable) {
-        return usuarioRepository.buscarPorRole(role, pageable).map(AdministrativoDTO.ListResponse::new);
+    public Page<AdministrativoDTO.ListResponse> listar(Pageable pageable) {
+        List<UsuarioRole> rolesAdministrativas = List.of(
+                UsuarioRole.COORDENADOR_DO_CURSO,
+                UsuarioRole.SECRETARIO
+        );
+
+        return usuarioRepository.buscarPorRoles(rolesAdministrativas, pageable).map(AdministrativoDTO.ListResponse::new);
     }
 }

@@ -31,8 +31,7 @@ public class AdministrativoController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'COORDENADOR_DO_CURSO')")
     public ResponseEntity<Page<AdministrativoDTO.ListResponse>> listar(
-            @RequestParam(required = false) UsuarioRole role,
             @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return ResponseEntity.ok(administrativoService.listar(role, pageable));
+        return ResponseEntity.ok(administrativoService.listar(pageable));
     }
 }
