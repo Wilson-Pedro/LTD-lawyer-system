@@ -17,6 +17,8 @@ import { estagiariosRoutes } from '@/features/estagiarios/routes';
 import { advogadosRoutes } from '@/features/advogados/routes';
 import { assistidosRoutes } from '@/features/assistidos/routes';
 import { administrativoRoutes } from '@/features/equipe-administrativa/routes';
+import { demandasRoutes } from '@/features/demandas/routes';
+import { processosRoutes } from '@/features/processos/routes';
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +44,8 @@ export const router = createBrowserRouter([
           ...advogadosRoutes,
           ...assistidosRoutes,
           ...administrativoRoutes,
+          ...demandasRoutes,
+          ...processosRoutes,
         ],
       },
     ],

@@ -1,23 +1,20 @@
 import { Pessoa } from '@/types/pessoa';
 import { Usuario } from '../auth/types';
 
-export interface Estagiario {
-  id: number;
-  matricula: string;
-  periodoEstagio: string;
+export interface Professor {
   pessoa: Pessoa;
   usuario: Usuario;
 }
 
-export interface EstagiarioOption {
+export interface ProfessorOption {
   id: number;
   nome: string;
 }
 
-export interface EstagiarioListItem {
+export interface ProfessorListItem {
   id: number;
   nome: string;
-  matricula: string;
-  periodoEstagio: string;
+  email: string;
+  telefone: string;
   usuarioStatus: string;
 }

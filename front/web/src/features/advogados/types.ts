@@ -10,6 +10,11 @@ export interface Advogado {
   usuario: Usuario;
 }
 
+export interface AdvogadoOption {
+  id: number;
+  nome: string;
+}
+
 export interface AdvogadoListItem {
   id: number;
   nome: string;

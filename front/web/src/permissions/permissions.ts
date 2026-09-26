@@ -5,8 +5,10 @@ const permissions = {
   'processos:criar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
   'processos:editar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
   'processos:visualizar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
-  
+
   // Demandas
+  'demandas:criar': [ROLE.COORDENADOR_DO_CURSO, ROLE.PROFESSOR, ROLE.ADMIN],
+  'demandas:editar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
   'demandas:atribuir': [ROLE.COORDENADOR_DO_CURSO, ROLE.PROFESSOR, ROLE.ADMIN],
   'demandas:visualizar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
 

@@ -7,7 +7,7 @@ import { paths } from '@/routes/paths';
 
 import { CriarAdministrativoRequest } from '../schema';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { administrativoService } from '../service/administrativoService';
+import { administrativoService } from '../services/administrativoService';
 import { AdministrativoForm } from '../components/AdministrativoForm';
 import { Role, usuarioRoleLabel } from '@/constants/roles';
 

@@ -1,5 +1,5 @@
 import { Group, Title, TextInput, Box } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { IconSearch, ReactNode } from '@tabler/icons-react';
 import { Button } from '@/components/ui/Button';
 
 interface ListLayoutProps {
@@ -7,6 +7,8 @@ interface ListLayoutProps {
   onCreate?: () => void;
   canCreate?: boolean;
   createButtonText?: string;
+  // add elementos extras
+  actions?: React.ReactNode;
   searchProps?: {
     value: string;
     onChange: (value: string) => void;
@@ -20,6 +22,7 @@ export function ListLayout({
   onCreate,
   canCreate,
   createButtonText = 'Novo',
+  actions,
   searchProps,
   children,
 }: ListLayoutProps) {
@@ -27,9 +30,14 @@ export function ListLayout({
     <Box>
       <Group justify="space-between" mb="lg">
         <Title order={3}>{title}</Title>
-        {canCreate && onCreate && (
-          <Button onClick={onCreate}>{createButtonText}</Button>
-        )}
+
+        <Group>
+          {canCreate && onCreate && (
+            <Button onClick={onCreate}>{createButtonText}</Button>
+          )}
+
+          {actions}
+        </Group>
       </Group>
 
       {searchProps && (

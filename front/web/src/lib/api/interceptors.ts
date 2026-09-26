@@ -20,6 +20,16 @@ api.interceptors.response.use(
       });
     }
 
+    // if (error.response?.status === 500) {
+    //   const detail = error.response?.data?.detail;
+
+    //   notifications.show({
+    //     title: error.response?.data?.title ?? 'Erro no Servidor',
+    //     message: detail ?? 'Erro interno inesperado.',
+    //     color: 'red',
+    //   });
+    // }
+
     return Promise.reject(error);
   },
 );

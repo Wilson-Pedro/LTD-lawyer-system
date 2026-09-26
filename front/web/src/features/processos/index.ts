@@ -1,2 +1,2 @@
 export * from './types/Processos';
-export * from './api/processosService';
+export * from './services/processosService';

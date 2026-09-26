@@ -1,5 +1,5 @@
 import { api } from '@/lib/api/axios';
-import { Estagiario, EstagiarioListItem } from '../types';
+import { Estagiario, EstagiarioListItem, EstagiarioOption } from '../types';
 import { PageResponse } from '@/types/pageResponse';
 import { AtualizarEstagiarioRequest, CriarEstagiarioRequest } from '../schema';
 
@@ -19,6 +19,19 @@ export const estagiariosService = {
       params: { page: pageIndex, size: pageSize, termo: termo || undefined },
     });
     return data;
+  },
+
+  listarOpcoes: async (
+    termo?: string,
+  ): Promise<{ value: string; label: string }[]> => {
+    const { data } = await api.get('estagiarios/opcoes', {
+      params: { nome: termo || undefined },
+    });
+
+    return data.map((estagiario: EstagiarioOption) => ({
+      value: String(estagiario.id),
+      label: estagiario.nome,
+    }));
   },
 
   buscarPorId: async (id: number): Promise<Estagiario> => {

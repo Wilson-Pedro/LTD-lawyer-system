@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
-import { administrativoService } from '../service/administrativoService';
+import { administrativoService } from '../services/administrativoService';
 import { getAdministrativoColumns } from '../components/administrativoColumns';
 import { paths } from '@/routes/paths';
 import { ListLayout } from '@/components/layouts/ListLayout';
