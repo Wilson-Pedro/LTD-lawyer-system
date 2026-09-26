@@ -29,7 +29,7 @@ public interface DemandaDTO {
                     .estagiario(estagiario)
                     .professor(professor)
                     .descricao(this.descricao)
-                    .prazo(prazoFinal)
+                    .prazoFinal(prazoFinal)
                     .prazoDocumentos(this.prazoDocumentos)
                     .build();
         }
@@ -54,7 +54,7 @@ public interface DemandaDTO {
                     .estagiario(estagiario)
                     .professor(professor)
                     .descricao(this.descricao)
-                    .prazo(prazoFinal)
+                    .prazoFinal(prazoFinal)
                     .prazoDocumentos(this.prazoDocumentos)
                     .etapaAtual(this.etapaAtual)
                     .build();
@@ -64,7 +64,7 @@ public interface DemandaDTO {
     @Schema(name = "DemandaResponse")
     record Response(
             Long id,
-            String descricaoDemanda,
+            String descricao,
             LocalDate prazo,
             LocalDateTime dataAbertura
     ) {
@@ -72,7 +72,7 @@ public interface DemandaDTO {
             this(
                     demanda.getId(),
                     demanda.getDescricao(),
-                    demanda.getPrazo(),
+                    demanda.getPrazoFinal(),
                     demanda.getDataAbertura()
             );
         }
@@ -81,24 +81,32 @@ public interface DemandaDTO {
     @Schema(name = "DemandaListResponse")
     record ListResponse(
             Long id,
-            String descricaoDemanda,
-            LocalDate prazo,
+            String descricao,
+            LocalDate prazoFinal,
+            LocalDate prazoDocumentacao,
+            String nomeAdvogado,
             String nomeEstagiario,
-            String nomeProfessor
+            String nomeProfessor,
+            EtapaDemanda etapaAtual,
+            Tempestividade tempestividade
     ) {
         public ListResponse(Demanda demanda) {
             this( demanda.getId(),
                     demanda.getDescricao(),
-                    demanda.getPrazo(),
+                    demanda.getPrazoFinal(),
+                    demanda.getPrazoDocumentos(),
+                    demanda.getAdvogado().getPessoa().getNome(),
                     demanda.getEstagiario().getPessoa().getNome(),
-                    demanda.getProfessor().getPessoa().getNome()
+                    demanda.getProfessor().getPessoa().getNome(),
+                    demanda.getEtapaAtual(),
+                    demanda.getTempestividade()
             );
         }
     }
 
     @Schema(name = "DemandaSearchFilter")
     record SearchFilter(
-            EtapaDemanda status,
+            EtapaDemanda etapaAtual,
             Tempestividade tempestividade
     ) {}
 }

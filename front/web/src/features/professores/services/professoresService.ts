@@ -16,7 +16,7 @@ export const professoresService = {
     termo,
   }: ListarProfessoresParams): Promise<PageResponse<ProfessorListItem>> => {
     const { data } = await api.get('/professores', {
-      params: { page: pageIndex, size: pageSize, termo: termo || undefined },
+      params: { page: pageIndex, size: pageSize, nome: termo || undefined },
     });
     return data;
   },

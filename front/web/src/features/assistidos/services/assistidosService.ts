@@ -1,10 +1,23 @@
 import { api } from '@/lib/api/axios';
-import { Assistido } from '../types';
+import { Assistido, AssistidoListItem } from '../types';
 import { AtualizarAssistidoRequest, CriarAssistidoRequest } from '../schema';
+import { PageResponse } from '@/types/pageResponse';
+
+interface ListarAssistidosParams {
+  pageIndex: number;
+  pageSize: number;
+  termo?: string;
+}
 
 export const assistidosService = {
-  listar: async (): Promise<Assistido[]> => {
-    const { data } = await api.get('/assistidos');
+  listar: async ({
+    pageIndex,
+    pageSize,
+    termo,
+  }: ListarAssistidosParams): Promise<PageResponse<AssistidoListItem>> => {
+    const { data } = await api.get('/assistidos', {
+      params: { page: pageIndex, size: pageSize, termo: termo || undefined },
+    });
     return data;
   },
 

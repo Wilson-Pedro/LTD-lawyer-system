@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 // estado/posse
 @RequiredArgsConstructor
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum EtapaDemanda {
 
 	ELABORACAO("Em Elaboração pelo Estagiário"),

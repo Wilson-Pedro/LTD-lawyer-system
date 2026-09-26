@@ -16,10 +16,10 @@ export const adminDashboardConfig: DashboardSection[] = [
     color: 'blue',
     cards: [
       {
-        title: 'Funcionários',
+        title: 'Equipe Administrativa',
         description: 'Coordenador e secretários',
         icon: <IconBriefcase size={20} />,
-        to: paths.funcionarios.lista,
+        to: paths.administrativo.lista,
       },
       {
         title: 'Professores',
@@ -37,13 +37,13 @@ export const adminDashboardConfig: DashboardSection[] = [
         title: 'Advogados',
         description: 'Advogados vinculados ao núcleo',
         icon: <IconGavel size={20} />,
-        to: paths.advogados.novo,
+        to: paths.advogados.lista,
       },
       {
         title: 'Assistidos',
         description: 'Pessoas atendidas pelo núcleo',
         icon: <IconUsers size={20} />,
-        to: paths.assistidos.novo,
+        to: paths.assistidos.lista,
       },
     ],
   },

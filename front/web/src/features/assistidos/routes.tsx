@@ -4,8 +4,17 @@ import { paths } from '@/routes/paths';
 import { RoleGuard } from '@/routes/RoleGuard';
 import CriarAssistidoPage from './pages/CriarAssistidoPage';
 import EditarAssistidoPage from './pages/EditarAssistidoPage';
+import ListaAssistidosPage from './pages/ListaAssistidosPage';
 
 export const assistidosRoutes: RouteObject[] = [
+  {
+    path: paths.assistidos.lista,
+    element: (
+      <RoleGuard action="assistidos:visualizar">
+        <ListaAssistidosPage />
+      </RoleGuard>
+    ),
+  },
   {
     path: paths.assistidos.novo,
     element: (

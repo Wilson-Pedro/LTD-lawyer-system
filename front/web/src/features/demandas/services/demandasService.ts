@@ -7,7 +7,7 @@ import { EtapaDemanda } from '../constants';
 interface ListarDemandasParams {
   pageIndex: number;
   pageSize: number;
-  status?: EtapaDemanda;
+  etapaAtual?: EtapaDemanda;
   tempestividade?: string;
 }
 
@@ -15,14 +15,14 @@ export const demandasService = {
   listar: async ({
     pageIndex,
     pageSize,
-    status,
+    etapaAtual,
     tempestividade,
   }: ListarDemandasParams): Promise<PageResponse<DemandaListItem>> => {
     const { data } = await api.get('/demandas', {
       params: {
         page: pageIndex,
         size: pageSize,
-        status: status || undefined,
+        etapaAtual: etapaAtual || undefined,
         tempestividade: tempestividade || undefined,
       },
     });
@@ -40,7 +40,7 @@ export const demandasService = {
   },
 
   migrar: async (dados: MigrarDemandaRequest): Promise<Demanda> => {
-    const { data } = await api.post('/demandas', dados);
+    const { data } = await api.post('/demandas/importar', dados);
     return data;
   },
 

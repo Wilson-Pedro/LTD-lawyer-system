@@ -53,7 +53,9 @@ export function ProfessorForm({
           </Grid>
         </FormSection>
 
-        <Input name="senha" label="Senha" type="password" />
+        {modo === 'criar' && (
+          <Input name="senha" label="Senha" type="password" />
+        )}
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting

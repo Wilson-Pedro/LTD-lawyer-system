@@ -1,6 +1,6 @@
 package com.advocacia.estacio.modules.demandas;
 
-import com.advocacia.estacio.infra.security.CustomUserDetails;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -20,10 +20,16 @@ public class DemandaSpecs {
 
     public static Specification<Demanda> comFiltros(DemandaDTO.SearchFilter filtro) {
         return (root, query, cb) -> {
+            if(Long.class != query.getResultType() && long.class != query.getResultType()) {
+                root.fetch("advogado", JoinType.LEFT).fetch("pessoa", JoinType.LEFT);
+                root.fetch("professor", JoinType.LEFT).fetch("pessoa", JoinType.LEFT);
+                root.fetch("estagiario", JoinType.LEFT).fetch("pessoa", JoinType.LEFT);
+            }
+
             List<Predicate> predicates = new ArrayList<>();
 
-            if (filtro.status() != null) {
-                predicates.add(cb.equal(root.get("status"), filtro.status()));
+            if (filtro.etapaAtual() != null) {
+                predicates.add(cb.equal(root.get("etapaAtual"), filtro.etapaAtual()));
             }
             if(filtro.tempestividade() != null) {
                 predicates.add(cb.equal(root.get("tempestividade"), filtro.tempestividade()));

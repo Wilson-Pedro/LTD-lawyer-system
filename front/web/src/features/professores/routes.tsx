@@ -3,16 +3,17 @@ import { paths } from '@/routes/paths';
 import { RoleGuard } from '@/routes/RoleGuard';
 import CriarProfessorPage from './pages/CriarProfessorPage';
 import EditarProfessorPage from './pages/EditarProfessorPage';
+import ListaProfessoresPage from './pages/ListaProfessor';
 
 export const professoresRoutes: RouteObject[] = [
-  //   {
-  //     path: paths.professores.lista,
-  //     element: (
-  //       <RoleGuard action="professores:visualizar">
-  //         <ListaProfessoresPage />
-  //       </RoleGuard>
-  //     ),
-  //   },
+  {
+    path: paths.professores.lista,
+    element: (
+      <RoleGuard action="professores:visualizar">
+        <ListaProfessoresPage />
+      </RoleGuard>
+    ),
+  },
   {
     path: paths.professores.novo,
     element: (

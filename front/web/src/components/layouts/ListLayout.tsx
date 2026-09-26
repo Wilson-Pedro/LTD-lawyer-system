@@ -9,6 +9,7 @@ interface ListLayoutProps {
   createButtonText?: string;
   // add elementos extras
   actions?: React.ReactNode;
+  filters?: React.ReactNode;
   searchProps?: {
     value: string;
     onChange: (value: string) => void;
@@ -23,6 +24,7 @@ export function ListLayout({
   canCreate,
   createButtonText = 'Novo',
   actions,
+  filters,
   searchProps,
   children,
 }: ListLayoutProps) {
@@ -50,6 +52,8 @@ export function ListLayout({
           maw={360}
         />
       )}
+
+      {filters && <Group mb="md">{filters}</Group>}
 
       {children}
     </Box>

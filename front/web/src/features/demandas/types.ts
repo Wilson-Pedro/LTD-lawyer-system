@@ -1,3 +1,6 @@
+import { Tempestividade } from '@/constants/tempestividade';
+import { EtapaDemanda } from './constants';
+
 export interface Demanda {
   idi: number;
   descricaoDemanda: string;
@@ -25,8 +28,12 @@ export interface DemandaResponse {
 
 export interface DemandaListItem {
   id: number;
-  descricaoDemanda: string;
-  prazo: string;
+  descricao: string;
+  prazoFinal: string;
+  prazoDocumentacao: string;
+  nomeAdvogado: string;
   nomeEstagiario: string;
   nomeProfessor: string;
+  etapaAtual: EtapaDemanda;
+  tempestividade: Tempestividade;
 }

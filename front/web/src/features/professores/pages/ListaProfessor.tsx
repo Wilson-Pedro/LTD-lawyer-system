@@ -3,15 +3,15 @@ import { ListLayout } from '@/components/layouts/ListLayout';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
+import { professoresService } from '../services/professoresService';
+import { getProfessoresColumns } from '../components/professoresColumns';
 import { paths } from '@/routes/paths';
 import { useMemo } from 'react';
-import { getAssistidosColumns } from '../components/assistidosColumns';
-import { assistidosService } from '../services/assistidosService';
 
-export default function ListaAssistidosPage() {
+export default function ListaProfessoresPage() {
   const navigate = useNavigate();
-  const podeCriar = usePermission('assistidos:criar');
-  const podeEditar = usePermission('assistidos:editar');
+  const podeCriar = usePermission('professores:criar');
+  const podeEditar = usePermission('professores:editar');
 
   const {
     dados,
@@ -23,15 +23,15 @@ export default function ListaAssistidosPage() {
     filtro,
     setFiltro,
   } = useListaPaginada({
-    fetchFn: assistidosService.listar,
+    fetchFn: professoresService.listar,
     filtroInicial: { termo: '' },
   });
 
   const columns = useMemo(
     () =>
-      getAssistidosColumns({
-        onEditar: (id) => navigate(paths.assistidos.editar(id)),
-        onVerDetalhe: (id) => navigate(paths.assistidos.detalhe(id)),
+      getProfessoresColumns({
+        onEditar: (id) => navigate(paths.professores.editar(id)),
+        onVerDetalhe: (id) => navigate(paths.professores.detalhe(id)),
         podeEditar,
       }),
     [navigate, podeEditar],
@@ -39,14 +39,14 @@ export default function ListaAssistidosPage() {
 
   return (
     <ListLayout
-      title="Assistidos"
+      title="Professores"
       canCreate={podeCriar}
-      onCreate={() => navigate(paths.assistidos.novo)}
-      createButtonText="Novo Assistido"
+      onCreate={() => navigate(paths.professores.novo)}
+      createButtonText="Novo Professor"
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome ou matrícula...',
+        placeholder: 'Buscar por nome...',
       }}
     >
       <DataTable

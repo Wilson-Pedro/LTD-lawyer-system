@@ -48,7 +48,7 @@ const navGroups: NavGroup[] = [
       },
       {
         label: 'Professores',
-        to: paths.usuarios,
+        to: paths.professores.lista,
         requiredAction: 'professores:visualizar',
       },
       {
@@ -75,12 +75,12 @@ const navGroups: NavGroup[] = [
       {
         label: 'Processos',
         to: paths.processos.lista,
-        requiredAction: 'processos:visualizar'
+        requiredAction: 'processos:visualizar',
       },
       {
         label: 'Demandas',
         to: paths.demandas.lista,
-        requiredAction: 'demandas:visualizar'
+        requiredAction: 'demandas:visualizar',
       },
     ],
   },

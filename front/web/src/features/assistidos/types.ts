@@ -14,11 +14,9 @@ export interface Assistido {
   endereco: Endereco | null;
 }
 
-
-export interface AssistidoListResponse {
+export interface AssistidoListItem {
   id: number;
   nome: string;
-  email: string;
-  usuarioStatus: string;
-  registro: string;
+  matricula: string;
+  telefone: string;
 }

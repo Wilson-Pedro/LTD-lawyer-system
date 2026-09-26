@@ -8,6 +8,14 @@ import { useMemo } from 'react';
 import { demandasService } from '../services/demandasService';
 import { getDemandasColumns } from '../components/demandasColumns';
 import { Button } from '@/components/ui/Button';
+import { Select } from '@mantine/core';
+import { EtapaDemanda, etapaDemandaLabel } from '../constants';
+import { DemandaListItem } from '../types';
+
+interface FiltroDemandas {
+  termo: string;
+  etapaAtual?: EtapaDemanda;
+}
 
 export default function ListaDemandasPage() {
   const navigate = useNavigate();
@@ -23,7 +31,7 @@ export default function ListaDemandasPage() {
     setPagination,
     filtro,
     setFiltro,
-  } = useListaPaginada({
+  } = useListaPaginada<DemandaListItem, FiltroDemandas>({
     fetchFn: demandasService.listar,
     filtroInicial: { termo: '' },
   });
@@ -55,8 +63,26 @@ export default function ListaDemandasPage() {
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome ou matrícula...',
+        placeholder: 'Buscar por nome...',
       }}
+      filters={
+        <Select
+          placeholder="Filtrar por Etapa"
+          data={Object.values(EtapaDemanda).map((e) => ({
+            value: e,
+            label: etapaDemandaLabel[e as EtapaDemanda],
+          }))}
+          value={filtro.etapaAtual ?? null}
+          onChange={(valor) =>
+            setFiltro({
+              ...filtro,
+              etapaAtual: (valor as EtapaDemanda) ?? undefined,
+            })
+          }
+          clearable
+          w={200}
+        />
+      }
     >
       <DataTable
         data={dados}

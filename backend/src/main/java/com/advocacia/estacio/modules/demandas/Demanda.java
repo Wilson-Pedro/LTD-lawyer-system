@@ -40,7 +40,8 @@ public class Demanda implements Serializable {
     @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
-    private LocalDate prazo;
+    @Column(name = "prazo-final", nullable = false)
+    private LocalDate prazoFinal;
 
     @Column(name = "prazo_documentos")
     private LocalDate prazoDocumentos;
@@ -70,7 +71,7 @@ public class Demanda implements Serializable {
 
     @Builder
     public Demanda(Advogado advogado, Estagiario estagiario, Professor professor,
-                   String descricao, LocalDate prazo, LocalDate prazoDocumentos,
+                   String descricao, LocalDate prazoFinal, LocalDate prazoDocumentos,
                    EtapaDemanda etapaAtual, List<DemandaTramitacao> tramitacoes,
                    Tempestividade tempestividade, LocalDateTime dataAbertura,
                    LocalDateTime ultimaAtualizacao) {
@@ -79,7 +80,7 @@ public class Demanda implements Serializable {
         this.estagiario = estagiario;
         this.professor = professor;
         this.descricao = descricao;
-        this.prazo = prazo;
+        this.prazoFinal = prazoFinal;
         this.prazoDocumentos = prazoDocumentos;
         this.dataAbertura = dataAbertura;
         this.ultimaAtualizacao = ultimaAtualizacao;

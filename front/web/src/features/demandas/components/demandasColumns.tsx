@@ -1,5 +1,7 @@
 import { getTableHelpers } from '@/components/ui/dataTable/columnHelpers';
 import { DemandaListItem } from '../types';
+import { etapaDemandaLabel } from '../constants';
+import { Tempestividade } from '@/constants/tempestividade';
 
 interface ColunasCallbacks {
   onEditar: (id: string | number) => void;
@@ -15,16 +17,25 @@ export function getDemandasColumns({
   const helpers = getTableHelpers<DemandaListItem>();
 
   return [
-    helpers.link('descricaoDemanda', 'Descrição', (row) =>
-      onVerDetalhe(row.id),
-    ),
+    helpers.link('descricao', 'Descrição', (row) => onVerDetalhe(row.id)),
 
-    { accessorKey: 'prazo', header: 'Prazo Final' },
+    helpers.date('prazoDocumentacao', 'Prazo Documentação'),
 
-    { accessorKey: 'nomeEstagiario', header: 'Estagiário' },
-    { accessorKey: 'nomeProfessor', header: 'Professor' },
+    helpers.dateWithAlert('prazoFinal', 'Prazo Final', (row) => {
+      return row.tempestividade === Tempestividade.FORA_DO_PRAZO;
+    }),
 
-    // helpers.enumMap('periodoEstagio', 'Período', periodoEstagioLabel),
+    { accessorKey: 'nomeAdvogado', header: 'Advogado', enableSorting: false },
+
+    {
+      accessorKey: 'nomeEstagiario',
+      header: 'Estagiário',
+      enableSorting: false,
+    },
+
+    { accessorKey: 'nomeProfessor', header: 'Professor', enableSorting: false },
+
+    helpers.enumMap('etapaAtual', 'Etapa Atual', etapaDemandaLabel),
     ...helpers.edit(onEditar, podeEditar),
   ];
 }
