@@ -94,7 +94,7 @@ export function DemandaForm({
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <Input name="descricao" label="Descrição da Demanda" />
+              <Input name="descricao" label="Descrição da Demanda"/>
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 6 }}>

@@ -14,6 +14,7 @@ function paraValoresDoForm(estagiario: Estagiario) {
   return {
     nome: estagiario.pessoa.nome,
     telefone: estagiario.pessoa.telefone,
+    email: estagiario.pessoa.email,
     matricula: estagiario.matricula,
     periodoEstagio: estagiario.periodoEstagio,
   };

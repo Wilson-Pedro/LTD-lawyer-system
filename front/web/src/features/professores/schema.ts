@@ -14,4 +14,9 @@ export const criarProfessorSchema = dadosBaseSchema.extend({
   senha: z.string().min(6, 'Senha deve ter ao menos 6 caracteres'),
 });
 
+export const atualizarProfessorSchema = dadosBaseSchema;
+
 export type CriarProfessorRequest = z.infer<typeof criarProfessorSchema>;
+export type AtualizarProfessorRequest = z.infer<
+  typeof atualizarProfessorSchema
+>;

@@ -1,7 +1,7 @@
 import { api } from '@/lib/api/axios';
 import { Professor, ProfessorListItem, ProfessorOption } from '../types';
 import { PageResponse } from '@/types/pageResponse';
-import { CriarProfessorRequest } from '../schema';
+import { AtualizarProfessorRequest, CriarProfessorRequest } from '../schema';
 
 interface ListarProfessoresParams {
   pageIndex: number;
@@ -44,11 +44,11 @@ export const professoresService = {
     return data;
   },
 
-  //   atualizar: async (
-  //     id: number,
-  //     dados: AtualizarProfessorRequest,
-  //   ): Promise<Professor> => {
-  //     const { data } = await api.put(`/professores/${id}`, dados);
-  //     return data;
-  //   },
+  atualizar: async (
+    id: number,
+    dados: AtualizarProfessorRequest,
+  ): Promise<Professor> => {
+    const { data } = await api.put(`/professores/${id}`, dados);
+    return data;
+  },
 };

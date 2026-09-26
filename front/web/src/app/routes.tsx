@@ -19,6 +19,7 @@ import { assistidosRoutes } from '@/features/assistidos/routes';
 import { administrativoRoutes } from '@/features/equipe-administrativa/routes';
 import { demandasRoutes } from '@/features/demandas/routes';
 import { processosRoutes } from '@/features/processos/routes';
+import { professoresRoutes } from '@/features/professores/routes';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
           { path: paths.home, element: <DashboardPage /> },
 
           ...estagiariosRoutes,
+          ...professoresRoutes,
           ...advogadosRoutes,
           ...assistidosRoutes,
           ...administrativoRoutes,
