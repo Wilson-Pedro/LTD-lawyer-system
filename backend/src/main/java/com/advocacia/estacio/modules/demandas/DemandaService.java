@@ -57,22 +57,6 @@ public class DemandaService {
 		);
 	}
 
-	@Transactional
-	public DemandaDTO.Response importarRetroativo(DemandaDTO.ImportacaoRequest req, Long pessoaLogadaId) {
-		Estagiario estagiario = estagiarioService.obterReferecia(req.estagiarioId());
-		Professor professor = professorService.obterReferencia(req.professorId());
-		Advogado advogado = advogadoService.obterReferencia(req.advogadoId());
-
-		Demanda demanda = req.toEntity(advogado, estagiario, professor);
-
-		return finalizarCriacaoDemanda(
-				demanda,
-				pessoaLogadaId,
-				TipoTramitacao.CADASTRO_RETROATIVO,
-				"Demanda importada para o sistema já na etapa: " + req.etapaAtual().getDescricao()
-		);
-	}
-
 	private DemandaDTO.Response finalizarCriacaoDemanda(Demanda demanda, Long pessoaLogadaId, TipoTramitacao tipo, String observacao) {
 		Pessoa responsavel = pessoaService.obterReferencia(pessoaLogadaId);
 

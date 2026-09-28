@@ -49,4 +49,25 @@ public interface DemandaTramitacaoDTO {
             );
         }
     }
+
+    @Schema(name = "DemandaTramitacaoListResponse")
+    public record ListResponse(
+            Long id,
+            String nomeResponsavel,
+            TipoTramitacao tipoTramitacao,
+            String observacoes,
+            String linkAnexo,
+            LocalDateTime criadoEm
+    ) {
+        public ListResponse(DemandaTramitacao tramitacao) {
+            this(
+                    tramitacao.getId(),
+                    tramitacao.getResponsavel().getNome(),
+                    tramitacao.getTipoTramitacao(),
+                    tramitacao.getObservacoes(),
+                    tramitacao.getLinkAnexo(),
+                    tramitacao.getCriadoEm()
+            );
+        }
+    }
 }

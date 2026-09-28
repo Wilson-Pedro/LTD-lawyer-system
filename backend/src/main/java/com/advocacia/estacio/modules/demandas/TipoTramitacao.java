@@ -11,16 +11,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public enum TipoTramitacao {
 
-    CADASTRO_RETROATIVO(
-            "Cadastro de Demanda Pré-existente",
-            null, // O destino será dinâmico, definido no momento da importação
-            Set.of(UsuarioRole.COORDENADOR_DO_CURSO, UsuarioRole.ADMIN),
-            Set.of()
-    ),
-
     ABERTURA(
             "Abertura da Demanda",
-            EtapaDemanda.ELABORACAO,
+            null,
             Set.of(UsuarioRole.COORDENADOR_DO_CURSO, UsuarioRole.ADMIN),
             Set.of()
     ),

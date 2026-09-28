@@ -40,7 +40,7 @@ public class Demanda implements Serializable {
     @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(name = "prazo-final", nullable = false)
+    @Column(name = "prazo_final", nullable = false)
     private LocalDate prazoFinal;
 
     @Column(name = "prazo_documentos")

@@ -29,10 +29,14 @@ public class AssistidoController {
 
 	@GetMapping
 	public ResponseEntity<Page<AssistidoDTO.ListResponse>> listar(
-			@RequestParam(required = false) AssistidoDTO.SearchFilter filtro,
+			AssistidoDTO.SearchFilter filtro,
 			@PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 	) {
-		var filtroSeguro = (filtro != null && filtro.termo() != null) ? filtro : new AssistidoDTO.SearchFilter(null);
+		String termoTratado = null;
+		if (filtro != null && filtro.termo() != null && !filtro.termo().isBlank()) {
+			termoTratado = filtro.termo().trim();
+		}
+		var filtroSeguro = new AssistidoDTO.SearchFilter(termoTratado);
 		var page = assistidoService.listar(filtroSeguro, pageable);
 		return ResponseEntity.ok(page);
 	}

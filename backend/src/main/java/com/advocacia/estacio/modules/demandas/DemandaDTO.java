@@ -19,30 +19,6 @@ public interface DemandaDTO {
             @Schema(example = "Cliente sofreu acidente de trânsito e a seguradora se recusa a pagar.")
             @NotBlank String descricao,
             @NotNull Integer diasAdicionais,
-            @NotNull LocalDate prazoDocumentos
-    ) {
-        public Demanda toEntity(Advogado advogado, Estagiario estagiario, Professor professor) {
-            LocalDate prazoFinal = this.prazoDocumentos.plusDays(this.diasAdicionais);
-
-            return Demanda.builder()
-                    .advogado(advogado)
-                    .estagiario(estagiario)
-                    .professor(professor)
-                    .descricao(this.descricao)
-                    .prazoFinal(prazoFinal)
-                    .prazoDocumentos(this.prazoDocumentos)
-                    .build();
-        }
-    }
-
-    // Para demandas que já existem no mundo real.
-    @Schema(name = "DemandaImportacaoRequest")
-    record ImportacaoRequest(
-            @NotNull Long advogadoId,
-            @NotNull Long estagiarioId,
-            @NotNull Long professorId,
-            @NotBlank String descricao,
-            @NotNull Integer diasAdicionais,
             @NotNull LocalDate prazoDocumentos,
             @NotNull EtapaDemanda etapaAtual
     ) {
@@ -65,15 +41,23 @@ public interface DemandaDTO {
     record Response(
             Long id,
             String descricao,
-            LocalDate prazo,
-            LocalDateTime dataAbertura
+            LocalDate prazoFinal,
+            LocalDate prazoDocumentacao,
+            EtapaDemanda etapaAtual,
+            Tempestividade tempestividade,
+            LocalDateTime dataAbertura,
+            LocalDateTime ultimaAtualizacao
     ) {
         public Response(Demanda demanda) {
             this(
                     demanda.getId(),
                     demanda.getDescricao(),
                     demanda.getPrazoFinal(),
-                    demanda.getDataAbertura()
+                    demanda.getPrazoDocumentos(),
+                    demanda.getEtapaAtual(),
+                    demanda.getTempestividade(),
+                    demanda.getDataAbertura(),
+                    demanda.getUltimaAtualizacao()
             );
         }
     }
