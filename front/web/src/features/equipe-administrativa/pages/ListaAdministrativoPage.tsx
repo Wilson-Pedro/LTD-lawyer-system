@@ -5,7 +5,7 @@ import { useListaPaginada } from '@/hooks/useListaPaginada';
 import { administrativoService } from '../services/administrativoService';
 import { getAdministrativoColumns } from '../components/administrativoColumns';
 import { paths } from '@/routes/paths';
-import { ListLayout } from '@/components/layouts/ListLayout';
+import { ListLayout } from '@/components/ui/list/ListLayout';
 import { useMemo } from 'react';
 
 export default function AdministrativoListPage() {

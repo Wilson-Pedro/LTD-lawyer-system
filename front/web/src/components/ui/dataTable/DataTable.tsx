@@ -14,17 +14,15 @@ import {
   Group,
   Text,
   Pagination,
-  Center,
-  Loader,
-  Stack,
 } from '@mantine/core';
 import {
   IconChevronUp,
   IconChevronDown,
   IconSelector,
-  IconDatabaseOff,
 } from '@tabler/icons-react';
 import classes from './DataTable.module.css';
+import { EmptyState } from '../EmptyState';
+import { LoadingState } from '../LoadingState';
 
 interface DataTableProps<TData extends RowData> {
   data: TData[];
@@ -62,29 +60,11 @@ export function DataTable<T extends Record<string, any>>({
   });
 
   if (isLoading) {
-    return (
-      <Center py={64}>
-        <Stack align="center" gap="xs">
-          <Loader color="institucional" size="sm" />
-          <Text c="dimmed" size="sm">
-            Carregando...
-          </Text>
-        </Stack>
-      </Center>
-    );
+    return <LoadingState />;
   }
 
   if (data.length === 0) {
-    return (
-      <Center className={classes.emptyState}>
-        <Stack align="center" gap={4}>
-          <IconDatabaseOff size={32} color="var(--mantine-color-gray-4)" />
-          <Text c="dimmed" size="sm">
-            {emptyMessage}
-          </Text>
-        </Stack>
-      </Center>
-    );
+    return <EmptyState />;
   }
 
   return (

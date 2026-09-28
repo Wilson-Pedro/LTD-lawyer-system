@@ -3,8 +3,8 @@ import { paths } from '@/routes/paths';
 
 import { RoleGuard } from '@/routes/RoleGuard';
 import CriarDemandaPage from './pages/CriarDemandaPage';
-import MigrarDemandaPage from './pages/MigrarDemandaPage';
 import ListaDemandasPage from './pages/ListaDemandasPage';
+import DetalheDeamandaPage from './pages/DetalheDemandaPage';
 
 export const demandasRoutes: RouteObject[] = [
   {
@@ -16,18 +16,18 @@ export const demandasRoutes: RouteObject[] = [
     ),
   },
   {
-    path: paths.demandas.novo,
+    path: paths.demandas.detalhe(':id'),
     element: (
-      <RoleGuard action="demandas:criar">
-        <CriarDemandaPage />
+      <RoleGuard action="demandas:visualizar">
+        <DetalheDeamandaPage />
       </RoleGuard>
     ),
   },
   {
-    path: paths.demandas.migrar,
+    path: paths.demandas.novo,
     element: (
       <RoleGuard action="demandas:criar">
-        <MigrarDemandaPage />
+        <CriarDemandaPage />
       </RoleGuard>
     ),
   },

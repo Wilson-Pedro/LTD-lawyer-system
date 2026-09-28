@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
-import { Center, Loader } from '@mantine/core';
 
 import { paths } from '@/routes/paths';
 import { Advogado } from '../types';
@@ -9,6 +8,8 @@ import { advogadosService } from '../services/advogadosService';
 import { AtualizarAdvogadoRequest } from '../schema';
 import { AdvogadoForm } from '../components/AdvogadoForm';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 function paraValoresDoForm(advogado: Advogado) {
   return {
@@ -55,15 +56,11 @@ export default function EditarAdvogadoPage() {
   }
 
   if (isLoading) {
-    return (
-      <Center py={64}>
-        <Loader color="institucional" type="dots" />
-      </Center>
-    );
+    return <LoadingState />;
   }
 
   if (!advogado) {
-    return <Center py={64}>Advogado não encontrado.</Center>;
+    return <EmptyState message="Advogado não encontrado." />;
   }
 
   return (

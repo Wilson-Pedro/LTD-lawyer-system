@@ -19,7 +19,6 @@ export const paths = {
     lista: '/demandas',
     detalhe: (id: string | number) => `/demandas/${id}`,
     novo: '/demandas/novo',
-    migrar: '/demandas/existente',
     editar: (id: string | number) => `/demandas/${id}/editar`,
   },
   estagiarios: {

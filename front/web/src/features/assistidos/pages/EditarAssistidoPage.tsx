@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
-import { Center, Loader } from '@mantine/core';
 import { AssistidoForm } from '../components/AssistidoForm';
 import { assistidosService } from '../services/assistidosService';
 import { Assistido } from '../types';
@@ -9,6 +8,8 @@ import { paths } from '@/routes/paths';
 import { AtualizarAssistidoRequest } from '../schema';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { estadoCivilLabel } from '@/constants/estadoCivil';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { LoadingState } from '@/components/ui/LoadingState';
 
 function paraValoresDoForm(assistido: Assistido) {
   return {
@@ -63,15 +64,11 @@ export default function EditarAssistidoPage() {
   }
 
   if (isLoading) {
-    return (
-      <Center py={64}>
-        <Loader color="institucional" type="dots" />
-      </Center>
-    );
+    return <LoadingState />;
   }
 
   if (!assistido) {
-    return <Center py={64}>Assistido não encontrado.</Center>;
+    return <EmptyState message="Assistido não encontrado." />;
   }
 
   return (

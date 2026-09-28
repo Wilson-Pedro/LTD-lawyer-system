@@ -13,15 +13,11 @@ const demandaBaseSchema = z.object({
 });
 
 // p/ criar demandas novas
-export const criarDemandaSchema = demandaBaseSchema;
-
-// p/ demandas que já existem no mundo real e já está em processo
-export const migrarDemandaSchema = demandaBaseSchema.extend({
+export const criarDemandaSchema = demandaBaseSchema.extend({
   etapaAtual: z.string().min(1, 'A etapa atual é obrigatória'),
 });
 
 export const atualizarDemandaSchema = demandaBaseSchema.partial();
 
 export type CriarDemandaRequest = z.infer<typeof criarDemandaSchema>;
-export type MigrarDemandaRequest = z.infer<typeof migrarDemandaSchema>;
 export type AtualizarDemandaRequest = z.infer<typeof atualizarDemandaSchema>;

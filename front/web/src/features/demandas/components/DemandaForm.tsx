@@ -7,10 +7,8 @@ import { FormSection } from '@/components/ui/form/FormSection';
 import {
   AtualizarDemandaRequest,
   CriarDemandaRequest,
-  MigrarDemandaRequest,
   atualizarDemandaSchema,
   criarDemandaSchema,
-  migrarDemandaSchema,
 } from '../schema';
 import { AsyncSelect } from '@/components/ui/form/AsyncSelect';
 import { estagiariosService } from '@/features/estagiarios/services/estagiariosService';
@@ -19,11 +17,9 @@ import { professoresService } from '@/features/professores/services/professoresS
 import { Select } from '@/components/ui/form/Select';
 
 interface DemandaFormProps {
-  valoresIniciais?: Partial<
-    CriarDemandaRequest & MigrarDemandaRequest & AtualizarDemandaRequest
-  >;
+  valoresIniciais?: Partial<CriarDemandaRequest & AtualizarDemandaRequest>;
   onSubmit: (dados: any) => Promise<void>;
-  modo: 'criar' | 'migrar' | 'editar';
+  modo: 'criar' | 'editar';
   opcoesEtapas?: Array<{ value: string; label: string }>;
 }
 
@@ -33,12 +29,7 @@ export function DemandaForm({
   modo,
   opcoesEtapas = [],
 }: DemandaFormProps) {
-  const schema =
-    modo === 'criar'
-      ? criarDemandaSchema
-      : modo === 'migrar'
-        ? migrarDemandaSchema
-        : atualizarDemandaSchema;
+  const schema = modo === 'criar' ? criarDemandaSchema : atualizarDemandaSchema;
 
   const methods = useZodForm(schema, {
     defaultValues: valoresIniciais,
@@ -62,7 +53,7 @@ export function DemandaForm({
   }
 
   const textoBotao =
-    modo === 'criar' || 'migrar' ? 'Adicionar Demanda' : 'Salvar Alterações';
+    modo === 'criar' ? 'Adicionar Demanda' : 'Salvar Alterações';
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
@@ -94,7 +85,7 @@ export function DemandaForm({
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <Input name="descricao" label="Descrição da Demanda"/>
+              <Input name="descricao" label="Descrição da Demanda" />
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 6 }}>
@@ -124,15 +115,13 @@ export function DemandaForm({
               </Grid.Col>
             )}
 
-            {modo === 'migrar' && (
-              <Grid.Col span={12}>
-                <Select
-                  name="etapaAtual"
-                  label="Etapa Atual"
-                  options={opcoesEtapas}
-                />
-              </Grid.Col>
-            )}
+            <Grid.Col span={12}>
+              <Select
+                name="etapaAtual"
+                label="Etapa Atual"
+                options={opcoesEtapas}
+              />
+            </Grid.Col>
           </Grid>
         </FormSection>
 

@@ -9,6 +9,7 @@ import { periodoEstagioLabel } from '../constants';
 import { paths } from '@/routes/paths';
 import { AtualizarEstagiarioRequest } from '../schema';
 import { PageHeader } from '@/components/ui/PageHeader';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 function paraValoresDoForm(estagiario: Estagiario) {
   return {
@@ -58,7 +59,7 @@ export default function EditarEstagiarioPage() {
   }
 
   if (!estagiario) {
-    return <Center py={64}>Estagiário não encontrado.</Center>;
+    return <EmptyState message="Estagiário não encontrado." />;
   }
 
   return (

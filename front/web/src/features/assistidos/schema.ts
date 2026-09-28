@@ -5,7 +5,10 @@ import z from 'zod';
 const dadosBaseSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
   matricula: z.string().min(1, 'Matrícula é obrigatória'),
-  telefone: z.string().optional(),
+  telefone: z.preprocess(
+    vazioParaUndefined,
+    z.string().min(8, 'Telefone inválido').optional(),
+  ),
   email: z.preprocess(
     vazioParaUndefined,
     z.string().email('E-mail inválido').optional(),

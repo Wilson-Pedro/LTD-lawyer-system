@@ -1,5 +1,5 @@
 import { Group, Title, TextInput, Box } from '@mantine/core';
-import { IconSearch, ReactNode } from '@tabler/icons-react';
+import { IconSearch } from '@tabler/icons-react';
 import { Button } from '@/components/ui/Button';
 
 interface ListLayoutProps {

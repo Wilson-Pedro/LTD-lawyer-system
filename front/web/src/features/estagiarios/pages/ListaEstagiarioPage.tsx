@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ListLayout } from '@/components/layouts/ListLayout';
+import { ListLayout } from '@/components/ui/list/ListLayout';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
@@ -27,14 +27,14 @@ export default function ListaEstagiariosPage() {
     filtroInicial: { termo: '' },
   });
 
- const columns = useMemo(
+  const columns = useMemo(
     () =>
       getEstagiariosColumns({
         onEditar: (id) => navigate(paths.estagiarios.editar(id)),
         onVerDetalhe: (id) => navigate(paths.estagiarios.detalhe(id)),
         podeEditar,
       }),
-    [navigate, podeEditar]
+    [navigate, podeEditar],
   );
 
   return (

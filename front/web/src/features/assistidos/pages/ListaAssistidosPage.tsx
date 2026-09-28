@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ListLayout } from '@/components/layouts/ListLayout';
+import { ListLayout } from '@/components/ui/list/ListLayout';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
@@ -46,7 +46,7 @@ export default function ListaAssistidosPage() {
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome ou matrícula...',
+        placeholder: 'Buscar por nome...',
       }}
     >
       <DataTable

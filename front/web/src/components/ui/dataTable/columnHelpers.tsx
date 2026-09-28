@@ -19,6 +19,7 @@ function createLinkColumn<TData extends RowData>(
         style={{
           cursor: 'pointer',
           fontWeight: 500,
+          color: 'var(--mantine-color-institucional-7)',
         }}
       >
         {getValue() as string}

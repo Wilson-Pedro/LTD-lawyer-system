@@ -1,7 +1,7 @@
 import { getTableHelpers } from '@/components/ui/dataTable/columnHelpers';
 import { DemandaListItem } from '../types';
 import { etapaDemandaLabel } from '../constants';
-import { Tempestividade } from '@/constants/tempestividade';
+import { TEMPESTIVIDADE } from '@/constants/tempestividade';
 
 interface ColunasCallbacks {
   onEditar: (id: string | number) => void;
@@ -22,7 +22,7 @@ export function getDemandasColumns({
     helpers.date('prazoDocumentacao', 'Prazo Documentação'),
 
     helpers.dateWithAlert('prazoFinal', 'Prazo Final', (row) => {
-      return row.tempestividade === Tempestividade.FORA_DO_PRAZO;
+      return row.tempestividade === TEMPESTIVIDADE.FORA_DO_PRAZO;
     }),
 
     { accessorKey: 'nomeAdvogado', header: 'Advogado', enableSorting: false },

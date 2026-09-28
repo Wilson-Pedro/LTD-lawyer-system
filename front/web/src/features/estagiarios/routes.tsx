@@ -5,6 +5,7 @@ import CriarEstagiarioPage from './pages/CriarEstagiarioPage';
 import EditarEstagiarioPage from './pages/EditarEstagiarioPage';
 import ListaEstagiariosPage from './pages/ListaEstagiarioPage';
 import { RoleGuard } from '@/routes/RoleGuard';
+import DetalheEstagiarioPage from './pages/DetalheEstagiario';
 
 export const estagiariosRoutes: RouteObject[] = [
   {
@@ -12,6 +13,14 @@ export const estagiariosRoutes: RouteObject[] = [
     element: (
       <RoleGuard action="estagiarios:visualizar">
         <ListaEstagiariosPage />
+      </RoleGuard>
+    ),
+  },
+  {
+    path: paths.estagiarios.detalhe(':id'),
+    element: (
+      <RoleGuard action="estagiarios:visualizar">
+        <DetalheEstagiarioPage />
       </RoleGuard>
     ),
   },

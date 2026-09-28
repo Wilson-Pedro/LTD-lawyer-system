@@ -1,6 +1,6 @@
 import { api } from '@/lib/api/axios';
-import { CriarDemandaRequest, MigrarDemandaRequest } from '../schema';
-import { Demanda, DemandaListItem } from '../types';
+import { CriarDemandaRequest } from '../schema';
+import { Demanda, DemandaListItem, Tramitacao } from '../types';
 import { PageResponse } from '@/types/pageResponse';
 import { EtapaDemanda } from '../constants';
 
@@ -39,8 +39,10 @@ export const demandasService = {
     return data;
   },
 
-  migrar: async (dados: MigrarDemandaRequest): Promise<Demanda> => {
-    const { data } = await api.post('/demandas/importar', dados);
+  listarTramitacoes: async (
+    demandaId: number,
+  ): Promise<PageResponse<Tramitacao>> => {
+    const { data } = await api.get(`/demandas/${demandaId}/tramitacoes`);
     return data;
   },
 

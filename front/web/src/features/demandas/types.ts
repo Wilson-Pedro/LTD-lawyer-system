@@ -1,29 +1,25 @@
 import { Tempestividade } from '@/constants/tempestividade';
 import { EtapaDemanda } from './constants';
+import { Role } from '@/constants/roles';
 
 export interface Demanda {
-  idi: number;
-  descricaoDemanda: string;
-  prazo: string;
+  id: number;
+  descricao: string;
+  prazoFinal: string;
+  prazoDocumentacao: string;
+  etapaAtual: EtapaDemanda;
+  tempestividade: Tempestividade;
   dataAbertura: string;
+  ultimaAtualizacao: string;
 }
 
-export interface DemandaResponse {
+export interface Tramitacao {
   id: number;
-  demanda: string;
-  estagiarioNome: string;
-  professorNome: string;
-  advogadoNome: string;
-  estagiarioId: number;
-  professorId: number;
-  advogadoId: number;
-  demandaStatusAluno: string;
-  demandaStatusProfessor: string;
-  demandaStatusAdvogado: string;
-  prazoDocumentos: string;
-  prazo: string;
-  diasPrazo: number;
-  tempestividade: string;
+  criadoEm: string;
+  nomeResponsavel: string;
+  tipoTramitacao: string;
+  observacoes: string;
+  linkAnexo: string | null;
 }
 
 export interface DemandaListItem {
@@ -36,4 +32,13 @@ export interface DemandaListItem {
   nomeProfessor: string;
   etapaAtual: EtapaDemanda;
   tempestividade: Tempestividade;
+}
+
+export interface Tramitacao {
+  id: number;
+  nomeResponsavel: string;
+  tipoTramitacao: string;
+  observacoes: string;
+  linkAnexo: string | null;
+  criadoEm: string;
 }

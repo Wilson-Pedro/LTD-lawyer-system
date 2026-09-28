@@ -1,8 +1,12 @@
+import { vazioParaUndefined } from '@/utils/zodHelpers';
 import { z } from 'zod';
 
 const dadosBaseSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
-  telefone: z.string().optional(),
+  telefone: z.preprocess(
+    vazioParaUndefined,
+    z.string().min(8, 'Telefone inválido').optional(),
+  ),
   email: z.string().min(1, 'E-mail é obrigatório').email('E-mail inválido'),
   matricula: z.string().min(1, 'Matrícula é obrigatória'),
   periodoEstagio: z.string().min(1, 'Período é obrigatório'),

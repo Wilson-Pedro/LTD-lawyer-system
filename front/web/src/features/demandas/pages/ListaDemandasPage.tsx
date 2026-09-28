@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { ListLayout } from '@/components/layouts/ListLayout';
+import { ListLayout } from '@/components/ui/list/ListLayout';
 import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
@@ -7,14 +7,19 @@ import { paths } from '@/routes/paths';
 import { useMemo } from 'react';
 import { demandasService } from '../services/demandasService';
 import { getDemandasColumns } from '../components/demandasColumns';
-import { Button } from '@/components/ui/Button';
-import { Select } from '@mantine/core';
-import { EtapaDemanda, etapaDemandaLabel } from '../constants';
+import { ETAPA_DEMANDA, EtapaDemanda, etapaDemandaLabel } from '../constants';
 import { DemandaListItem } from '../types';
+import {
+  TEMPESTIVIDADE,
+  Tempestividade,
+  tempestividadeLabel,
+} from '@/constants/tempestividade';
+import { EnumFilterSelect } from '@/components/ui/list/EnumFilterSelect';
 
 interface FiltroDemandas {
   termo: string;
   etapaAtual?: EtapaDemanda;
+  tempestividade?: Tempestividade;
 }
 
 export default function ListaDemandasPage() {
@@ -52,36 +57,28 @@ export default function ListaDemandasPage() {
       canCreate={podeCriar}
       onCreate={() => navigate(paths.demandas.novo)}
       createButtonText="Nova Demanda"
-      actions={
-        <Button
-          variant="outline"
-          onClick={() => navigate(paths.demandas.migrar)}
-        >
-          Demanda Existente
-        </Button>
-      }
-      searchProps={{
-        value: filtro.termo,
-        onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome...',
-      }}
+      // searchProps={{
+      //   value: filtro.termo,
+      //   onChange: (termo) => setFiltro({ ...filtro, termo }),
+      //   placeholder: 'Buscar por nome...',
+      // }}
       filters={
-        <Select
-          placeholder="Filtrar por Etapa"
-          data={Object.values(EtapaDemanda).map((e) => ({
-            value: e,
-            label: etapaDemandaLabel[e as EtapaDemanda],
-          }))}
-          value={filtro.etapaAtual ?? null}
-          onChange={(valor) =>
-            setFiltro({
-              ...filtro,
-              etapaAtual: (valor as EtapaDemanda) ?? undefined,
-            })
-          }
-          clearable
-          w={200}
-        />
+        <>
+          <EnumFilterSelect
+            placeholder="Filtrar por Etapa"
+            values={Object.values(ETAPA_DEMANDA)}
+            labels={etapaDemandaLabel}
+            value={filtro.etapaAtual}
+            onChange={(v) => setFiltro({ ...filtro, etapaAtual: v })}
+          />
+          <EnumFilterSelect
+            placeholder="Filtrar por Tempestividade"
+            values={Object.values(TEMPESTIVIDADE)}
+            labels={tempestividadeLabel}
+            value={filtro.tempestividade}
+            onChange={(v) => setFiltro({ ...filtro, tempestividade: v })}
+          />
+        </>
       }
     >
       <DataTable
