@@ -1,6 +1,7 @@
 import { Tempestividade } from '@/constants/tempestividade';
 import { EtapaDemanda } from './constants';
 import { Role } from '@/constants/roles';
+import { TipoTramitacao } from '@/constants/tipoTramitacao';
 
 export interface Demanda {
   id: number;
@@ -11,15 +12,12 @@ export interface Demanda {
   tempestividade: Tempestividade;
   dataAbertura: string;
   ultimaAtualizacao: string;
-}
-
-export interface Tramitacao {
-  id: number;
-  criadoEm: string;
-  nomeResponsavel: string;
-  tipoTramitacao: string;
-  observacoes: string;
-  linkAnexo: string | null;
+  advogadoId: number;
+  advogadoNome: string;
+  estagiarioId: number;
+  estagiarioNome: string;
+  professorId: number;
+  professorNome: string;
 }
 
 export interface DemandaListItem {
@@ -36,9 +34,15 @@ export interface DemandaListItem {
 
 export interface Tramitacao {
   id: number;
-  nomeResponsavel: string;
-  tipoTramitacao: string;
+  responsavelNome: string;
+  responsavelRole: Role;
+  tipoTramitacao: TipoTramitacao;
   observacoes: string;
   linkAnexo: string | null;
   criadoEm: string;
+}
+
+export interface TramitacaoDisponivel {
+  tipo: TipoTramitacao;
+  descricao: string;
 }

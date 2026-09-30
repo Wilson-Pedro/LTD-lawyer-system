@@ -6,13 +6,13 @@ interface DetailFieldProps {
   span?: number;
 }
 
-export function DetailField({ label, value, span = 6 }: DetailFieldProps) {
+export function DetailField({ label, value, span = 4 }: DetailFieldProps) {
   return (
     <Grid.Col span={span}>
       <Text size="sm" c="dimmed">
         {label}
       </Text>
-      <Text>{value ?? '-'}</Text>
+      <Text size="sm">{value ?? '-'}</Text>
     </Grid.Col>
   );
 }

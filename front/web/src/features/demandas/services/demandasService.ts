@@ -1,6 +1,11 @@
 import { api } from '@/lib/api/axios';
-import { CriarDemandaRequest } from '../schema';
-import { Demanda, DemandaListItem, Tramitacao } from '../types';
+import { CriarDemandaRequest, CriarTramitacaoRequest } from '../schema';
+import {
+  Demanda,
+  DemandaListItem,
+  Tramitacao,
+  TramitacaoDisponivel,
+} from '../types';
 import { PageResponse } from '@/types/pageResponse';
 import { EtapaDemanda } from '../constants';
 
@@ -44,6 +49,22 @@ export const demandasService = {
   ): Promise<PageResponse<Tramitacao>> => {
     const { data } = await api.get(`/demandas/${demandaId}/tramitacoes`);
     return data;
+  },
+
+  listarAcoesDisponiveis: async (
+    demandaId: number,
+  ): Promise<TramitacaoDisponivel[]> => {
+    const { data } = await api.get(
+      `/demandas/${demandaId}/tramitacoes/disponiveis`,
+    );
+    return data;
+  },
+
+  tramitar: async (
+    demandaId: number,
+    dados: CriarTramitacaoRequest,
+  ): Promise<void> => {
+    await api.post(`/demandas/${demandaId}/tramitacoes`, dados);
   },
 
   // atualizar: async (

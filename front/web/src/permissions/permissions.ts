@@ -9,8 +9,14 @@ const permissions = {
   // Demandas
   'demandas:criar': [ROLE.COORDENADOR_DO_CURSO, ROLE.PROFESSOR, ROLE.ADMIN],
   'demandas:editar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
-  'demandas:atribuir': [ROLE.COORDENADOR_DO_CURSO, ROLE.PROFESSOR, ROLE.ADMIN],
-  'demandas:visualizar': [ROLE.COORDENADOR_DO_CURSO, ROLE.ADMIN],
+  // 'demandas:atribuir': [ROLE.COORDENADOR_DO_CURSO, ROLE.PROFESSOR, ROLE.ADMIN],
+  'demandas:visualizar': [
+    ROLE.COORDENADOR_DO_CURSO,
+    ROLE.ADMIN,
+    ROLE.ESTAGIARIO,
+    ROLE.ADVOGADO,
+    ROLE.PROFESSOR,
+  ],
 
   // Usuários
   'usuarios:gerenciar': [

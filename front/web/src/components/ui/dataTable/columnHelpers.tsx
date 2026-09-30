@@ -1,35 +1,59 @@
-import { ActionIcon, Group, Text, Tooltip } from '@mantine/core';
+import {
+  ActionIcon,
+  Anchor,
+  Checkbox,
+  Group,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { IconAlertCircle, IconEdit } from '@tabler/icons-react';
 import type { ColumnDef, RowData, StockFeatures } from '@tanstack/react-table';
 import { UsuarioStatus } from '@/constants/usuarioStatus';
 import { UsuarioStatusBadge } from '../UsuarioStatusBadge';
 import { formatarData } from '@/utils/formatters';
 
-function createLinkColumn<TData extends RowData>(
+function createTextColumn<TData extends RowData>(
   accessorKey: keyof TData,
   headerLabel: string,
-  onClick: (row: TData) => void,
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
 ): ColumnDef<StockFeatures, TData, unknown> {
   return {
     accessorKey: accessorKey as string,
     header: headerLabel,
-    cell: ({ getValue, row }) => (
-      <span
-        onClick={() => onClick(row.original)}
-        style={{
-          cursor: 'pointer',
-          fontWeight: 500,
-          color: 'var(--mantine-color-institucional-7)',
-        }}
-      >
-        {getValue() as string}
-      </span>
-    ),
+    ...overrides,
+  };
+}
+
+function createLinkColumn<TData extends RowData>(
+  accessorKey: keyof TData,
+  headerLabel: string,
+  onClick: (row: TData) => void,
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+): ColumnDef<StockFeatures, TData, unknown> {
+  return {
+    accessorKey: accessorKey as string,
+    header: headerLabel,
+    cell: ({ getValue, row }) => {
+      const textValue = getValue() as string;
+      return (
+        <Anchor
+          onClick={() => onClick(row.original)}
+          c="institucional.6"
+          lineClamp={2}
+          title={textValue}
+          style={{ wordBreak: 'break-word' }}
+        >
+          {textValue}
+        </Anchor>
+      );
+    },
+    ...overrides,
   };
 }
 
 function createStatusColumn<TData extends RowData>(
   accessorKey: keyof TData,
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
 ): ColumnDef<StockFeatures, TData, any> {
   return {
     accessorKey: accessorKey as string,
@@ -38,6 +62,7 @@ function createStatusColumn<TData extends RowData>(
       const status = getValue() as UsuarioStatus;
       return <UsuarioStatusBadge status={status} />;
     },
+    ...overrides,
   };
 }
 
@@ -45,6 +70,7 @@ function createEnumColumn<TData extends RowData>(
   accessorKey: keyof TData,
   headerLabel: string,
   dicionario: Record<string, string>,
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
 ): ColumnDef<StockFeatures, TData, unknown> {
   return {
     accessorKey: accessorKey as string,
@@ -53,13 +79,15 @@ function createEnumColumn<TData extends RowData>(
       const valor = getValue() as string;
       return dicionario[valor] || 'Não definido';
     },
+    ...overrides,
   };
 }
 
 function createEditColumn<T extends { id: string | number }>(
   onEdit: (id: string | number) => void,
   visivel: boolean,
-): ColumnDef<StockFeatures, T, any>[] {
+  overrides?: Partial<ColumnDef<StockFeatures, T, unknown>>,
+): ColumnDef<StockFeatures, T, unknown>[] {
   if (!visivel) return [];
   return [
     {
@@ -72,14 +100,44 @@ function createEditColumn<T extends { id: string | number }>(
           </ActionIcon>
         </Tooltip>
       ),
+      ...overrides,
     },
   ];
+}
+
+function createSelectionColumn<TData extends RowData>(
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+): ColumnDef<StockFeatures, TData, unknown> {
+  return {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        indeterminate={table.getIsSomePageRowsSelected()}
+        onChange={table.getToggleAllPageRowsSelectedHandler()}
+        aria-label="Selecionar todos"
+        color="institucional"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onChange={row.getToggleSelectedHandler()}
+        disabled={!row.getCanSelect()}
+        aria-label="Selecionar linha"
+        color="institucional"
+      />
+    ),
+    enableSorting: false,
+    ...overrides,
+  };
 }
 
 function createDateAlertColumn<TData extends RowData>(
   accessorKey: keyof TData,
   headerLabel: string,
   checkIsOverdue: (row: TData) => boolean,
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
 ): ColumnDef<StockFeatures, TData, unknown> {
   return {
     accessorKey: accessorKey as string,
@@ -109,12 +167,14 @@ function createDateAlertColumn<TData extends RowData>(
         </Group>
       );
     },
+    ...overrides,
   };
 }
 
 function createDateColumn<TData extends RowData>(
   accessorKey: keyof TData,
   headerLabel: string,
+  overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
 ): ColumnDef<StockFeatures, TData, unknown> {
   return {
     accessorKey: accessorKey as string,
@@ -123,6 +183,7 @@ function createDateColumn<TData extends RowData>(
       const valor = getValue() as string;
       return formatarData(valor);
     },
+    ...overrides,
   };
 }
 
@@ -130,11 +191,18 @@ export function getTableHelpers<
   TData extends RowData & { id: string | number },
 >() {
   return {
+    text: (
+      acessorKey: keyof TData,
+      headerLabel: string,
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) => createTextColumn<TData>(acessorKey, headerLabel, overrides),
+
     link: (
       accessorKey: keyof TData,
       headerLabel: string,
       onClick: (row: TData) => void,
-    ) => createLinkColumn<TData>(accessorKey, headerLabel, onClick),
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) => createLinkColumn<TData>(accessorKey, headerLabel, onClick, overrides),
 
     status: (accessorKey: keyof TData) =>
       createStatusColumn<TData>(accessorKey),
@@ -143,18 +211,37 @@ export function getTableHelpers<
       accessorKey: keyof TData,
       headerLabel: string,
       dicionario: Record<string, string>,
-    ) => createEnumColumn<TData>(accessorKey, headerLabel, dicionario),
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) =>
+      createEnumColumn<TData>(accessorKey, headerLabel, dicionario, overrides),
 
-    edit: (onEdit: (id: string | number) => void, visivel: boolean) =>
-      createEditColumn<TData>(onEdit, visivel),
+    edit: (
+      onEdit: (id: string | number) => void,
+      visivel: boolean,
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) => createEditColumn<TData>(onEdit, visivel, overrides),
 
-    date: (accessorKey: keyof TData, headerLabel: string) =>
-      createDateColumn<TData>(accessorKey, headerLabel),
+    selection: (
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) => createSelectionColumn<TData>(overrides),
+
+    date: (
+      accessorKey: keyof TData,
+      headerLabel: string,
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) => createDateColumn<TData>(accessorKey, headerLabel, overrides),
 
     dateWithAlert: (
       accessorKey: keyof TData,
       headerLabel: string,
       checkIsOverdue: (row: TData) => boolean,
-    ) => createDateAlertColumn<TData>(accessorKey, headerLabel, checkIsOverdue),
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) =>
+      createDateAlertColumn<TData>(
+        accessorKey,
+        headerLabel,
+        checkIsOverdue,
+        overrides,
+      ),
   };
 }

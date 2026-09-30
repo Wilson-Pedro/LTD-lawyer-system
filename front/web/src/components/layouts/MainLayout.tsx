@@ -28,6 +28,7 @@ import classes from './MainLayout.module.css';
 
 export function MainLayout() {
   const [mobileAberto, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopAberto, { toggle: toggleDesktop }] = useDisclosure(true);
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ export function MainLayout() {
       navbar={{
         width: 260,
         breakpoint: 'sm',
-        collapsed: { mobile: !mobileAberto },
+        collapsed: { mobile: !mobileAberto, desktop: !desktopAberto },
       }}
       padding="md"
     >
@@ -64,6 +65,13 @@ export function MainLayout() {
               opened={mobileAberto}
               onClick={toggleMobile}
               hiddenFrom="sm"
+              size="sm"
+            />
+    
+            <Burger
+              opened={desktopAberto}
+              onClick={toggleDesktop}
+              visibleFrom="sm"
               size="sm"
             />
             <Link to={paths.home} style={{ textDecoration: 'none' }}>

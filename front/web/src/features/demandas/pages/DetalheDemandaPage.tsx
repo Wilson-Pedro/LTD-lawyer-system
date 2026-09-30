@@ -10,12 +10,27 @@ import {
   tempestividadeColor,
   tempestividadeLabel,
 } from '@/constants/tempestividade';
-import { Tabs } from '@mantine/core';
+import {
+  Box,
+  DataList,
+  DataListItem,
+  DataListItemLabel,
+  DataListItemValue,
+  Divider,
+  Group,
+  SimpleGrid,
+  Spoiler,
+  Tabs,
+  Text,
+} from '@mantine/core';
 import { DetailSection } from '@/components/ui/detail/DetailSection';
 import { DetailField } from '@/components/ui/detail/DetailField';
 import { etapaDemandaColor, etapaDemandaLabel } from '../constants';
 import { formatarData } from '@/utils/formatters';
 import { TramitacaoTimeline } from '../components/TramitacaoTimeline';
+import { Button } from '@/components/ui/Button';
+import { useDisclosure } from '@mantine/hooks';
+import { AdicionarTramitacaoModal } from '../components/AdicionarTramitacaoModal';
 
 export default function DetalheDeamandaPage() {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +41,9 @@ export default function DetalheDeamandaPage() {
 
   const [tabAtiva, setTabAtiva] = useState('dados');
   const [tramitacoes, setTramitacoes] = useState<Tramitacao[] | null>(null);
+
+  const [modalAberto, { open: abrirModal, close: fecharModal }] =
+    useDisclosure(false);
 
   //   const podeEditar = usePermission('estagiarios:editar');
   //   const podeAlterarStatus = usePermission('estagiarios:alterarStatus');
@@ -57,6 +75,7 @@ export default function DetalheDeamandaPage() {
     <DetailShell>
       <DetailHeader
         title={`Demanda #${demanda.id}`}
+        actions={<Button onClick={abrirModal}>Nova Tramitação</Button>}
         badges={[
           {
             label: tempestividadeLabel[demanda.tempestividade],
@@ -66,24 +85,27 @@ export default function DetalheDeamandaPage() {
           {
             label: etapaDemandaLabel[demanda.etapaAtual],
             color: etapaDemandaColor[demanda.etapaAtual],
-            variant: 'light',
+            variant: 'outline',
           },
         ]}
       />
-      <Tabs value={tabAtiva} onChange={(value) => setTabAtiva(value as string)}>
-        <Tabs.List mb={'md'}>
+      <Tabs
+        value={tabAtiva}
+        variant="outline"
+        orientation="vertical"
+        placement="right"
+        onChange={(value) => setTabAtiva(value as string)}
+      >
+        <Tabs.List mb={'md'} ml={'md'}>
           <Tabs.Tab value="dados">Dados</Tabs.Tab>
           <Tabs.Tab value="tramitacoes">Tramitações</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="dados">
           <DetailSection title="Informações Gerais">
-            <DetailField label="Descrição" value={demanda.descricao} />
-
-            <DetailField
-              label="Etapa Atual"
-              value={etapaDemandaLabel[demanda.etapaAtual]}
-            />
+            <DetailField label="Estagiário" value={demanda.estagiarioNome} />
+            <DetailField label="Advogado" value={demanda.advogadoNome} />
+            <DetailField label="Professor" value={demanda.professorNome} />
 
             <DetailField
               label="Prazo Final"
@@ -98,6 +120,19 @@ export default function DetalheDeamandaPage() {
               label="Data de Abertura"
               value={formatarData(demanda.dataAbertura)}
             />
+
+            <Box>
+              <Text size="sm" c="dimmed" mb={4}>
+                Descrição
+              </Text>
+              <Spoiler
+                maxHeight={42}
+                hideLabel="Ocultar"
+                showLabel="Mostrar mais"
+              >
+                <Text size="sm">{demanda.descricao}</Text>
+              </Spoiler>
+            </Box>
           </DetailSection>
         </Tabs.Panel>
 
@@ -111,6 +146,14 @@ export default function DetalheDeamandaPage() {
           )}
         </Tabs.Panel>
       </Tabs>
+      <AdicionarTramitacaoModal
+        opened={modalAberto}
+        onClose={fecharModal}
+        demandaId={demanda.id}
+        onSuccess={() => {
+          carregar();
+        }}
+      />
     </DetailShell>
   );
 }

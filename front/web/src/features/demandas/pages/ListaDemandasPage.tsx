@@ -4,7 +4,7 @@ import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
 import { paths } from '@/routes/paths';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { demandasService } from '../services/demandasService';
 import { getDemandasColumns } from '../components/demandasColumns';
 import { ETAPA_DEMANDA, EtapaDemanda, etapaDemandaLabel } from '../constants';
@@ -15,6 +15,9 @@ import {
   tempestividadeLabel,
 } from '@/constants/tempestividade';
 import { EnumFilterSelect } from '@/components/ui/list/EnumFilterSelect';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { RowSelectionState } from '@tanstack/react-table';
+import { Button } from '@/components/ui/Button';
 
 interface FiltroDemandas {
   termo: string;
@@ -23,6 +26,7 @@ interface FiltroDemandas {
 }
 
 export default function ListaDemandasPage() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const podeCriar = usePermission('demandas:criar');
   const podeEditar = usePermission('demandas:editar');
@@ -40,6 +44,8 @@ export default function ListaDemandasPage() {
     fetchFn: demandasService.listar,
     filtroInicial: { termo: '' },
   });
+  // const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  // const quantidadeSelecionada = Object.keys(rowSelection).length;
 
   const columns = useMemo(
     () =>
@@ -47,6 +53,7 @@ export default function ListaDemandasPage() {
         onEditar: (id) => navigate(paths.demandas.editar(id)),
         onVerDetalhe: (id) => navigate(paths.demandas.detalhe(id)),
         podeEditar,
+        role: user!.role,
       }),
     [navigate, podeEditar],
   );
@@ -81,15 +88,22 @@ export default function ListaDemandasPage() {
         </>
       }
     >
-      <DataTable
-        data={dados}
-        columns={columns}
-        isLoading={isLoading}
-        pagination={pagination}
-        onPaginationChange={setPagination}
-        pageCount={totalPages}
-        totalElements={totalElements}
-      />
+      <>
+        {/* {quantidadeSelecionada > 0 && (
+          <Button color="red">Apagar {quantidadeSelecionada} itens</Button>
+        )} */}
+        <DataTable
+          data={dados}
+          columns={columns}
+          isLoading={isLoading}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          pageCount={totalPages}
+          totalElements={totalElements}
+          // rowSelection={rowSelection}
+          // onRowSelectionChange={setRowSelection}
+        />
+      </>
     </ListLayout>
   );
 }

@@ -17,9 +17,9 @@ export const etapaDemandaLabel: Record<EtapaDemanda, string> = {
 };
 
 export const etapaDemandaColor: Record<EtapaDemanda, string> = {
-  [ETAPA_DEMANDA.ELABORACAO]: 'yellow',
-  [ETAPA_DEMANDA.REVISAO_PROFESSOR]: 'yellow',
-  [ETAPA_DEMANDA.VALIDACAO_ADVOGADO]: 'yellow',
+  [ETAPA_DEMANDA.ELABORACAO]: 'institucional',
+  [ETAPA_DEMANDA.REVISAO_PROFESSOR]: 'institucional',
+  [ETAPA_DEMANDA.VALIDACAO_ADVOGADO]: 'institucional',
   [ETAPA_DEMANDA.PROTOCOLADA]: 'institucional',
   [ETAPA_DEMANDA.ARQUIVADA]: 'gray',
 };

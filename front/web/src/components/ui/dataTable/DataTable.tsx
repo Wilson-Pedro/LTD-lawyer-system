@@ -8,13 +8,9 @@ import {
   type PaginationState,
   Updater,
   RowData,
+  RowSelectionState,
 } from '@tanstack/react-table';
-import {
-  Table,
-  Group,
-  Text,
-  Pagination,
-} from '@mantine/core';
+import { Table, Group, Text, Pagination } from '@mantine/core';
 import {
   IconChevronUp,
   IconChevronDown,
@@ -30,33 +26,37 @@ interface DataTableProps<TData extends RowData> {
   isLoading?: boolean;
   emptyMessage?: string;
   totalElements?: number;
-
   pagination: PaginationState;
   onPaginationChange: (updater: Updater<PaginationState>) => void;
   pageCount: number;
+  rowSelection?: RowSelectionState;
+  onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void;
 }
 
-export function DataTable<T extends Record<string, any>>({
+export function DataTable<TData extends RowData>({
   data,
   columns,
   isLoading,
-  emptyMessage = 'Nenhum registro encontrado.',
   totalElements,
   pagination,
   onPaginationChange,
   pageCount,
-}: DataTableProps<T>) {
+  rowSelection = {},
+  onRowSelectionChange,
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useTable({
     data,
     columns,
     features: stockFeatures,
-    state: { sorting, pagination },
+    state: { sorting, pagination, rowSelection },
     onSortingChange: setSorting,
     onPaginationChange,
     manualPagination: true,
     pageCount,
+    onRowSelectionChange,
+    // getRowId: (row) => row.id,
   });
 
   if (isLoading) {

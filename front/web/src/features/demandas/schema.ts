@@ -1,3 +1,4 @@
+import { vazioParaUndefined } from '@/utils/zodHelpers';
 import z from 'zod';
 
 const demandaBaseSchema = z.object({
@@ -12,12 +13,21 @@ const demandaBaseSchema = z.object({
   prazoDocumentos: z.string().min(1, 'O prazo de documentos é obrigatório'),
 });
 
-// p/ criar demandas novas
 export const criarDemandaSchema = demandaBaseSchema.extend({
   etapaAtual: z.string().min(1, 'A etapa atual é obrigatória'),
 });
 
 export const atualizarDemandaSchema = demandaBaseSchema.partial();
 
+export const criarTramitacaoSchema = z.object({
+  tipoTramitacao: z.string().min(1, 'O tipo de tramitação é obrigatório'),
+  observacoes: z.preprocess(vazioParaUndefined, z.string().optional()),
+  linkAnexo: z.preprocess(
+    vazioParaUndefined,
+    z.string().url('Deve ser um link válido').optional(),
+  ),
+});
+
 export type CriarDemandaRequest = z.infer<typeof criarDemandaSchema>;
 export type AtualizarDemandaRequest = z.infer<typeof atualizarDemandaSchema>;
+export type CriarTramitacaoRequest = z.infer<typeof criarTramitacaoSchema>;

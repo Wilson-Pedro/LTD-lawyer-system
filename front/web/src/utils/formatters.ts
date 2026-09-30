@@ -1,21 +1,34 @@
-export function formatarData(data: string | Date | null | undefined): string {
+type FormatoData = 'curto' | 'com-segundos' | 'extenso' | 'somente-data';
+
+const OPCOES_FORMATO: Record<FormatoData, Intl.DateTimeFormatOptions> = {
+  curto: { dateStyle: 'short', timeStyle: 'short' },
+  'com-segundos': { dateStyle: 'short', timeStyle: 'medium' },
+  extenso: { dateStyle: 'long', timeStyle: 'short' },
+  'somente-data': { dateStyle: 'short' },
+};
+
+export function formatarData(
+  data: string | Date | null | undefined,
+  formato: FormatoData = 'curto',
+): string {
   if (!data) return '-';
+  let dataSaneada = data;
 
   // Previne o bug de fuso horário do JavaScript
-  // Se a data vier apenas como "YYYY-MM-DD" do back-end, o JS assume UTC e
-  // pode subtrair 3 horas no Brasil, caindo para o dia anterior.
+  // Adiciona o meio-dia (T12:00:00) para garantir que fuso nenhum mude o dia.
   if (typeof data === 'string' && data.length === 10) {
-    const [ano, mes, dia] = data.split('-');
-    return `${dia}/${mes}/${ano}`;
+    dataSaneada = `${data}T12:00:00`;
   }
-
-  // Para outros formatos (ISO completos com hora, ou objetos Date)
+  
   try {
-    const dataObj = new Date(data);
+    const dataObj = new Date(dataSaneada);
+
+    if (isNaN(dataObj.getTime())) return String(data);
+
     return new Intl.DateTimeFormat('pt-BR', {
-      timeZone: 'America/Sao_Paulo',
+      ...OPCOES_FORMATO[formato],
     }).format(dataObj);
   } catch (error) {
-    return String(data); // Fallback caso venha um texto inválido
+    return String(data);
   }
 }
