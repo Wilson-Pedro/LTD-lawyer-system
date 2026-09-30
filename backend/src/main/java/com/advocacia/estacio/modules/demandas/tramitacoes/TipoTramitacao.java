@@ -1,5 +1,6 @@
-package com.advocacia.estacio.modules.demandas;
+package com.advocacia.estacio.modules.demandas.tramitacoes;
 
+import com.advocacia.estacio.modules.demandas.EtapaDemanda;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,9 @@ public enum TipoTramitacao {
     // --- Ações do Aluno / Estagiário ---
 
     ENVIO_PARA_REVISAO(
-        "Envio da Minuta para o Professor",
+        "Envio para Revisão do Professor",
         EtapaDemanda.REVISAO_PROFESSOR,
-        Set.of(UsuarioRole.ESTAGIARIO),
+        Set.of(UsuarioRole.ESTAGIARIO, UsuarioRole.ADMIN),
         Set.of(EtapaDemanda.ELABORACAO)
     ),
 

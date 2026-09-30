@@ -28,18 +28,4 @@ interface AssistidoRepository extends JpaRepository<Assistido, Long> {
             @Param("termo") String termo,
             Pageable pageable
     );
-
-//	Page<Assistido> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
-
-//	@Query("""
-//			SELECT new com.advocacia.estacio.domain.dto.ResponseMinDto(
-//				ass.id,
-//				ass.nome,
-//				ass.email,
-//				ass.registro
-//			)
-//			FROM Assistido ass
-//			""")
-//	Page<Assistido> buscarTodos(Pageable pageable);
-
 }

@@ -66,7 +66,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         );
 
         AdvogadoDTO.CreateRequest advogadoRequest = new AdvogadoDTO.CreateRequest(
-                "Carlos Mendes (Advogado)",
+                "Carlos Mendes",
                 "advogado@gmail.com",
                 "1234",
                 "98999999999",
@@ -77,7 +77,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         // 3. Criação do Professor
         ProfessorDTO.CreateRequest professorRequest = new ProfessorDTO.CreateRequest(
-                "Mariana Silva (Professora)",
+                "Mariana Silva",
                 "professor@gmail.com",
                 "1234",
                 "98988888888"
@@ -86,10 +86,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         // 4. Criação do Estagiário
         EstagiarioDTO.CreateRequest estagiarioRequest = new EstagiarioDTO.CreateRequest(
-                "João Pedro (Estagiário)",
+                "João Pedro",
                 "estagiario@gmail.com",
-                "98977777777",
                 "1234",
+                "98977777777",
                 "2024010123",
                 PeriodoEstagio.ESTAGIO_II
         );

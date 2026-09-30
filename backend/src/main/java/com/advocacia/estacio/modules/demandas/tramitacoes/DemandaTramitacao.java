@@ -1,5 +1,6 @@
-package com.advocacia.estacio.modules.demandas;
+package com.advocacia.estacio.modules.demandas.tramitacoes;
 
+import com.advocacia.estacio.modules.demandas.Demanda;
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import jakarta.persistence.*;
 import lombok.Builder;

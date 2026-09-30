@@ -1,6 +1,7 @@
 package com.advocacia.estacio.modules.demandas;
 
 import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.demandas.tramitacoes.DemandaTramitacao;
 import com.advocacia.estacio.modules.estagiarios.Estagiario;
 import com.advocacia.estacio.modules.professores.Professor;
 import jakarta.persistence.*;

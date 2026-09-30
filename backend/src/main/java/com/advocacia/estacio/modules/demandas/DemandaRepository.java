@@ -1,34 +1,23 @@
 package com.advocacia.estacio.modules.demandas;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 interface DemandaRepository extends JpaRepository<Demanda, Long>, JpaSpecificationExecutor<Demanda> {
-	
-//	@Query("""
-//			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-//				d.id,
-//				d.demanda,
-//				d.estagiario.nome,
-//				d.advogado.nome,
-//				d.professor.nome,
-//				d.estagiario.id,
-//				d.advogado.id,
-//				d.professor.id,
-//				d.demandaStatusAluno,
-//				d.demandaStatusProfessor,
-//				d.demandaStatusAdvogado,
-//				d.prazoDocumentos,
-//				d.prazo,
-//				d.tempestividade
-//			)
-//			FROM Demanda d
-//			""")
-//	Page<DemandaDto> getAll(Pageable pageable);
+
+    @EntityGraph(attributePaths = {
+            "advogado.pessoa",
+            "estagiario.pessoa",
+            "professor.pessoa"
+    })
+    @Query("SELECT d FROM Demanda d WHERE d.id = :id")
+    Optional<Demanda> buscarDetalhesPorId(@Param("id") Long id);
+
 
 //	@Query("""
 //		SELECT DISTINCT d FROM Demanda d

@@ -3,16 +3,17 @@ package com.advocacia.estacio.modules.demandas;
 import com.advocacia.estacio.infra.exceptions.RegraDeNegocioException;
 import com.advocacia.estacio.infra.security.AuthorizationUtils;
 import com.advocacia.estacio.infra.security.CustomUserDetails;
-import com.advocacia.estacio.modules.advogados.Advogado;
 
-import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.demandas.tramitacoes.DemandaTramitacao;
+import com.advocacia.estacio.modules.demandas.tramitacoes.DemandaTramitacaoDTO;
+import com.advocacia.estacio.modules.demandas.tramitacoes.TipoTramitacao;
 import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import com.advocacia.estacio.modules.advogados.AdvogadoService;
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import com.advocacia.estacio.modules.pessoas.PessoaService;
-import com.advocacia.estacio.modules.professores.Professor;
 import com.advocacia.estacio.modules.professores.ProfessorService;
 import com.advocacia.estacio.infra.security.SecurityUtils;
+import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +43,6 @@ public class DemandaService {
 	/**
 	 * Ao criar uma demanda se add partes envolvidas na demanda
 	 * Adicionar os dias para calcular o Prazo Final (Prazo dos Docs + dias adicionais)
-	 *
 	 */
 	@Transactional
 	public DemandaDTO.Response cadastrar(DemandaDTO.Request req, Long pessoaLogadaId) {
@@ -48,26 +51,12 @@ public class DemandaService {
 				estagiarioService.obterReferecia(req.estagiarioId()),
 				professorService.obterReferencia(req.professorId())
 		);
-
-		return finalizarCriacaoDemanda(
-				demanda,
-				pessoaLogadaId,
-				TipoTramitacao.ABERTURA,
-				"Demanda cadastrada e iniciada no sistema."
-		);
-	}
-
-	private DemandaDTO.Response finalizarCriacaoDemanda(Demanda demanda, Long pessoaLogadaId, TipoTramitacao tipo, String observacao) {
 		Pessoa responsavel = pessoaService.obterReferencia(pessoaLogadaId);
-
-//		if (!tipo.podeSerExecutadaPor(roleLogada)) {
-//			throw new AccessDeniedException("Você não tem permissão para iniciar essa demanda.");
-//		}
 
 		DemandaTramitacao tramitacaoInicial = DemandaTramitacao.builder()
 				.responsavel(responsavel)
-				.tipoTramitacao(tipo)
-				.observacoes(observacao)
+				.tipoTramitacao(TipoTramitacao.ABERTURA)
+				.observacoes("Demanda cadastrada e iniciada no sistema.")
 				.build();
 
 		demanda.adicionarTramitacao(tramitacaoInicial);
@@ -75,8 +64,8 @@ public class DemandaService {
 		return new DemandaDTO.Response(demandaSalva);
 	}
 
-	public DemandaDTO.Response buscarPorId(Long id) {
-		var demanda = demandaRepository.findById(id)
+	public DemandaDTO.Response buscarDetalhesPorId(Long id) {
+		var demanda = demandaRepository.buscarDetalhesPorId(id)
 				.orElseThrow(() -> new EntityNotFoundException("Demanda não encontrada"));
 		return new DemandaDTO.Response(demanda);
 	}
@@ -92,11 +81,6 @@ public class DemandaService {
 
 		return demandaRepository.findAll(spec, pageable).map(DemandaDTO.ListResponse::new);
 	}
-
-//	public Page<DemandaDTO.ListResponse> buscarTodosPorPessoa(Long pessoaId, Pageable pageable) {
-//		Page<Demanda> demandas = demandaRepository.buscarDemandasPorPessoa(pessoaId, pageable);
-//		return demandas.map(DemandaDTO.ListResponse::new);
-//	}
 
 	@Transactional
 	public DemandaTramitacaoDTO.Response tramitar(
@@ -125,6 +109,16 @@ public class DemandaService {
 		return new DemandaTramitacaoDTO.Response(tramitacao);
 	}
 
+	public List<DemandaTramitacaoDTO.Disponivel> listarAcoesDisponiveis(Long id, UsuarioRole roleLogado) {
+		Demanda demanda = buscarDemandaPorId(id);
+
+		return Arrays.stream(TipoTramitacao.values())
+				.filter(acao -> acao.podeSerExecutadaNa(demanda.getEtapaAtual()))
+				.filter(acao -> acao.podeSerExecutadaPor(roleLogado))
+				.map(acao -> new DemandaTramitacaoDTO.Disponivel(acao, acao.getDescricao()))
+				.toList();
+	}
+
 	// --- MÉTODOS PRIVADOS (Auxiliares internos) ---
 
 	/**
@@ -135,51 +129,4 @@ public class DemandaService {
 		return demandaRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Demanda não encontrada"));
 	}
-	
-//	@Override
-//	public Page<DemandaDto> buscarTodosPorUserId(Long userId, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//		return demandaRepository.buscarTodosPorUserId(userId, pageable);
-//	}
-//
-//	@Override
-//	public Page<DemandaDto> buscarTodosPorProfessorId(Long professorId, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//		return demandaRepository.buscarTodosPorProfessorId(professorId, pageable);
-//	}
-//
-//	@Override
-//	public Page<DemandaDto> buscarTodosPorAdvogadoId(Long advogadoId, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//		return demandaRepository.buscarTodosPorAdvogadoId(advogadoId, pageable);
-//	}
-//
-//	@Override
-//	public Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//		return demandaRepository.buscarTodosPorStatus(DemandaStatus.toEnum(demandaStatus), pageable);
-//	}
-
-	/**
-	 *	Estranho: Necessidade de Validacao de Role e definir exatamente que DemandaAvaliacao vai mudar.
-	 * */
-//	public void mudarDemandaStatus(Long id, DemandaStatusDto dto) {
-//		Demanda demanda = buscarPorId(id);
-//		demanda.setDemandaStatusAluno(EtapaDemanda.toEnum(dto.getDemandaStatusAluno()));
-//		demanda.setDemandaStatusProfessor(EtapaDemanda.toEnum(dto.getDemandaStatusProfessor()));
-//		demanda.setDemandaStatusAdvogado(EtapaDemanda.toEnum(dto.getDemandaStatusAdvogado()));
-//		demandaRepository.save(demanda);
-//	}
-
-//	public List<EtapaDemanda> getDemandaStatus(UsuarioRole role) {
-//		return switch (role) {
-//			case ADMIN -> List.of(EtapaDemanda.values());
-//
-//			case PROFESSOR -> List.of(EtapaDemanda.EM_CORRECAO, EtapaDemanda.CORRIGIDO, EtapaDemanda.DEVOLVIDO,
-//					EtapaDemanda.DENTRO_DO_PRAZO, EtapaDemanda.FORA_DO_PRAZO);
-//
-//			case ADVOGADO -> List.of(EtapaDemanda.EM_CORRECAO, EtapaDemanda.CORRIGIDO, EtapaDemanda.DEVOLVIDO);
-//			default -> throw new EnumException("Essa Role não tem demandas");
-//		};
-//	}
 }

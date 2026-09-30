@@ -46,7 +46,13 @@ public interface DemandaDTO {
             EtapaDemanda etapaAtual,
             Tempestividade tempestividade,
             LocalDateTime dataAbertura,
-            LocalDateTime ultimaAtualizacao
+            LocalDateTime ultimaAtualizacao,
+            Long advogadoId,
+            String advogadoNome,
+            Long estagiarioId,
+            String estagiarioNome,
+            Long professorId,
+            String professorNome
     ) {
         public Response(Demanda demanda) {
             this(
@@ -57,7 +63,13 @@ public interface DemandaDTO {
                     demanda.getEtapaAtual(),
                     demanda.getTempestividade(),
                     demanda.getDataAbertura(),
-                    demanda.getUltimaAtualizacao()
+                    demanda.getUltimaAtualizacao(),
+                    demanda.getAdvogado().getId(),
+                    demanda.getAdvogado().getPessoa().getNome(),
+                    demanda.getEstagiario().getId(),
+                    demanda.getEstagiario().getPessoa().getNome(),
+                    demanda.getProfessor().getId(),
+                    demanda.getProfessor().getPessoa().getNome()
             );
         }
     }

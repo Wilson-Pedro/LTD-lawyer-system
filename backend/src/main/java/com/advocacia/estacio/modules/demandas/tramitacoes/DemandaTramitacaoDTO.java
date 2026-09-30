@@ -1,4 +1,4 @@
-package com.advocacia.estacio.modules.demandas;
+package com.advocacia.estacio.modules.demandas.tramitacoes;
 
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
@@ -11,7 +11,7 @@ public interface DemandaTramitacaoDTO {
 
     @Schema(name = "DemandaTramitacaoCreateRequest")
     record CreateRequest(
-            @NotNull  TipoTramitacao tipoTramitacao,
+            @NotNull TipoTramitacao tipoTramitacao,
             String observacoes,
             String linkAnexo
     ) {
@@ -28,41 +28,18 @@ public interface DemandaTramitacaoDTO {
     @Schema(name = "DemandaTramitacaoResponse")
     record Response(
             Long id,
-            Long demandaId,
             String responsavelNome,
             UsuarioRole responsavelRole,
-            TipoTramitacao tipoTramitacao,
-            String observacoes,
-            LocalDateTime criadaEm,
-            EtapaDemanda etapaAtualDaDemanda
-    ) {
-        public Response(DemandaTramitacao tramitacao) {
-            this(
-                    tramitacao.getId(),
-                    tramitacao.getDemanda().getId(),
-                    tramitacao.getResponsavel().getNome(),
-                    tramitacao.getResponsavel().getUsuario().getRole(),
-                    tramitacao.getTipoTramitacao(),
-                    tramitacao.getObservacoes(),
-                    tramitacao.getCriadoEm(),
-                    tramitacao.getDemanda().getEtapaAtual()
-            );
-        }
-    }
-
-    @Schema(name = "DemandaTramitacaoListResponse")
-    public record ListResponse(
-            Long id,
-            String nomeResponsavel,
             TipoTramitacao tipoTramitacao,
             String observacoes,
             String linkAnexo,
             LocalDateTime criadoEm
     ) {
-        public ListResponse(DemandaTramitacao tramitacao) {
+        public Response(DemandaTramitacao tramitacao) {
             this(
                     tramitacao.getId(),
                     tramitacao.getResponsavel().getNome(),
+                    tramitacao.getResponsavel().getUsuario().getRole(),
                     tramitacao.getTipoTramitacao(),
                     tramitacao.getObservacoes(),
                     tramitacao.getLinkAnexo(),
@@ -70,4 +47,7 @@ public interface DemandaTramitacaoDTO {
             );
         }
     }
+
+    @Schema(name = "DemandaTramitacaoDisponivel")
+    record Disponivel(TipoTramitacao tipo, String descricao ) {}
 }

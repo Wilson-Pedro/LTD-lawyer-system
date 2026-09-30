@@ -1,6 +1,8 @@
 package com.advocacia.estacio.modules.demandas;
 
 import com.advocacia.estacio.infra.security.CustomUserDetails;
+import com.advocacia.estacio.modules.demandas.tramitacoes.DemandaTramitacaoDTO;
+import com.advocacia.estacio.modules.demandas.tramitacoes.DemandaTramitacaoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,13 +15,15 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RequestMapping("/api/v1/demandas")
 @RestController
 @RequiredArgsConstructor
 public class DemandaController {
-	
+
 	private final DemandaService demandaService;
-	private final TramitacaoService tramitacaoService;
+	private final DemandaTramitacaoService tramitacaoService;
 
 	@PostMapping
 	public ResponseEntity<DemandaDTO.Response> cadastrar(
@@ -40,13 +44,13 @@ public class DemandaController {
 		return ResponseEntity.ok(pages);
 	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<DemandaDTO.Response> buscarPorId(@PathVariable Long id) {
-        var dto = demandaService.buscarPorId(id);
-        return ResponseEntity.ok(dto);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<DemandaDTO.Response> buscarPorId(@PathVariable Long id) {
+		var dto = demandaService.buscarDetalhesPorId(id);
+		return ResponseEntity.ok(dto);
+	}
 
-	@PostMapping("/{demandaId}/tramitar")
+	@PostMapping("/{demandaId}/tramitacoes")
 	public ResponseEntity<DemandaTramitacaoDTO.Response> tramitar(
 			@PathVariable Long demandaId,
 			@RequestBody @Valid DemandaTramitacaoDTO.CreateRequest req,
@@ -57,47 +61,21 @@ public class DemandaController {
 	}
 
 	@GetMapping("/{demandaId}/tramitacoes")
-	public ResponseEntity<Page<DemandaTramitacaoDTO.ListResponse>> listarTramitacoes(
+	public ResponseEntity<Page<DemandaTramitacaoDTO.Response>> listarTramitacoes(
 			@PathVariable Long demandaId,
 			@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
 	) {
 		return ResponseEntity.ok(tramitacaoService.listarPorDemanda(demandaId, pageable));
 	}
 
-//	@GetMapping("/me")
-//	public ResponseEntity<Page<DemandaDTO.ListResponse>> buscarMinhasDemandas(
-//			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable,
-//			@AuthenticationPrincipal Usuario usuarioLogado
-//			) {
-//		Long meuId = usuarioLogado.getId();
-//		var pages = demandaService.buscarTodosPorPessoa(meuId, pageable);
-//		return ResponseEntity.ok(pages);
-//	}
-
-//	@GetMapping("/pessoa/{pessoaId}")
-//	public ResponseEntity<Page<DemandaDTO.ListResponse>> buscarDemandasPorPessoa(
-//			@PathVariable Long pessoaId,
-//			@PageableDefault(size = 20, direction = Sort.Direction.DESC) Pageable pageable) {
-//
-//		var pages = demandaService.buscarTodosPorPessoa(pessoaId, pageable);
-//		return ResponseEntity.ok(pages);
-//	}
-
-//	@GetMapping("/role/{role}")
-//	public ResponseEntity<List<String>> buscarDemandaStatus(@PathVariable String role) {
-//		List<String> demandaStatus = demandaService
-//				.getDemandaStatus(UsuarioRole.toEnum(role))
-//				.stream()
-//				.map(EtapaDemanda::getStatus)
-//				.toList();
-//		return ResponseEntity.ok(demandaStatus);
+	@GetMapping({"/{demandaId}/tramitacoes/disponiveis"})
+	public ResponseEntity<List<DemandaTramitacaoDTO.Disponivel>> listarAcoesDisponiveis(
+			@PathVariable Long demandaId,
+			@AuthenticationPrincipal CustomUserDetails usuarioLogado
+	) {
+		return ResponseEntity.ok((demandaService.listarAcoesDisponiveis(demandaId, usuarioLogado.getRole())));
 	}
 
-//    @PatchMapping("/{id}/change")
-//    public ResponseEntity<Void> mudarDemandaStatus(@PathVariable Long id, @RequestParam(defaultValue = "Em Correção") String status) {
-//        demandaService.mudarDemandaStatus(id, status);
-//        return ResponseEntity.noContent().build();
-//    }
 
 //	@PutMapping("/{id}/update")
 //	public ResponseEntity<Void> mudarDemandaStatus(
@@ -106,16 +84,5 @@ public class DemandaController {
 //		demandaService.mudarDemandaStatus(id, demandaStatusDto);
 //		return ResponseEntity.noContent().build();
 //	}
-
-//	@GetMapping("/status/{demandaStatus}")
-//	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorStatus(
-//			@PathVariable String demandaStatus,
-//			@RequestParam(defaultValue = "0") int page,
-//			@RequestParam(defaultValue = "20") int size) {
-//		if(demandaStatus.equalsIgnoreCase("todos")) {
-//			return ResponseEntity.ok(new PageResponseDto<>(demandaService.buscarTodos(page, size)));
-//		}
-//		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorStatus(demandaStatus, page, size);
-//		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
-//	}
+}
 
