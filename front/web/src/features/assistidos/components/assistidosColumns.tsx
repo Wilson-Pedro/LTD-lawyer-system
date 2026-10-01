@@ -16,8 +16,8 @@ export function getAssistidosColumns({
 
   return [
     helpers.link('nome', 'Nome', (row) => onVerDetalhe(row.id)),
-    { accessorKey: 'matricula', header: 'Matrícula' },
-    { accessorKey: 'telefone', header: 'Telefone' },
+    helpers.text('matricula', 'Matrícula', { enableSorting: false }),
+    helpers.text('telefone', 'Telefone', { enableSorting: false }),
     ...helpers.edit(onEditar, podeEditar),
   ];
 }

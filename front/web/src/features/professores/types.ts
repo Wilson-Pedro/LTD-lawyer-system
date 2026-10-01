@@ -1,9 +1,10 @@
 import { Pessoa } from '@/types/pessoa';
-import { Usuario } from '../auth/types';
+import { Usuario } from '../usuarios/types';
 
 export interface Professor {
+  id: number;
   pessoa: Pessoa;
-  usuario: Usuario;
+  usuario: Usuario
 }
 
 export interface ProfessorOption {

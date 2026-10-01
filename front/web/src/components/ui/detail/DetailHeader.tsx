@@ -1,23 +1,26 @@
-import { Group, Title, Badge, Stack, BadgeProps } from '@mantine/core';
-
-interface DetailHeaderProps {
-  title: string;
+import { Group, Badge, Stack, BadgeProps} from '@mantine/core';
+import { PageHeader, PageHeaderProps } from '../PageHeader';
+interface DetailHeaderProps extends PageHeaderProps {
   badges?: (BadgeProps & { label: string })[];
   actions?: React.ReactNode;
 }
 
-export function DetailHeader({ title, badges, actions }: DetailHeaderProps) {
+export function DetailHeader({
+  badges,
+  actions,
+  ...pageHeaderProps
+}: DetailHeaderProps) {
   return (
-    <Group justify="space-between" align="flex-start">
-      <Stack gap={4}>
-        <Title order={3}>{title}</Title>
+    <Group justify="space-between" align="flex-start" mb="md">
+      <Stack gap="xs">
+        <PageHeader {...pageHeaderProps} mb={0} />
         {badges && badges.length > 0 && (
-          <Group gap={'xs'}>
-            {badges.map((badge, index) => {
+          <Group gap="xs">
+            {badges.map((badge) => {
               const { label, ...props } = badge;
 
               return (
-                <Badge key={index} {...props}>
+                <Badge key={label} {...props}>
                   {label}
                 </Badge>
               );
@@ -25,7 +28,9 @@ export function DetailHeader({ title, badges, actions }: DetailHeaderProps) {
           </Group>
         )}
       </Stack>
-      <Group>{actions}</Group>
+      <Group gap="md" align="flex-end">
+        {actions}
+      </Group>
     </Group>
   );
 }

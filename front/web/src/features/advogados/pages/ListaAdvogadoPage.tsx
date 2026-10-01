@@ -41,6 +41,11 @@ export default function ListaAdvogadosPage() {
   return (
     <ListLayout
       title="Advogados"
+      description="Aqui estão todos os advogados cadastrados no sistema."
+      breadcrumbs={[
+        { label: 'Início', link: paths.home },
+        { label: 'Advogados' },
+      ]}
       canCreate={podeCriar}
       onCreate={() => navigate(paths.advogados.novo)}
       createButtonText="Novo Advogado"

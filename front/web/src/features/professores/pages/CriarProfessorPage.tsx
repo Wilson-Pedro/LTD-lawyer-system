@@ -17,7 +17,7 @@ export default function CriarProfessorPage() {
     await professoresService.criar(dados);
     notifications.show({
       message: 'Professor cadastrado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.professores.lista);
   }

@@ -40,6 +40,11 @@ export default function ListaEstagiariosPage() {
   return (
     <ListLayout
       title="Estagiários"
+      description="Aqui estão todos os estagiários cadastrados no sistema."
+      breadcrumbs={[
+        { label: 'Início', link: paths.home },
+        { label: 'Estagiários' },
+      ]}
       canCreate={podeCriar}
       onCreate={() => navigate(paths.estagiarios.novo)}
       createButtonText="Novo Estagiário"

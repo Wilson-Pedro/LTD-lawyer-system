@@ -20,11 +20,13 @@ export function EnumFilterSelect<T extends string>({
   return (
     <Select
       placeholder={placeholder}
+      checkIconPosition="right"
       data={values.map((v) => ({ value: v, label: labels[v] }))}
       value={value ?? null}
       onChange={(valor) => onChange((valor as T) ?? undefined)}
       clearable
       w={w}
+      radius={"lg"}
     />
   );
 }

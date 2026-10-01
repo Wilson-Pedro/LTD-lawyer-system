@@ -23,7 +23,7 @@ export default function CriarEstagiarioPage() {
     await estagiariosService.criar(dados);
     notifications.show({
       message: 'Estagiário cadastrado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.estagiarios.lista);
   }

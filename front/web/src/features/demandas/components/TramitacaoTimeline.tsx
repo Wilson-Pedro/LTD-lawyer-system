@@ -72,7 +72,7 @@ export function TramitacaoTimeline({ tramitacoes }: TramitacaoTimelineProps) {
                 <Group gap={6} align="flex-start" wrap="nowrap" mb={'xs'}>
                   <IconMessage
                     size={14}
-                    color="var(--mantine-color-gray-5)"
+                    color="var(--mantine-color-gray-6)"
                     style={{ marginTop: 2, flexShrink: 0 }}
                   />
                   <Spoiler
@@ -81,7 +81,7 @@ export function TramitacaoTimeline({ tramitacoes }: TramitacaoTimelineProps) {
                     hideLabel="Ocultar"
                     style={{ flex: 1 }}
                   >
-                    <Text size="md" c={'dimmed'}>
+                    <Text size="sm" c={'gray.6'}>
                       {t.observacoes}
                     </Text>
                   </Spoiler>
@@ -92,7 +92,7 @@ export function TramitacaoTimeline({ tramitacoes }: TramitacaoTimelineProps) {
                 <Group gap={6} align="flex-start" wrap="nowrap">
                   <IconPaperclip
                     size={14}
-                    color="var(--mantine-color-gray-5)"
+                    color="var(--mantine-color-gray-6)"
                     style={{ marginTop: 2 }}
                   />
                   <Anchor href={t.linkAnexo} size="sm">

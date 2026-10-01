@@ -1,7 +1,4 @@
 
-import { Button } from '@/components/ui/Button';
-import { Container, Group, Text, Title } from '@mantine/core';
-
 export default function AcessoNegadoPage() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">

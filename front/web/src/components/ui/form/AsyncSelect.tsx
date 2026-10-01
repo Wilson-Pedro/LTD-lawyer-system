@@ -13,7 +13,6 @@ interface AsyncSelectProps extends Omit<
 > {
   name: string;
   label: string;
-  // Função que faz a chamada à API e retorna as opções
   fetchData: (termo: string) => Promise<{ value: string; label: string }[]>;
 }
 
@@ -33,7 +32,7 @@ export function AsyncSelect({
   const [searchValue, setSearchValue] = useState('');
 
   const [debouncedSearch] = useDebouncedValue(searchValue, 300);
-  
+
   const [options, setOptions] = useState<{ value: string; label: string }[]>(
     [],
   );
@@ -72,6 +71,7 @@ export function AsyncSelect({
           error={erro}
           data={options}
           placeholder="Digite para buscar..."
+          checkIconPosition="right"
           searchable
           searchValue={searchValue}
           onSearchChange={setSearchValue}

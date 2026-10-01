@@ -5,7 +5,7 @@ import CriarEstagiarioPage from './pages/CriarEstagiarioPage';
 import EditarEstagiarioPage from './pages/EditarEstagiarioPage';
 import ListaEstagiariosPage from './pages/ListaEstagiarioPage';
 import { RoleGuard } from '@/routes/RoleGuard';
-import DetalheEstagiarioPage from './pages/DetalheEstagiario';
+import DetalheEstagiarioPage from './pages/DetalheEstagiarioPage';
 
 export const estagiariosRoutes: RouteObject[] = [
   {

@@ -45,7 +45,7 @@ export default function EditarEstagiarioPage() {
     await estagiariosService.atualizar(Number(id), dados);
     notifications.show({
       message: 'Estagiário atualizado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.estagiarios.lista);
   }

@@ -50,7 +50,7 @@ export default function EditarAdvogadoPage() {
     await advogadosService.atualizar(Number(id), dados);
     notifications.show({
       message: 'Advogado atualizado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.advogados.lista);
   }

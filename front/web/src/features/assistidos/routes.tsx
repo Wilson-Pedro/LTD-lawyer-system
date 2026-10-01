@@ -5,6 +5,7 @@ import { RoleGuard } from '@/routes/RoleGuard';
 import CriarAssistidoPage from './pages/CriarAssistidoPage';
 import EditarAssistidoPage from './pages/EditarAssistidoPage';
 import ListaAssistidosPage from './pages/ListaAssistidosPage';
+import DetalheAssistidoPage from './pages/DetalheAssistidoPage';
 
 export const assistidosRoutes: RouteObject[] = [
   {
@@ -12,6 +13,14 @@ export const assistidosRoutes: RouteObject[] = [
     element: (
       <RoleGuard action="assistidos:visualizar">
         <ListaAssistidosPage />
+      </RoleGuard>
+    ),
+  },
+  {
+    path: paths.assistidos.detalhe(':id'),
+    element: (
+      <RoleGuard action="assistidos:visualizar">
+        <DetalheAssistidoPage />
       </RoleGuard>
     ),
   },

@@ -1,5 +1,5 @@
 import { Pessoa } from '@/types/pessoa';
-import { Usuario } from '../auth/types';
+import { Usuario } from '../usuarios/types';
 
 export interface Estagiario {
   id: number;

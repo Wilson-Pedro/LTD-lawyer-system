@@ -22,7 +22,7 @@ export default function CriarDemandaPage() {
     await demandasService.criar(dados);
     notifications.show({
       message: 'Demanda registrada com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.demandas.lista);
   }

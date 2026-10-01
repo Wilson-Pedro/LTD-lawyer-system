@@ -18,7 +18,7 @@ export default function AdministrativoCreatePage() {
     await administrativoService.criar(dados);
     notifications.show({
       message: `${usuarioRoleLabel[dados.role as Role]} cadastrado com sucesso`,
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.administrativo.lista);
   }

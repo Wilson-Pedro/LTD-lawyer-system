@@ -204,8 +204,10 @@ export function getTableHelpers<
       overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
     ) => createLinkColumn<TData>(accessorKey, headerLabel, onClick, overrides),
 
-    status: (accessorKey: keyof TData) =>
-      createStatusColumn<TData>(accessorKey),
+    status: (
+      accessorKey: keyof TData,
+      overrides?: Partial<ColumnDef<StockFeatures, TData, unknown>>,
+    ) => createStatusColumn<TData>(accessorKey, overrides),
 
     enumMap: (
       accessorKey: keyof TData,

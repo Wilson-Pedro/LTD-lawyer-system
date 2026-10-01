@@ -19,11 +19,7 @@ const permissions = {
   ],
 
   // Usuários
-  'usuarios:gerenciar': [
-    ROLE.COORDENADOR_DO_CURSO,
-    ROLE.SECRETARIO,
-    ROLE.ADMIN,
-  ],
+  'usuarios:alterarStatus': [ROLE.ADMIN],
 
   // Administrativo (Coordenador e Secretário)
   'administrativo:criar': [ROLE.ADMIN],

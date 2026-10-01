@@ -10,27 +10,15 @@ import {
   tempestividadeColor,
   tempestividadeLabel,
 } from '@/constants/tempestividade';
-import {
-  Box,
-  DataList,
-  DataListItem,
-  DataListItemLabel,
-  DataListItemValue,
-  Divider,
-  Group,
-  SimpleGrid,
-  Spoiler,
-  Tabs,
-  Text,
-} from '@mantine/core';
+import { Box, Button, Spoiler, Stack, Text } from '@mantine/core';
 import { DetailSection } from '@/components/ui/detail/DetailSection';
 import { DetailField } from '@/components/ui/detail/DetailField';
 import { etapaDemandaColor, etapaDemandaLabel } from '../constants';
 import { formatarData } from '@/utils/formatters';
 import { TramitacaoTimeline } from '../components/TramitacaoTimeline';
-import { Button } from '@/components/ui/Button';
 import { useDisclosure } from '@mantine/hooks';
 import { AdicionarTramitacaoModal } from '../components/AdicionarTramitacaoModal';
+import { paths } from '@/routes/paths';
 
 export default function DetalheDeamandaPage() {
   const { id } = useParams<{ id: string }>();
@@ -58,14 +46,13 @@ export default function DetalheDeamandaPage() {
   }
 
   useEffect(carregar, [id]);
-
   useEffect(() => {
-    if (tabAtiva === 'tramitacoes' && tramitacoes === null && demanda) {
+    if (tramitacoes === null && demanda) {
       demandasService
         .listarTramitacoes(demanda.id)
         .then((resposta) => setTramitacoes(resposta.content));
     }
-  }, [tabAtiva, tramitacoes, demanda]);
+  }, [tramitacoes, demanda]);
 
   if (isLoading) return <LoadingState />;
 
@@ -75,6 +62,11 @@ export default function DetalheDeamandaPage() {
     <DetailShell>
       <DetailHeader
         title={`Demanda #${demanda.id}`}
+        breadcrumbs={[
+          { label: 'Início', link: paths.home },
+          { label: 'Demandas', link: paths.demandas.lista },
+          { label: `Demanda #${demanda.id}` },
+        ]}
         actions={<Button onClick={abrirModal}>Nova Tramitação</Button>}
         badges={[
           {
@@ -89,63 +81,50 @@ export default function DetalheDeamandaPage() {
           },
         ]}
       />
-      <Tabs
-        value={tabAtiva}
-        variant="outline"
-        orientation="vertical"
-        placement="right"
-        onChange={(value) => setTabAtiva(value as string)}
-      >
-        <Tabs.List mb={'md'} ml={'md'}>
-          <Tabs.Tab value="dados">Dados</Tabs.Tab>
-          <Tabs.Tab value="tramitacoes">Tramitações</Tabs.Tab>
-        </Tabs.List>
 
-        <Tabs.Panel value="dados">
-          <DetailSection title="Informações Gerais">
-            <DetailField label="Estagiário" value={demanda.estagiarioNome} />
-            <DetailField label="Advogado" value={demanda.advogadoNome} />
-            <DetailField label="Professor" value={demanda.professorNome} />
+      <DetailSection title="Informações Gerais">
+        <DetailField label="Estagiário" value={demanda.estagiarioNome} />
+        <DetailField label="Advogado" value={demanda.advogadoNome} />
+        <DetailField label="Professor" value={demanda.professorNome} />
 
-            <DetailField
-              label="Prazo Final"
-              value={formatarData(demanda.prazoFinal)}
-            />
-            <DetailField
-              label="Prazo da Documentação"
-              value={formatarData(demanda.prazoDocumentacao)}
-            />
+        <DetailField
+          label="Prazo Final"
+          value={formatarData(demanda.prazoFinal)}
+        />
+        <DetailField
+          label="Prazo da Documentação"
+          value={formatarData(demanda.prazoDocumentacao)}
+        />
 
-            <DetailField
-              label="Data de Abertura"
-              value={formatarData(demanda.dataAbertura)}
-            />
+        <DetailField
+          label="Data de Abertura"
+          value={formatarData(demanda.dataAbertura)}
+        />
 
-            <Box>
-              <Text size="sm" c="dimmed" mb={4}>
-                Descrição
-              </Text>
-              <Spoiler
-                maxHeight={42}
-                hideLabel="Ocultar"
-                showLabel="Mostrar mais"
-              >
-                <Text size="sm">{demanda.descricao}</Text>
-              </Spoiler>
-            </Box>
-          </DetailSection>
-        </Tabs.Panel>
+        <Box>
+          <Text size="sm" c="dimmed" mb={4}>
+            Descrição
+          </Text>
+          <Spoiler maxHeight={42} hideLabel="Ocultar" showLabel="Mostrar mais">
+            <Text size="sm">{demanda.descricao}</Text>
+          </Spoiler>
+        </Box>
+      </DetailSection>
 
-        <Tabs.Panel value="tramitacoes" pt="md">
-          {tramitacoes === null ? (
-            <LoadingState message="Carregando ..." />
-          ) : tramitacoes.length === 0 ? (
-            <EmptyState message="Nenhuma tramitação registada para esta demanda." />
-          ) : (
-            <TramitacaoTimeline tramitacoes={tramitacoes} />
-          )}
-        </Tabs.Panel>
-      </Tabs>
+      <Stack title="Tramitações" mb="sm">
+        <Text size="sm" c="dimmed">
+          Aqui você pode ver todas as tramitações registradas para esta demanda.
+        </Text>
+
+        {tramitacoes === null ? (
+          <LoadingState message="Carregando ..." />
+        ) : tramitacoes.length === 0 ? (
+          <EmptyState message="Nenhuma tramitação registada para esta demanda." />
+        ) : (
+          <TramitacaoTimeline tramitacoes={tramitacoes} />
+        )}
+      </Stack>
+
       <AdicionarTramitacaoModal
         opened={modalAberto}
         onClose={fecharModal}

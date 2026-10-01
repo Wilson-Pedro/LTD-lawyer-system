@@ -12,6 +12,6 @@ export const tempestividadeLabel: Record<Tempestividade, string> = {
 };
 
 export const tempestividadeColor: Record<Tempestividade, string> = {
-  [TEMPESTIVIDADE.DENTRO_DO_PRAZO]: 'green',
+  [TEMPESTIVIDADE.DENTRO_DO_PRAZO]: 'teal',
   [TEMPESTIVIDADE.FORA_DO_PRAZO]: 'red',
 };

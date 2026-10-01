@@ -40,6 +40,11 @@ export default function ListaProfessoresPage() {
   return (
     <ListLayout
       title="Professores"
+      description="Aqui estão todos os professores cadastrados no sistema."
+      breadcrumbs={[
+        { label: 'Início', link: paths.home },
+        { label: 'Professores' },
+      ]}
       canCreate={podeCriar}
       onCreate={() => navigate(paths.professores.novo)}
       createButtonText="Novo Professor"

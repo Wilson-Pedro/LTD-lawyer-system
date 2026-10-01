@@ -58,7 +58,7 @@ export default function EditarAssistidoPage() {
     await assistidosService.atualizar(Number(id), dados);
     notifications.show({
       message: 'Assistido atualizado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.assistidos.lista);
   }

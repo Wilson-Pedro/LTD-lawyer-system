@@ -38,6 +38,11 @@ export default function AdministrativoListPage() {
   return (
     <ListLayout
       title="Equipe Administrativa"
+      description="Aqui está a equipe administrativa do sistema."
+      breadcrumbs={[
+        { label: 'Início', link: paths.home },
+        { label: 'Equipe Administrativa' },
+      ]}
       canCreate={podeCriar}
       createButtonText="Novo Membro"
       onCreate={() => navigate(paths.administrativo.novo)}

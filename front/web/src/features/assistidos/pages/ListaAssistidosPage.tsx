@@ -40,6 +40,11 @@ export default function ListaAssistidosPage() {
   return (
     <ListLayout
       title="Assistidos"
+      description="Aqui estão todos os assistidos cadastrados no sistema."
+      breadcrumbs={[
+        { label: 'Início', link: paths.home },
+        { label: 'Assistidos' },
+      ]}
       canCreate={podeCriar}
       onCreate={() => navigate(paths.assistidos.novo)}
       createButtonText="Novo Assistido"

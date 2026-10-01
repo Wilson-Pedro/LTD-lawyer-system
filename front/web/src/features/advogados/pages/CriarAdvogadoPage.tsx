@@ -17,7 +17,7 @@ export default function CriarAdvogadoPage() {
     await advogadosService.criar(dados);
     notifications.show({
       message: 'Advogado cadastrado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.advogados.lista);
   }

@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Title, Text, Anchor } from '@mantine/core';
+import { Button, Title, Text, Anchor } from '@mantine/core';
 import { Form } from '@/components/ui/form/Form';
 import { Input } from '@/components/ui/form/Input';
-import { Button } from '@/components/ui/Button';
 import { useZodForm } from '@/hooks/useZodForm';
 import { authService } from '../services/authService';
 import { esqueciSenhaSchema, EsqueciSenhaRequest } from '../schema';

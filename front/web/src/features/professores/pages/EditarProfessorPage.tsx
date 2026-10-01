@@ -22,7 +22,7 @@ function paraValoresDoForm(professor: Professor) {
 export default function EditarProfessorPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-
+ 
   const [professor, setProfessor] = useState<Professor | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -39,7 +39,7 @@ export default function EditarProfessorPage() {
     await professoresService.atualizar(Number(id), dados);
     notifications.show({
       message: 'Professor atualizado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.professores.lista);
   }

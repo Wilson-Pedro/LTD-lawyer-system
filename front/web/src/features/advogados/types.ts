@@ -1,6 +1,6 @@
-import { Usuario } from '@/features/auth/types';
 import { Endereco } from '@/types/endereco';
 import { Pessoa } from '@/types/pessoa';
+import { Usuario } from '../usuarios/types';
 
 export interface Advogado {
   id: number;

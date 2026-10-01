@@ -22,7 +22,7 @@ export default function CriarAssistidoPage() {
     await assistidosService.criar(dados);
     notifications.show({
       message: 'Assistido cadastrado com sucesso',
-      color: 'green',
+      color: 'teal',
     });
     navigate(paths.assistidos.lista);
   }

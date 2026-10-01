@@ -1,13 +1,12 @@
-import { Group, Title, TextInput, Box } from '@mantine/core';
+import { Group, TextInput, Box, Button } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
-import { Button } from '@/components/ui/Button';
 
-interface ListLayoutProps {
-  title: string;
+import { PageHeader, PageHeaderProps } from '../PageHeader';
+
+interface ListLayoutProps extends PageHeaderProps {
   onCreate?: () => void;
   canCreate?: boolean;
   createButtonText?: string;
-  // add elementos extras
   actions?: React.ReactNode;
   filters?: React.ReactNode;
   searchProps?: {
@@ -19,7 +18,6 @@ interface ListLayoutProps {
 }
 
 export function ListLayout({
-  title,
   onCreate,
   canCreate,
   createButtonText = 'Novo',
@@ -27,34 +25,36 @@ export function ListLayout({
   filters,
   searchProps,
   children,
+  ...pageHeaderProps
 }: ListLayoutProps) {
   return (
     <Box>
-      <Group justify="space-between" mb="lg">
-        <Title order={3}>{title}</Title>
-
-        <Group>
+      <Group align="flex-start" justify="space-between">
+        <PageHeader {...pageHeaderProps} />
+        <Group gap="md">
           {canCreate && onCreate && (
-            <Button onClick={onCreate}>{createButtonText}</Button>
+            <Button onClick={onCreate} color="teal">
+              {createButtonText}
+            </Button>
           )}
 
           {actions}
         </Group>
       </Group>
 
-      {searchProps && (
-        <TextInput
-          placeholder={searchProps.placeholder ?? 'Buscar...'}
-          leftSection={<IconSearch size={16} />}
-          value={searchProps.value}
-          onChange={(e) => searchProps.onChange(e.target.value)}
-          mb="md"
-          maw={360}
-        />
-      )}
+      <Group gap="md" mb="md" align="center" justify="flex-start">
+        {searchProps && (
+          <TextInput
+            placeholder={searchProps.placeholder ?? 'Buscar...'}
+            leftSection={<IconSearch size={16} />}
+            value={searchProps.value}
+            onChange={(e) => searchProps.onChange(e.target.value)}
+            maw={360}
+          />
+        )}
 
-      {filters && <Group mb="md">{filters}</Group>}
-
+        {filters && <Group gap="xs">{filters}</Group>}
+      </Group>
       {children}
     </Box>
   );

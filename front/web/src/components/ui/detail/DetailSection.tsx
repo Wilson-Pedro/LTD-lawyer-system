@@ -11,7 +11,7 @@ export function DetailSection({ title, children }: DetailSectionProps) {
       <Divider
         mb="md"
         label={
-          <Title order={6} c={'institucional.7'}>
+          <Title order={6} c={'gray.7'}>
             {title}
           </Title>
         }

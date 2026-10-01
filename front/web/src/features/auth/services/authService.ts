@@ -1,5 +1,5 @@
 import { api } from '@/lib/api/axios';
-import { LoginResponse, Usuario } from '../types';
+import { LoginResponse } from '../types';
 import {
   EsqueciSenhaRequest,
   LoginRequest,
@@ -9,11 +9,6 @@ import {
 export const authService = {
   login: async (dados: LoginRequest): Promise<LoginResponse> => {
     const { data } = await api.post('/auth/login', dados);
-    return data;
-  },
-
-  me: async (): Promise<Usuario> => {
-    const { data } = await api.get('/usuarios/me');
     return data;
   },
 

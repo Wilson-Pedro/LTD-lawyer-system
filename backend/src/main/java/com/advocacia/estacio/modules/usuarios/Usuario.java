@@ -49,6 +49,9 @@ public class Usuario  {
 	@Column(name = "desativado_em")
 	private LocalDateTime desativadoEm;
 
+	@Column(name = "bloqueado_em")
+	private LocalDateTime bloqueadoEm;
+
 	protected Usuario() {
 	}
 
@@ -61,15 +64,19 @@ public class Usuario  {
 	public void desativar() {
 		this.status = UsuarioStatus.INATIVO;
 		this.desativadoEm = LocalDateTime.now();
+		this.bloqueadoEm = null;
 	}
 
 	public void reativar() {
 		this.status = UsuarioStatus.ATIVO;
 		this.desativadoEm = null;
+		this.bloqueadoEm = null;
 	}
 
 	public void bloquear() {
 		this.status = UsuarioStatus.BLOQUEADO;
+		this.bloqueadoEm = LocalDateTime.now();
+		this.desativadoEm = null;
 	}
 
 	@Override

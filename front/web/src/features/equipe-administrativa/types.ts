@@ -1,9 +1,10 @@
 import { Role } from '@/constants/roles';
 import { UsuarioStatus } from '@/constants/usuarioStatus';
 import { Pessoa } from '@/types/pessoa';
-import { Usuario } from '../auth/types';
+import { Usuario } from '../usuarios/types';
 
 export interface Administrativo {
+  id: number;
   pessoa: Pessoa;
   usuario: Usuario;
 }

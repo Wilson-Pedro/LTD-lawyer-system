@@ -17,8 +17,10 @@ export function getAdministrativoColumns({
 
   return [
     helpers.link('nome', 'Nome', (row) => onVerDetalhe(row.id)),
-    helpers.enumMap('role', 'Cargo', usuarioRoleLabel),
-    helpers.status('usuarioStatus'),
+    helpers.enumMap('role', 'Cargo', usuarioRoleLabel, {
+      enableSorting: false,
+    }),
+    helpers.status('usuarioStatus', { enableSorting: false }),
     ...helpers.edit(onEditar, podeEditar),
   ];
 }

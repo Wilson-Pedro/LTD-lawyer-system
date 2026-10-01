@@ -4,6 +4,7 @@ import { RoleGuard } from '@/routes/RoleGuard';
 import CriarProfessorPage from './pages/CriarProfessorPage';
 import EditarProfessorPage from './pages/EditarProfessorPage';
 import ListaProfessoresPage from './pages/ListaProfessor';
+import { DetalheProfessorPage } from './pages/DetalheProfessorPage';
 
 export const professoresRoutes: RouteObject[] = [
   {
@@ -11,6 +12,14 @@ export const professoresRoutes: RouteObject[] = [
     element: (
       <RoleGuard action="professores:visualizar">
         <ListaProfessoresPage />
+      </RoleGuard>
+    ),
+  },
+  {
+    path: paths.professores.detalhe(':id'),
+    element: (
+      <RoleGuard action="professores:visualizar">
+        <DetalheProfessorPage />
       </RoleGuard>
     ),
   },

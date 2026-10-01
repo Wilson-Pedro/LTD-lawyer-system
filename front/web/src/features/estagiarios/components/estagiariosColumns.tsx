@@ -17,11 +17,11 @@ export function getEstagiariosColumns({
 
   return [
     helpers.link('nome', 'Nome', (row) => onVerDetalhe(row.id)),
-
-    { accessorKey: 'matricula', header: 'Matrícula' },
-    
-    helpers.enumMap('periodoEstagio', 'Período', periodoEstagioLabel),
-    helpers.status('usuarioStatus'),
+    helpers.text('matricula', 'Matrícula', { enableSorting: false }),
+    helpers.enumMap('periodoEstagio', 'Período', periodoEstagioLabel, {
+      enableSorting: false,
+    }),
+    helpers.status('usuarioStatus', { enableSorting: false }),
     ...helpers.edit(onEditar, podeEditar),
   ];
 }

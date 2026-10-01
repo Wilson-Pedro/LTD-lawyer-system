@@ -20,9 +20,9 @@ public class UsuarioController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("{id}/status")
+    @PatchMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> alterarStatus(@PathVariable Long id, UsuarioStatus usuarioStatus) {
+    public ResponseEntity<Void> alterarStatus(@PathVariable Long id, @RequestBody UsuarioStatus usuarioStatus) {
         usuarioService.alterarStatus(id, usuarioStatus);
         return ResponseEntity.noContent().build();
     }

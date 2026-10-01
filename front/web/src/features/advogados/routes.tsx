@@ -4,6 +4,7 @@ import { RoleGuard } from '@/routes/RoleGuard';
 import CriarAdvogadoPage from './pages/CriarAdvogadoPage';
 import EditarAdvogadoPage from './pages/EditarAdvogadoPage';
 import ListaAdvogadosPage from './pages/ListaAdvogadoPage';
+import { DetalheAdvogadoPage } from './pages/DetalheAdvogadoPage';
 
 export const advogadosRoutes: RouteObject[] = [
   {
@@ -11,6 +12,14 @@ export const advogadosRoutes: RouteObject[] = [
     element: (
       <RoleGuard action="advogados:visualizar">
         <ListaAdvogadosPage />
+      </RoleGuard>
+    ),
+  },
+  {
+    path: paths.advogados.detalhe(':id'),
+    element: (
+      <RoleGuard action="advogados:visualizar">
+        <DetalheAdvogadoPage />
       </RoleGuard>
     ),
   },

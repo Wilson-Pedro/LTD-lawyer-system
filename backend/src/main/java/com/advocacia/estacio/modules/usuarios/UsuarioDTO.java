@@ -20,7 +20,8 @@ public interface UsuarioDTO {
             UsuarioRole role,
             UsuarioStatus status,
             LocalDateTime criadoEm,
-            LocalDateTime desativadoEm
+            LocalDateTime desativadoEm,
+            LocalDateTime bloqueadoEm
     ) {
         public Response(Usuario usuario) {
             this(
@@ -29,7 +30,8 @@ public interface UsuarioDTO {
                     usuario.getRole(),
                     usuario.getStatus(),
                     usuario.getCriadoEm(),
-                    usuario.getDesativadoEm()
+                    usuario.getDesativadoEm(),
+                    usuario.getBloqueadoEm()
             );
         }
     }

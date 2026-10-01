@@ -4,7 +4,8 @@ export const USUARIO_STATUS = {
   BLOQUEADO: 'BLOQUEADO',
 } as const;
 
-export type UsuarioStatus = (typeof USUARIO_STATUS)[keyof typeof USUARIO_STATUS];
+export type UsuarioStatus =
+  (typeof USUARIO_STATUS)[keyof typeof USUARIO_STATUS];
 
 export const usuarioStatusLabel: Record<UsuarioStatus, string> = {
   [USUARIO_STATUS.ATIVO]: 'Ativo',
@@ -13,7 +14,7 @@ export const usuarioStatusLabel: Record<UsuarioStatus, string> = {
 };
 
 export const usuarioStatusColor: Record<UsuarioStatus, string> = {
-  [USUARIO_STATUS.ATIVO]: 'green',
-  [USUARIO_STATUS.INATIVO]: 'yellow',
-  [USUARIO_STATUS.BLOQUEADO]: 'red',
+  [USUARIO_STATUS.ATIVO]: 'teal',
+  [USUARIO_STATUS.INATIVO]: 'gray',
+  [USUARIO_STATUS.BLOQUEADO]: 'yellow',
 };

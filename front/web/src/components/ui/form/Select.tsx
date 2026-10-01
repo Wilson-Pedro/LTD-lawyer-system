@@ -28,6 +28,7 @@ export function Select({ name, label, options, ...rest }: SelectProps) {
           error={erro}
           data={options}
           placeholder="Selecione uma opção..."
+          checkIconPosition="right"
           onChange={onChange}
           onBlur={onBlur}
           value={value || null}

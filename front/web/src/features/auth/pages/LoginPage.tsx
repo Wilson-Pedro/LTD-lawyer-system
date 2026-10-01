@@ -1,10 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Anchor, Title } from '@mantine/core';
+import { Anchor, Button, Title } from '@mantine/core';
 
 import { AuthLayout } from '@/components/layouts/AuthLayout';
 import { Form } from '@/components/ui/form/Form';
 import { Input } from '@/components/ui/form/Input';
-import { Button } from '@/components/ui/Button';
 import { useZodForm } from '@/hooks/useZodForm';
 import { paths } from '@/routes/paths';
 

@@ -1,9 +1,10 @@
 import { createContext, useState, useEffect, ReactNode } from 'react';
 
-import { Usuario } from '../types';
+import { Usuario } from '@/features/usuarios/types';
 import { clearToken, getToken, setToken } from '@/lib/storage/tokenStorage';
 import { authService } from '../services/authService';
 import { LoginRequest } from '../schema';
+import { usuariosService } from '@/features/usuarios/services/usuariosService';
 
 interface AuthContextData {
   user: Usuario | null;
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       try {
-        const usuario = await authService.me();
+        const usuario = await usuariosService.me();
         setUser(usuario);
       } catch {
         clearToken();
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { token, tipo, expiraEm } = await authService.login(dados);
     setToken(token, tipo, expiraEm);
 
-    const usuario = await authService.me();
+    const usuario = await usuariosService.me();
     setUser(usuario);
   }
 

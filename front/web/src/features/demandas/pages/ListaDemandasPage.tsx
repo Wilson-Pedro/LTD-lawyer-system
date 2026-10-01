@@ -4,7 +4,7 @@ import { DataTable } from '@/components/ui/dataTable/DataTable';
 import { usePermission } from '@/features/auth/hooks/usePermission';
 import { useListaPaginada } from '@/hooks/useListaPaginada';
 import { paths } from '@/routes/paths';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { demandasService } from '../services/demandasService';
 import { getDemandasColumns } from '../components/demandasColumns';
 import { ETAPA_DEMANDA, EtapaDemanda, etapaDemandaLabel } from '../constants';
@@ -17,7 +17,6 @@ import {
 import { EnumFilterSelect } from '@/components/ui/list/EnumFilterSelect';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { RowSelectionState } from '@tanstack/react-table';
-import { Button } from '@/components/ui/Button';
 
 interface FiltroDemandas {
   termo: string;
@@ -61,14 +60,19 @@ export default function ListaDemandasPage() {
   return (
     <ListLayout
       title="Demandas"
+      description="Aqui estão todas as demandas cadastradas no sistema."
+      breadcrumbs={[
+        { label: 'Início', link: paths.home },
+        { label: 'Demandas' },
+      ]}
       canCreate={podeCriar}
       onCreate={() => navigate(paths.demandas.novo)}
       createButtonText="Nova Demanda"
-      // searchProps={{
-      //   value: filtro.termo,
-      //   onChange: (termo) => setFiltro({ ...filtro, termo }),
-      //   placeholder: 'Buscar por nome...',
-      // }}
+      searchProps={{
+        value: filtro.termo,
+        onChange: (termo) => setFiltro({ ...filtro, termo }),
+        placeholder: 'Buscar por nome...',
+      }}
       filters={
         <>
           <EnumFilterSelect

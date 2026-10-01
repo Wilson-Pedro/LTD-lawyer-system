@@ -16,11 +16,9 @@ export function getProfessoresColumns({
 
   return [
     helpers.link('nome', 'Nome', (row) => onVerDetalhe(row.id)),
-
-    { accessorKey: 'telefone', header: 'Telefone' },
-    { accessorKey: 'email', header: 'Email' },
-
-    helpers.status('usuarioStatus'),
+    helpers.text('telefone', 'Telefone', { enableSorting: false }),
+    helpers.text('email', 'Email', { enableSorting: false }),
+    helpers.status('usuarioStatus', { enableSorting: false }),
     ...helpers.edit(onEditar, podeEditar),
   ];
 }
