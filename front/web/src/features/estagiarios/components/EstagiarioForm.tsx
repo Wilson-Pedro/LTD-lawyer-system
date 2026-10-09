@@ -11,6 +11,7 @@ import {
   criarEstagiarioSchema,
 } from '../schema';
 import { FormSection } from '@/components/ui/form/FormSection';
+import { MaskInput } from '@/components/ui/form/MaskInput';
 
 interface EstagiarioFormProps {
   valoresIniciais?: Partial<
@@ -50,7 +51,12 @@ export function EstagiarioForm({
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 4 }}>
-              <Input name="telefone" label="Telefone" />
+              <MaskInput
+                name="telefone"
+                label="Telefone"
+                mask="(99) 99999-9999"
+                placeholder="(__) _____-____"
+              />
             </Grid.Col>
           </Grid>
         </FormSection>

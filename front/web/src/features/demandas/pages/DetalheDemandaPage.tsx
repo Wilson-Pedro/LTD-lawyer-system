@@ -46,6 +46,7 @@ export default function DetalheDeamandaPage() {
   }
 
   useEffect(carregar, [id]);
+  
   useEffect(() => {
     if (tramitacoes === null && demanda) {
       demandasService
@@ -55,7 +56,6 @@ export default function DetalheDeamandaPage() {
   }, [tramitacoes, demanda]);
 
   if (isLoading) return <LoadingState />;
-
   if (!demanda) return <EmptyState />;
 
   return (
@@ -131,6 +131,7 @@ export default function DetalheDeamandaPage() {
         demandaId={demanda.id}
         onSuccess={() => {
           carregar();
+          setTramitacoes(null);
         }}
       />
     </DetailShell>

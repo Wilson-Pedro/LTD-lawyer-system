@@ -1,6 +1,6 @@
 package com.advocacia.estacio.modules.processos;
 
-public enum AreaDoDireito {
+public enum AreaDireito {
 	
 	CIVIL( "Direito Civil"),
 	TRABALHISTA("Direito Trabalhista"),
@@ -21,7 +21,7 @@ public enum AreaDoDireito {
 
 	private final String descricao;
 
-	AreaDoDireito(String descricao) {
+	AreaDireito(String descricao) {
 		this.descricao = descricao;
 	}
 
@@ -29,10 +29,10 @@ public enum AreaDoDireito {
 		return descricao;
 	}
 
-	public static String obterDescricao(AreaDoDireito areaDoDireito) {
-		if (areaDoDireito == null) {
+	public static String obterDescricao(AreaDireito areaDireito) {
+		if (areaDireito == null) {
 			return null;
 		}
-		return areaDoDireito.getDescricao();
+		return areaDireito.getDescricao();
 	}
 }

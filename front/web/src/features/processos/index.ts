@@ -1,2 +1,2 @@
-export * from './types/Processos';
+export * from './types';
 export * from './services/processosService';

@@ -9,6 +9,8 @@ import { paths } from '@/routes/paths';
 
 import { useAuth } from '../hooks/useAuth';
 import { LoginRequest, loginSchema } from '../schema';
+import { IconLock, IconMail } from '@tabler/icons-react';
+import { PasswordInput } from '@/components/ui/form/PasswordInput';
 
 export default function LoginPage() {
   const methods = useZodForm(loginSchema);
@@ -30,8 +32,17 @@ export default function LoginPage() {
         <Title order={4} ta="center" mb={4}>
           Bem-vindo(a) de volta
         </Title>
-        <Input name="login" label="Email" />
-        <Input name="password" label="Senha" type="password" />
+        <Input
+          name="login"
+          label="Email"
+          leftSection={<IconMail size={16} />}
+        />
+        <PasswordInput
+          name="password"
+          label="Senha"
+          type="password"
+          leftSection={<IconLock size={16} />}
+        />
 
         <Button
           type="submit"

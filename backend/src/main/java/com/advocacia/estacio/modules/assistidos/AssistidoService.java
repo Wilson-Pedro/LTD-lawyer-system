@@ -60,6 +60,16 @@ public class AssistidoService {
 		return new AssistidoDTO.Response(assistido);
 	}
 
+	/**
+	 * Retorna apenas a referência (Proxy) da entidade Assistido para vincular relacionamentos.
+	 * NÃO executa um SELECT no banco de dados, bom para performance.
+	 * @param id
+	 * @return um proxy da entidade com o identificador fornecido.
+	 */
+	public Assistido obterReferencia(Long id) {
+		return assistidoRepository.getReferenceById(id);
+	}
+
 	// --- MÉTODOS PRIVADOS (Auxiliares internos) ---
 
 	/**

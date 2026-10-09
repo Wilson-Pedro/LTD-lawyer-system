@@ -1,16 +1,21 @@
 package com.advocacia.estacio.modules.processos;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.assistidos.Assistido;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_processo")
@@ -22,82 +27,107 @@ public class Processo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    TODO: verificar se processos pertencem a demandas
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "demanda_id", nullable = false, unique = true)
-//    private Demanda demanda;
-
-
     @Column(name = "numero_processo", unique = true, nullable = false, length = 50)
-    private String numeroDoProcesso;
+    private String numeroProcesso;
 
     @Column(name = "numero_processo_pje", unique = true, length = 50)
-    private String numeroDoProcessoPje;
+    private String numeroProcessoPje;
 
     @Enumerated(EnumType.STRING)
-    private AreaDoDireito areaDoDireito;
+    private AreaDireito areaDireito;
 
     @Enumerated(EnumType.STRING)
     private Tribunal tribunal;
 
     private String assunto;
 
-    // TODO: talvez utilizar um tbl no banco devido as constantes alterações e
-    // ao grande número de varas
     @Column(length = 100)
     private String vara;
 
-    @Column(length = 100)
-    private String responsavel;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advogado_id")
+    private Advogado advogado;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "estagiario_id")
+    private Estagiario estagiario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assistido_id")
+    private Assistido assistido;
+
+    @Column(name = "partes_envolvidas")
+    @OneToMany(mappedBy = "processo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ParteEnvolvida> partesEnvolvidas = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private ProcessoStatus statusDoProcesso;
+    private ProcessoStatus status;
 
     @Column(name = "prazo_final")
     private LocalDate prazoFinal;
 
-    @Column(name = "partes_envolvidas")
-    @OneToMany(mappedBy = "processo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProcessoParte> partesEnvolvidas = new ArrayList<>();
-
-    @Column(name = "criacao")
+    @Column(name = "criado_em")
     @CreationTimestamp
-    private LocalDateTime criacao;
+    private LocalDateTime criadoEm;
 
-    @Column(name = "ultima_atualizacao")
-    private LocalDateTime ultimaAtualizacao;
+    @Column(name = "atualizado_em")
+    @UpdateTimestamp
+    private LocalDateTime atualizadoEm;
 
     protected Processo() {
+    }
+
+    public void adicionarParteEnvolvida(ParteEnvolvida parte) {
+        this.partesEnvolvidas.add(parte);
+        parte.setProcesso(this);
+    }
+
+    /**
+     * Gera e atribui o número de identificação interno a este processo.
+     * A geração baseia-se na data atual e no ID da própria entidade.
+     *
+     * O formato gerado segue o padrão: AAAA.DDMM.XXXX (Ex: 2026.0810.0015).
+     *
+     * @throws IllegalStateException se a entidade ainda não possuir um ID (antes do insert no banco).
+     */
+    public void atribuirNumeroDeProcesso() {
+        if (this.id == null) {
+            throw new IllegalStateException("O Processo precisa ter um ID antes de gerar o número.");
+        }
+
+        String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.ddMM"));
+        this.numeroProcesso = String.format("%s.%04d", dataFormatada, this.id);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Processo processo)) return false;
-        return numeroDoProcesso != null && Objects.equals(numeroDoProcesso, processo.getNumeroDoProcesso());
+        return numeroProcesso != null && Objects.equals(numeroProcesso, processo.getNumeroProcesso());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(numeroDoProcesso);
+        return Objects.hashCode(numeroProcesso);
     }
 
     @Builder
-    public Processo(String numeroDoProcesso, String numeroDoProcessoPje, AreaDoDireito areaDoDireito,
-                    Tribunal tribunal, String assunto, String vara, String responsavel,
-                    ProcessoStatus statusDoProcesso, LocalDate prazoFinal) {
-        this.numeroDoProcesso = numeroDoProcesso;
-        this.numeroDoProcessoPje = numeroDoProcessoPje;
-        this.areaDoDireito = areaDoDireito;
-        this.tribunal = tribunal;
-        this.assunto = assunto;
-        this.vara = vara;
-        this.responsavel = responsavel;
-        this.statusDoProcesso = statusDoProcesso;
-        this.prazoFinal = prazoFinal;
-    }
+    public Processo(LocalDate prazoFinal, ProcessoStatus status, List<ParteEnvolvida> partesEnvolvidas,
+                    Assistido assistido, Estagiario estagiario, Advogado advogado, String vara, String assunto,
+                    Tribunal tribunal, AreaDireito areaDireito, String numeroProcessoPje,
+                    String numeroProcesso) {
 
-    public void adicionarParteEnvolvida(ProcessoParte parteEnvolvida) {
-        this.partesEnvolvidas.add(parteEnvolvida);
+        this.prazoFinal = prazoFinal;
+        this.status = status;
+        this.partesEnvolvidas = partesEnvolvidas;
+        this.assistido = assistido;
+        this.estagiario = estagiario;
+        this.advogado = advogado;
+        this.vara = vara;
+        this.assunto = assunto;
+        this.tribunal = tribunal;
+        this.areaDireito = areaDireito;
+        this.numeroProcessoPje = numeroProcessoPje;
+        this.numeroProcesso = numeroProcesso;
     }
 }

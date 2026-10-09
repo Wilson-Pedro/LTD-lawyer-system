@@ -24,5 +24,7 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 //
 //	Optional<Processo> findByNumeroDoProcesso(String numeroDoProcesso);
 	
-	boolean existsByNumeroDoProcesso(String numeroDoProcesso);
+	boolean existsByNumeroProcesso(String numeroProcesso);
+
+    boolean existsByNumeroProcessoPje(String numeroPje);
 }

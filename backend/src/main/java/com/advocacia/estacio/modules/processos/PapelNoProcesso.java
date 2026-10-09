@@ -1,27 +1,22 @@
 package com.advocacia.estacio.modules.processos;
 
-public enum TipoParte {
+import lombok.Getter;
+
+@Getter
+public enum PapelNoProcesso {
     AUTOR_REQUERENTE("Autor / Requerente"),
     REU_REQUERIDO("Réu / Requerido"),
+    TESTEMUNHA("Testemunha"),
+    JUIZ("Juiz"),
     LITISCONSORTE_ATIVO("Litisconsorte Ativo"),
     LITISCONSORTE_PASSIVO("Litisconsorte Passivo"),
     TERCEIRO_INTERESSADO("Terceiro Interessado"),
-    MINISTERIO_PUBLICO("Ministério Público");
+    MINISTERIO_PUBLICO("Ministério Público"),
+    OUTROS("Outros");
 
     private final String descricao;
 
-    TipoParte(String descricao) {
+    PapelNoProcesso(String descricao) {
         this.descricao = descricao;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public static String obterDescricao(TipoParte tipoParte) {
-        if (tipoParte== null) {
-            return null;
-        }
-        return tipoParte.getDescricao();
     }
 }

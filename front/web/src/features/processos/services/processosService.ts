@@ -1,5 +1,5 @@
 import { api } from '@/lib/api/axios';
-import { ProcessoRequest } from '../types/Processos';
+import { ProcessoRequest } from '../types';
 
 export const processosService = {
   cadastrar: async (dados: ProcessoRequest): Promise<void> => {

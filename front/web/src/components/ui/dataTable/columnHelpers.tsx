@@ -144,7 +144,7 @@ function createDateAlertColumn<TData extends RowData>(
     header: headerLabel,
     cell: ({ getValue, row }) => {
       const dataBruta = getValue() as string;
-      const dataFormatada = formatarData(dataBruta);
+      const dataFormatada = formatarData(dataBruta, 'somente-data');
 
       if (dataFormatada === '-') return '-';
       const emAtraso = checkIsOverdue(row.original);
@@ -181,7 +181,7 @@ function createDateColumn<TData extends RowData>(
     header: headerLabel,
     cell: ({ getValue }) => {
       const valor = getValue() as string;
-      return formatarData(valor);
+      return formatarData(valor, 'somente-data');
     },
     ...overrides,
   };

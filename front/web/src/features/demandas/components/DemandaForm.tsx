@@ -14,6 +14,8 @@ import { estagiariosService } from '@/features/estagiarios/services/estagiariosS
 import { advogadosService } from '@/features/advogados/services/advogadosService';
 import { professoresService } from '@/features/professores/services/professoresService';
 import { Select } from '@/components/ui/form/Select';
+import { NumberInput } from '@/components/ui/form/NumberInput';
+import { Textarea } from '@/components/ui/form/TextArea';
 
 interface DemandaFormProps {
   valoresIniciais?: Partial<CriarDemandaRequest & AtualizarDemandaRequest>;
@@ -64,6 +66,7 @@ export function DemandaForm({
                 name="advogadoId"
                 label="Advogado Responsável"
                 fetchData={advogadosService.listarOpcoes}
+                withAsterisk
               />
             </Grid.Col>
 
@@ -72,6 +75,7 @@ export function DemandaForm({
                 name="estagiarioId"
                 label="Estagiário Responsável"
                 fetchData={estagiariosService.listarOpcoes}
+                withAsterisk
               />
             </Grid.Col>
 
@@ -80,18 +84,24 @@ export function DemandaForm({
                 name="professorId"
                 label="Professor Orientador"
                 fetchData={professoresService.listarOpcoes}
+                withAsterisk
               />
             </Grid.Col>
 
             <Grid.Col span={12}>
-              <Input name="descricao" label="Descrição da Demanda" />
+              <Textarea
+                name="descricao"
+                label="Descrição da Demanda"
+                withAsterisk
+              />
             </Grid.Col>
 
             <Grid.Col span={{ base: 12, md: 6 }}>
-              <Input
+              <NumberInput
                 name="diasAdicionais"
                 label="Dias Adicionais"
-                type="number"
+                min={0}
+                withAsterisk
               />
             </Grid.Col>
 
@@ -100,6 +110,7 @@ export function DemandaForm({
                 name="prazoDocumentos"
                 label="Prazo para Documentos"
                 type="date"
+                withAsterisk
               />
             </Grid.Col>
 
@@ -119,6 +130,7 @@ export function DemandaForm({
                 name="etapaAtual"
                 label="Etapa Atual"
                 options={opcoesEtapas}
+                withAsterisk
               />
             </Grid.Col>
           </Grid>

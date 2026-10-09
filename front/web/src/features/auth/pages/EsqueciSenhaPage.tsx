@@ -8,6 +8,7 @@ import { authService } from '../services/authService';
 import { esqueciSenhaSchema, EsqueciSenhaRequest } from '../schema';
 import { paths } from '@/routes/paths';
 import { AuthLayout } from '@/components/layouts/AuthLayout';
+import { IconMail } from '@tabler/icons-react';
 
 export default function EsqueciSenhaPage() {
   const methods = useZodForm(esqueciSenhaSchema);
@@ -35,7 +36,11 @@ export default function EsqueciSenhaPage() {
             Informe seu e-mail de login para receber o link de redefinição.
           </Text>
           <Form methods={methods} onSubmit={handleSalvar}>
-            <Input name="login" label="E-mail" />
+            <Input
+              name="login"
+              label="E-mail"
+              leftSection={<IconMail size={16} />}
+            />
             <Button type="submit" fullWidth mt="sm">
               Enviar link
             </Button>
