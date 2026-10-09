@@ -1,15 +1,7 @@
 package com.advocacia.estacio.infra.seed;
 
-import com.advocacia.estacio.modules.advogados.AdvogadoDTO;
-import com.advocacia.estacio.modules.advogados.AdvogadoService;
-import com.advocacia.estacio.modules.estagiarios.EstagiarioDTO;
-import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
-import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
 import com.advocacia.estacio.modules.pessoas.Pessoa;
 import com.advocacia.estacio.modules.pessoas.PessoaRepository;
-import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoDTO;
-import com.advocacia.estacio.modules.professores.ProfessorDTO;
-import com.advocacia.estacio.modules.professores.ProfessorService;
 import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
@@ -20,8 +12,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 @Component
 @RequiredArgsConstructor
 public class DatabaseSeeder implements CommandLineRunner {
@@ -29,9 +19,6 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final UsuarioRepository usuarioRepository;
     private final PessoaRepository pessoaRepository;
     private final UsuarioService usuarioService;
-    private final AdvogadoService advogadoService;
-    private final EstagiarioService estagiarioService;
-    private final ProfessorService professorService;
 
     @Value("${admin.email}")
     private String adminEmail;
@@ -41,7 +28,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (adminPassword == null) {
             throw new IllegalStateException("ADMIN_PASSWORD não configurada. Defina a variável de ambiente antes de iniciar em produção.");
         }
@@ -60,39 +47,5 @@ public class DatabaseSeeder implements CommandLineRunner {
             pessoaRepository.save(pessoaAdmin);
             System.out.println("✅ Usuário ADMIN (com Pessoa) criado com sucesso! Login: " + adminEmail);
         }
-
-        EnderecoDTO.Request enderecoAdvogado = new EnderecoDTO.Request(
-                "65000000", "Rua da Paz", "10", "Centro", "São Luís", "MA"
-        );
-
-        AdvogadoDTO.CreateRequest advogadoRequest = new AdvogadoDTO.CreateRequest(
-                "Carlos Mendes",
-                "advogado@gmail.com",
-                "1234",
-                "98999999999",
-                LocalDate.of(1985, 8, 15),
-                enderecoAdvogado
-        );
-        advogadoService.cadastrar(advogadoRequest);
-
-        // 3. Criação do Professor
-        ProfessorDTO.CreateRequest professorRequest = new ProfessorDTO.CreateRequest(
-                "Mariana Silva",
-                "professor@gmail.com",
-                "1234",
-                "98988888888"
-        );
-        professorService.cadastrar(professorRequest);
-
-        // 4. Criação do Estagiário
-        EstagiarioDTO.CreateRequest estagiarioRequest = new EstagiarioDTO.CreateRequest(
-                "João Pedro",
-                "estagiario@gmail.com",
-                "1234",
-                "98977777777",
-                "2024010123",
-                PeriodoEstagio.ESTAGIO_II
-        );
-        estagiarioService.cadastrar(estagiarioRequest);
     }
 }
