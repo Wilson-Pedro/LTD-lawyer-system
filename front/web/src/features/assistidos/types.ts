@@ -20,3 +20,8 @@ export interface AssistidoListItem {
   matricula: string;
   telefone: string;
 }
+
+export interface AssistidoOption {
+  id: number;
+  nome: string;
+}

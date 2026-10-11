@@ -95,12 +95,19 @@ public interface AssistidoDTO {
             String termo
     ){}
 
+    @Schema(name = "AssistidoOptionResponse")
+    record OptionResponse(
+            Long id,
+            String nome
+    ) {}
+
     @Schema(name = "AssistidoUpdateRequest")
     record UpdateRequest(
             String nome,
             @Email(message = "Informe um formato de email válido") String email,
             @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone,
             LocalDate dataNascimento,
+            String matricula,
             String profissao,
             String nacionalidade,
             String naturalidade,

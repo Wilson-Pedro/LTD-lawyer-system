@@ -1,5 +1,8 @@
 package com.advocacia.estacio.modules.processos;
 
+import lombok.Getter;
+
+@Getter
 public enum ProcessoStatus {
 	
 	TRAMITANDO("Tramitando"),
@@ -9,18 +12,5 @@ public enum ProcessoStatus {
 
 	private final String descricao;
 
-	ProcessoStatus(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public static String obterDescricao(ProcessoStatus processoStatus) {
-		if (processoStatus == null) {
-			return null;
-		}
-		return processoStatus.getDescricao();
-	}
+	ProcessoStatus(String descricao) { this.descricao = descricao; }
 }

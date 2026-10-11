@@ -1,17 +1,17 @@
 package com.advocacia.estacio.modules.assistidos;
 
-import com.advocacia.estacio.modules.advogados.Advogado;
-import com.advocacia.estacio.modules.advogados.AdvogadoDTO;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoService;
-import com.advocacia.estacio.modules.pessoas.Pessoa;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +26,12 @@ public class AssistidoService {
 		Assistido assistido = req.toEntity(endereco);
 		assistido = assistidoRepository.save(assistido);
 		return new AssistidoDTO.Response(assistido);
+	}
+
+	@Transactional(readOnly = true)
+	public List<AssistidoDTO.OptionResponse> listarOpcoes(String nome) {
+		Pageable limite = PageRequest.of(0, 20);
+		return  assistidoRepository.buscarOpcoesPorNome(nome, limite);
 	}
 
 	@Transactional(readOnly = true)
@@ -48,6 +54,7 @@ public class AssistidoService {
 				req.nome(),
 				req.telefone(),
 				req.dataNascimento(),
+				req.matricula(),
 				req.profissao(),
 				req.nacionalidade(),
 				req.naturalidade(),

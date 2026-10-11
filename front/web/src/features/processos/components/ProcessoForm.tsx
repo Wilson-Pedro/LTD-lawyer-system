@@ -43,7 +43,6 @@ export function ProcessoForm({
 
   const { isSubmitting } = methods.formState;
 
-  const { control } = methods;
 
   const textoBotao =
     modo === 'criar' ? 'Adicionar Processo' : 'Salvar Alterações';

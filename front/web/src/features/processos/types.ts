@@ -1,33 +1,44 @@
-export interface ProcessoRequest {
-  assistidoId: number;
-  numeroDoProcessoPje: string;
-  assunto: string;
-  vara: string;
-  responsavel: string;
-  advogadoId: number;
-  estagiarioId: number;
-  areaDoDireito: string;
-  tribunal: string;
-  prazo: string;
-}
+import { AreaDireito, ProcessoStatus, Tribunal } from './constants';
 
-export interface ProcessoResponse {
+export interface Processo {
   id: number;
-  assistidoId: number;
-  assistidoNome: string;
-  numeroDoProcesso: string;
-  numeroDoProcessoPje: string;
+  numeroProcesso: string;
+  numeroProcessoPje: string;
+  areaDireito: AreaDireito;
+  tribunal: Tribunal;
   assunto: string;
   vara: string;
-  prazoFinal: string;
-  responsavel: string;
-  advogadoId: number;
+  status: ProcessoStatus;
   estagiarioId: number;
   estagiarioNome: string;
+  advogadoId: number;
   advogadoNome: string;
-  areaDoDireito: string;
-  tribunal: string;
-  statusDoProcesso: string;
+  assistidoId: number;
+  assistidoNome: string;
   partesEnvolvidas: string;
-  ultimaAtualizacao: string;
+  prazoFinal: string;
+  atualizadoEm: string;
+  criadoEm: string;
+}
+
+export interface ListarProcessosParams {
+  pageIndex: number;
+  pageSize: number;
+  termo?: string;
+  areaDireito?: AreaDireito;
+  tribunal?: Tribunal;
+  status?: ProcessoStatus;
+}
+
+export interface ProcessoListItem {
+  id: number;
+  numeroProcesso: string;
+  numeroProcessoPje: string;
+  tribunal: Tribunal;
+  areaDireito: AreaDireito;
+  status: ProcessoStatus;
+  assistidoNome: string;
+  advogadoNome: string;
+  estagiarioNome: string;
+  prazoFinal: string;
 }

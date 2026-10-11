@@ -41,11 +41,14 @@ public class Assistido {
 	protected Assistido() {
 	}
 
-	public void atualizarDados(String nome, String telefone, LocalDate dataNascimento, String profissao,
+	public void atualizarDados(String nome, String telefone, LocalDate dataNascimento, String matricula, String profissao,
 							   String nacionalidade, String naturalidade, EstadoCivil estadoCivil) {
 
 		this.pessoa.atualizarDados(nome, telefone, dataNascimento);
 
+		if (matricula != null && !matricula.isBlank()) {
+			this.matricula = matricula;
+		}
 		if (profissao != null && !profissao.isBlank()) {
 			this.profissao = profissao;
 		}

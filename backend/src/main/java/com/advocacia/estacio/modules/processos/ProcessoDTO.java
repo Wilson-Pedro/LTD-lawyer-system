@@ -3,12 +3,13 @@ package com.advocacia.estacio.modules.processos;
 import com.advocacia.estacio.modules.advogados.Advogado;
 import com.advocacia.estacio.modules.assistidos.Assistido;
 import com.advocacia.estacio.modules.estagiarios.Estagiario;
-import com.advocacia.estacio.modules.estagiarios.EstagiarioDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ProcessoDTO {
@@ -63,14 +64,33 @@ public interface ProcessoDTO {
         }
     }
 
+    @Schema(name = "ParteEnvolvidaResponse")
+    public record ParteEnvolvidaResponse(
+            Long id,
+            String nome,
+            String papel,
+            String especificacaoPapel
+    ) {
+        public ParteEnvolvidaResponse(ParteEnvolvida entidade) {
+            this(
+                    entidade.getId(),
+                    entidade.getNome(),
+                    entidade.getPapel().name(),
+                    entidade.getEspecificacaoPapel()
+            );
+        }
+    }
+
     @Schema(name = "ProcessoResponse")
     record Response(
             Long id,
             String numeroProcesso,
             String numeroProcessoPje,
             AreaDireito areaDireito,
+            Tribunal tribunal,
+            String vara,
             String assunto,
-            ProcessoStatus processoStatus,
+            ProcessoStatus status,
             LocalDate prazoFinal,
             Long advogadoId,
             String advogadoNome,
@@ -78,7 +98,9 @@ public interface ProcessoDTO {
             String assistidoNome,
             Long estagiarioId,
             String estagiarioNome,
-            List<ParteEnvolvida> partesEnvolvidas
+            List<ParteEnvolvidaResponse> partesEnvolvidas,
+            LocalDateTime atualizadoEm,
+            LocalDateTime criadoEm
     ){
         public Response(Processo processo) {
             this(
@@ -86,6 +108,8 @@ public interface ProcessoDTO {
                     processo.getNumeroProcesso(),
                     processo.getNumeroProcessoPje(),
                     processo.getAreaDireito(),
+                    processo.getTribunal(),
+                    processo.getVara(),
                     processo.getAssunto(),
                     processo.getStatus(),
                     processo.getPrazoFinal(),
@@ -95,17 +119,51 @@ public interface ProcessoDTO {
                     processo.getAssistido().getPessoa().getNome(),
                     processo.getEstagiario().getId(),
                     processo.getEstagiario().getPessoa().getNome(),
-                    processo.getPartesEnvolvidas()
+                    processo.getPartesEnvolvidas() != null
+                            ? processo.getPartesEnvolvidas().stream()
+                            .map(ParteEnvolvidaResponse::new)
+                            .toList()
+                            : new ArrayList<>(),
+                    processo.getAtualizadoEm(),
+                    processo.getCriadoEm()
             );
         }
     }
+
+    @Schema(name = "ProcessoSearchFilter")
+    record SearchFilter(
+            String termo,
+            AreaDireito areaDireito,
+            Tribunal tribunal,
+            ProcessoStatus status
+    ) {}
 
     @Schema(name = "ProcessoListResponse")
     record ListResponse(
             Long id,
             String numeroProcesso,
-            String statusDoProcesso,
-            String nomeAssistido,
+            String numeroProcessoPje,
+            Tribunal tribunal,
+            AreaDireito areaDireito,
+            ProcessoStatus status,
+            String assistidoNome,
+            String advogadoNome,
+            String estagiarioNome,
             LocalDate prazoFinal
-    ) {}
+    ) {
+        public ListResponse(Processo processo) {
+            this(
+                    processo.getId(),
+                    processo.getNumeroProcesso(),
+                    processo.getNumeroProcessoPje(),
+                    processo.getTribunal(),
+                    processo.getAreaDireito(),
+                    processo.getStatus(),
+                    processo.getAssistido().getPessoa().getNome(),
+                    processo.getAdvogado().getPessoa().getNome(),
+                    processo.getEstagiario().getPessoa().getNome(),
+                    processo.getPrazoFinal()
+            );
+        }
+    }
 }

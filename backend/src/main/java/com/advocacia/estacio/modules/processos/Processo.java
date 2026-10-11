@@ -33,6 +33,7 @@ public class Processo implements Serializable {
     @Column(name = "numero_processo_pje", unique = true, length = 50)
     private String numeroProcessoPje;
 
+    @Column(name = "area_direito")
     @Enumerated(EnumType.STRING)
     private AreaDireito areaDireito;
 
@@ -56,7 +57,6 @@ public class Processo implements Serializable {
     @JoinColumn(name = "assistido_id")
     private Assistido assistido;
 
-    @Column(name = "partes_envolvidas")
     @OneToMany(mappedBy = "processo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ParteEnvolvida> partesEnvolvidas = new ArrayList<>();
 
@@ -84,19 +84,20 @@ public class Processo implements Serializable {
 
     /**
      * Gera e atribui o número de identificação interno a este processo.
-     * A geração baseia-se na data atual e no ID da própria entidade.
+     * A geração baseia-se na data atual e num número sequencial fornecido.
      *
      * O formato gerado segue o padrão: AAAA.DDMM.XXXX (Ex: 2026.0810.0015).
      *
-     * @throws IllegalStateException se a entidade ainda não possuir um ID (antes do insert no banco).
+     * @param sequencial O número sequencial único gerado pelo banco de dados.
+     * @throws IllegalStateException se o sequencial fornecido for nulo.
      */
-    public void atribuirNumeroDeProcesso() {
-        if (this.id == null) {
-            throw new IllegalStateException("O Processo precisa ter um ID antes de gerar o número.");
+    public void atribuirNumeroDeProcesso(Long sequencial) {
+        if (sequencial == null) {
+            throw new IllegalStateException("O sequencial não pode ser nulo.");
         }
 
         String dataFormatada = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.ddMM"));
-        this.numeroProcesso = String.format("%s.%04d", dataFormatada, this.id);
+        this.numeroProcesso = String.format("%s.%04d", dataFormatada, sequencial);
     }
 
     @Override
@@ -112,14 +113,12 @@ public class Processo implements Serializable {
     }
 
     @Builder
-    public Processo(LocalDate prazoFinal, ProcessoStatus status, List<ParteEnvolvida> partesEnvolvidas,
-                    Assistido assistido, Estagiario estagiario, Advogado advogado, String vara, String assunto,
-                    Tribunal tribunal, AreaDireito areaDireito, String numeroProcessoPje,
-                    String numeroProcesso) {
+    public Processo(LocalDate prazoFinal, ProcessoStatus status, Assistido assistido, Estagiario estagiario,
+                    Advogado advogado, String vara, String assunto, Tribunal tribunal, AreaDireito areaDireito,
+                    String numeroProcessoPje, String numeroProcesso) {
 
         this.prazoFinal = prazoFinal;
         this.status = status;
-        this.partesEnvolvidas = partesEnvolvidas;
         this.assistido = assistido;
         this.estagiario = estagiario;
         this.advogado = advogado;

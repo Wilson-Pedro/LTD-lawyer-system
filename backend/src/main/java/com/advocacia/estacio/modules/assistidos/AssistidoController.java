@@ -1,6 +1,7 @@
 package com.advocacia.estacio.modules.assistidos;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,13 +12,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/assistidos")
 @PreAuthorize("hasRole('ADMIN')")
+@RequiredArgsConstructor
 public class AssistidoController {
 	
-	@Autowired
-	AssistidoService assistidoService;
+	private final AssistidoService assistidoService;
 
 	@PostMapping
 	public ResponseEntity<AssistidoDTO.Response> cadastrar(
@@ -41,27 +44,24 @@ public class AssistidoController {
 		return ResponseEntity.ok(page);
 	}
 
-	// TODO: Criar método GET "/opcoes" para dropdowns
-	
+	@GetMapping("/opcoes")
+	public ResponseEntity<List<AssistidoDTO.OptionResponse>> listarOpcoes(
+			@RequestParam(defaultValue = "") String nome) {
+		var response = assistidoService.listarOpcoes(nome);
+		return ResponseEntity.ok(response);
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<AssistidoDTO.Response> buscarPorId(@PathVariable Long id) {
 		AssistidoDTO.Response response = assistidoService.buscarPorId(id);
 		return ResponseEntity.ok(response);
 	}
 
-//	@PutMapping("/{id}")
-//	public ResponseEntity<AssistidoDTO.Response> atualizar(
-//			@PathVariable Long id, @RequestBody @Valid AssistidoDTO.UpdateRequest request
-//	) {
-//		AssistidoDTO.Response response = assistidoService.atualizar(id, request);
-//		return ResponseEntity.ok(response);
-//	}
-
-	// TODO: ENTENDER ONDE ISSO É USADO NO FRONT
-//	@GetMapping("/estadosCivis")
-//	public ResponseEntity<List<String>> buscarEstadosCivis() {
-//		List<String> estadoCivis = assistidoService.getEstadosCivis().stream().map(EstadoCivil::getEstado).toList();
-//		return ResponseEntity.ok(estadoCivis);
-//	}
-
+	@PutMapping("/{id}")
+	public ResponseEntity<AssistidoDTO.Response> atualizar(
+			@PathVariable Long id, @RequestBody @Valid AssistidoDTO.UpdateRequest request
+	) {
+		AssistidoDTO.Response response = assistidoService.atualizar(id, request);
+		return ResponseEntity.ok(response);
+	}
 }

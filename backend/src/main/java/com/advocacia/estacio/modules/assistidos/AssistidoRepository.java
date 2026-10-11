@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 interface AssistidoRepository extends JpaRepository<Assistido, Long> {
@@ -26,6 +27,17 @@ interface AssistidoRepository extends JpaRepository<Assistido, Long> {
     """)
     Page<Assistido> buscarPorTermoGlobal(
             @Param("termo") String termo,
+            Pageable pageable
+    );
+
+    @Query("""
+        SELECT new com.advocacia.estacio.modules.assistidos.AssistidoDTO$OptionResponse(a.id, p.nome)
+        FROM Assistido a
+        JOIN a.pessoa p
+        WHERE (:nome IS NULL OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :nome, '%')))
+    """)
+    List<AssistidoDTO.OptionResponse> buscarOpcoesPorNome(
+            @Param("nome") String nome,
             Pageable pageable
     );
 }

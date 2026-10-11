@@ -3,8 +3,26 @@ import { paths } from '@/routes/paths';
 
 import { RoleGuard } from '@/routes/RoleGuard';
 import CriarProcessoPage from './pages/CriarProcessoPage';
+import ListaProcessosPage from './pages/ListaProcessosPage';
+import DetalheProcessoPage from './pages/DetalheProcessoPage';
 
 export const processosRoutes: RouteObject[] = [
+  {
+    path: paths.processos.lista,
+    element: (
+      <RoleGuard action="processos:visualizar">
+        <ListaProcessosPage />
+      </RoleGuard>
+    ),
+  },
+  {
+    path: paths.processos.detalhe(':id'),
+    element: (
+      <RoleGuard action="processos:visualizar">
+        <DetalheProcessoPage />
+      </RoleGuard>
+    ),
+  },
   {
     path: paths.processos.novo,
     element: (

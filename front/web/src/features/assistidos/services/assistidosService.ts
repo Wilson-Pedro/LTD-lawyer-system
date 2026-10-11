@@ -1,5 +1,5 @@
 import { api } from '@/lib/api/axios';
-import { Assistido, AssistidoListItem } from '../types';
+import { Assistido, AssistidoListItem, AssistidoOption } from '../types';
 import { AtualizarAssistidoRequest, CriarAssistidoRequest } from '../schema';
 import { PageResponse } from '@/types/pageResponse';
 
@@ -19,6 +19,19 @@ export const assistidosService = {
       params: { page: pageIndex, size: pageSize, termo: termo || undefined },
     });
     return data;
+  },
+
+  listarOpcoes: async (
+    termo?: string,
+  ): Promise<{ value: string; label: string }[]> => {
+    const { data } = await api.get('assistidos/opcoes', {
+      params: { nome: termo || undefined },
+    });
+
+    return data.map((assistido: AssistidoOption) => ({
+      value: String(assistido.id),
+      label: assistido.nome,
+    }));
   },
 
   buscarPorId: async (id: number): Promise<Assistido> => {
