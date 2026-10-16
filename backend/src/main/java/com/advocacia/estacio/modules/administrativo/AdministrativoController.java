@@ -1,6 +1,5 @@
 package com.advocacia.estacio.modules.administrativo;
 
-import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,4 +33,17 @@ public class AdministrativoController {
             @PageableDefault(size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(administrativoService.listar(pageable));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AdministrativoDTO.Response> buscarPorId(@PathVariable Long id) {
+        AdministrativoDTO.Response response = administrativoService.buscarPorId(id);
+        return ResponseEntity.ok(response);
+    }
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<AdministrativoDTO.Response> atualizar(
+//            @PathVariable Long id, @RequestBody @Valid AdministrativoDTO.UpdateRequest request) {
+//        ProfessorDTO.Response response = administrativoService.atualizar(id, request);
+//        return ResponseEntity.ok(response);
+//    }
 }

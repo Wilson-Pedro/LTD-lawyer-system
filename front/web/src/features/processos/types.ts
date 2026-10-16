@@ -28,6 +28,7 @@ export interface ListarProcessosParams {
   areaDireito?: AreaDireito;
   tribunal?: Tribunal;
   status?: ProcessoStatus;
+  sort?: string[];
 }
 
 export interface ProcessoListItem {

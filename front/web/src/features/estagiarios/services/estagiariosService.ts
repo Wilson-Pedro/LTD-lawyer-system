@@ -7,6 +7,7 @@ interface ListarEstagiariosParams {
   pageIndex: number;
   pageSize: number;
   termo?: string;
+  sort?: string[];
 }
 
 export const estagiariosService = {
@@ -14,9 +15,15 @@ export const estagiariosService = {
     pageIndex,
     pageSize,
     termo,
+    sort,
   }: ListarEstagiariosParams): Promise<PageResponse<EstagiarioListItem>> => {
     const { data } = await api.get('/estagiarios', {
-      params: { page: pageIndex, size: pageSize, termo: termo || undefined },
+      params: {
+        page: pageIndex,
+        size: pageSize,
+        termo: termo,
+        sort: sort,
+      },
     });
     return data;
   },

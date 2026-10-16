@@ -6,6 +6,7 @@ export const paths = {
   home: '/',
   administrativo: {
     lista: '/administrativo',
+    detalhe: (id: string | number) => `/administrativo/${id}`,
     novo: '/administrativo/novo',
     editar: (id: string | number) => `/administrativo/${id}/editar`,
   },

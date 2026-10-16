@@ -8,7 +8,7 @@ import { paths } from '@/routes/paths';
 import { ListLayout } from '@/components/ui/list/ListLayout';
 import { useMemo } from 'react';
 
-export default function AdministrativoListPage() {
+export default function ListaAdministrativoPage() {
   const navigate = useNavigate();
   const podeCriar = usePermission('administrativo:criar');
   const podeEditar = usePermission('administrativo:editar');
@@ -29,7 +29,7 @@ export default function AdministrativoListPage() {
     () =>
       getAdministrativoColumns({
         onEditar: (id) => navigate(paths.administrativo.editar(id)),
-        onVerDetalhe: (id) => navigate(paths.estagiarios.detalhe(id)),
+        onVerDetalhe: (id) => navigate(paths.administrativo.detalhe(id)),
         podeEditar,
       }),
     [podeEditar, navigate],

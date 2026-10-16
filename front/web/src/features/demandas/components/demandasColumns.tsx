@@ -25,7 +25,7 @@ export function getDemandasColumns({
     helpers.link('descricao', 'Descrição', (row) => onVerDetalhe(row.id), {
       enableSorting: false,
     }),
-    helpers.date('prazoDocumentacao', 'Prazo Documentação'),
+    helpers.date('prazoDocumentos', 'Prazo Documentação'),
     helpers.dateWithAlert('prazoFinal', 'Prazo Final', (row) => {
       return row.tempestividade === TEMPESTIVIDADE.FORA_DO_PRAZO;
     }),

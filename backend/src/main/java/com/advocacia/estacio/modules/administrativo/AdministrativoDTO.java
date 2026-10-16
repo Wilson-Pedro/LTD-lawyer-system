@@ -34,41 +34,42 @@ public interface AdministrativoDTO {
         }
     }
 
-        record Response(
-                PessoaDTO.Response pessoa,
-                UsuarioDTO.Response usuario
-        ) {
-            public Response(Pessoa pessoa, Usuario usuario) {
-                this(
-                        new PessoaDTO.Response(pessoa),
-                        new UsuarioDTO.Response(usuario)
-                );
-            }
-        }
-
-        @Schema(name = "AdministrativoListResponse")
-        record ListResponse(
-                Long id,
-                String nome,
-                String login,
-                UsuarioRole role,
-                UsuarioStatus usuarioStatus
-        ) {
-            public ListResponse(Usuario usuario) {
-                this(
-                        usuario.getId(),
-                        usuario.getPessoa().getNome(),
-                        usuario.getLogin(),
-                        usuario.getRole(),
-                        usuario.getStatus()
-                );
-            }
-        }
-
-        @Schema(name = "AdministrativoUpdateRequest")
-        record UpdateRequest(
-                @NotBlank(message = "O nome é obrigatório") String nome,
-                @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone
-        ) {
+    @Schema(name = "AdministrativoResponse")
+    record Response(
+            PessoaDTO.Response pessoa,
+            UsuarioDTO.Response usuario
+    ) {
+        public Response(Pessoa pessoa) {
+            this(
+                    new PessoaDTO.Response(pessoa),
+                    pessoa.getUsuario() != null ? new UsuarioDTO.Response(pessoa.getUsuario()) : null
+            );
         }
     }
+
+    @Schema(name = "AdministrativoListResponse")
+    record ListResponse(
+            Long id,
+            String nome,
+            String login,
+            UsuarioRole role,
+            UsuarioStatus usuarioStatus
+    ) {
+        public ListResponse(Usuario usuario) {
+            this(
+                    usuario.getPessoa().getId(),
+                    usuario.getPessoa().getNome(),
+                    usuario.getLogin(),
+                    usuario.getRole(),
+                    usuario.getStatus()
+            );
+        }
+    }
+
+    @Schema(name = "AdministrativoUpdateRequest")
+    record UpdateRequest(
+            @NotBlank(message = "O nome é obrigatório") String nome,
+            @Pattern(regexp = "^\\d{8,11}$", message = "Informe um número de telefone válido") String telefone
+    ) {
+    }
+}

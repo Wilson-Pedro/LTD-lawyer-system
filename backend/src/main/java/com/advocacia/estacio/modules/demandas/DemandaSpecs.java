@@ -1,29 +1,41 @@
 package com.advocacia.estacio.modules.demandas;
 
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DemandaSpecs {
+    private static final List<String> PAPEIS = List.of("advogado", "professor", "estagiario");
+
     public static Specification<Demanda> envolvePessoa(Long pessoaId) {
         return (root, query, cb) -> {
-            Predicate isAdvogado = cb.equal(root.get("advogado").get("id"), pessoaId);
-            Predicate isEstagiario = cb.equal(root.get("estagiario").get("id"), pessoaId);
-            Predicate isProfessor = cb.equal(root.get("professor").get("id"), pessoaId);
-
-            return cb.or(isAdvogado, isEstagiario, isProfessor);
+            Predicate[] predicates = PAPEIS.stream()
+                    .map(papel -> cb.equal(root.get(papel).get("id"), pessoaId))
+                    .toArray(Predicate[]::new);
+            return cb.or(predicates);
         };
     }
 
+    @SuppressWarnings("unchecked")
     public static Specification<Demanda> comFiltros(DemandaDTO.SearchFilter filtro) {
         return (root, query, cb) -> {
-            if(Long.class != query.getResultType() && long.class != query.getResultType()) {
-                root.fetch("advogado", JoinType.LEFT).fetch("pessoa", JoinType.LEFT);
-                root.fetch("professor", JoinType.LEFT).fetch("pessoa", JoinType.LEFT);
-                root.fetch("estagiario", JoinType.LEFT).fetch("pessoa", JoinType.LEFT);
+            boolean isCount = Long.class == query.getResultType() || long.class == query.getResultType();
+
+            Map<String, Path<Object>> pessoas = new HashMap<>();
+            if(!isCount) {
+                for(String papel : PAPEIS) {
+                    Fetch<Object, Object> f = root.fetch(papel, JoinType.LEFT);
+                    Join<Object, Object> pessoa = (Join<Object, Object>) f.fetch("pessoa", JoinType.LEFT);
+                    pessoas.put(papel, pessoa);
+                }
+            } else if(hasTermo(filtro)) {
+                for(String papel : PAPEIS) {
+                    pessoas.put(papel, root.join(papel, JoinType.LEFT).join("pessoa", JoinType.LEFT));
+                }
             }
 
             List<Predicate> predicates = new ArrayList<>();
@@ -34,9 +46,20 @@ public class DemandaSpecs {
             if(filtro.tempestividade() != null) {
                 predicates.add(cb.equal(root.get("tempestividade"), filtro.tempestividade()));
             }
+            if (hasTermo(filtro)) {
+                String termo = "%" + filtro.termo().trim().toLowerCase()  + "%";
+                Predicate[] matches = PAPEIS.stream()
+                        .map(papel -> cb.like(pessoas.get(papel).get("nome"), termo))
+                        .toArray(Predicate[]::new);
+                predicates.add(cb.or(matches));
+            }
 
             query.distinct(true);
             return cb.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    private static boolean hasTermo(DemandaDTO.SearchFilter filtro) {
+        return filtro.termo() != null && !filtro.termo().isBlank();
     }
 }

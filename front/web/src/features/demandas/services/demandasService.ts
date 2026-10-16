@@ -12,23 +12,29 @@ import { EtapaDemanda } from '../constants';
 interface ListarDemandasParams {
   pageIndex: number;
   pageSize: number;
+  termo?: string;
   etapaAtual?: EtapaDemanda;
   tempestividade?: string;
+  sort?: string[];
 }
 
 export const demandasService = {
   listar: async ({
     pageIndex,
     pageSize,
+    termo,
     etapaAtual,
     tempestividade,
+    sort,
   }: ListarDemandasParams): Promise<PageResponse<DemandaListItem>> => {
     const { data } = await api.get('/demandas', {
       params: {
         page: pageIndex,
         size: pageSize,
-        etapaAtual: etapaAtual || undefined,
-        tempestividade: tempestividade || undefined,
+        termo: termo,
+        etapaAtual: etapaAtual,
+        tempestividade: tempestividade,
+        sort: sort,
       },
     });
     return data;

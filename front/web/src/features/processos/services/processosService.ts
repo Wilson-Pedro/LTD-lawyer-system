@@ -7,17 +7,21 @@ export const processosService = {
   listar: async ({
     pageIndex,
     pageSize,
+    termo,
     areaDireito,
     tribunal,
     status,
+    sort,
   }: ListarProcessosParams): Promise<PageResponse<ProcessoListItem>> => {
     const { data } = await api.get('/processos', {
       params: {
         page: pageIndex,
         size: pageSize,
-        areaDireito: areaDireito || undefined,
-        tribunal: tribunal || undefined,
-        status: status || undefined,
+        termo: termo,
+        areaDireito: areaDireito,
+        tribunal: tribunal,
+        status: status,
+        sort: sort,
       },
     });
     return data;

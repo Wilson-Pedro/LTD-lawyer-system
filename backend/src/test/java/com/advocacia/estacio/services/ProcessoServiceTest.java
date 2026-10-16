@@ -2,7 +2,7 @@ package com.advocacia.estacio.services;
 
 import java.util.List;
 
-import com.advocacia.estacio.modules.processos.AreaDoDireito;
+import com.advocacia.estacio.modules.processos.AreaDireito;
 import com.advocacia.estacio.modules.processos.ProcessoStatus;
 import com.advocacia.estacio.modules.processos.Tribunal;
 import com.advocacia.estacio.modules.advogados.AdvogadoService;
@@ -145,11 +145,11 @@ class ProcessoServiceTest {
 	@Test
 	@DisplayName("Deve buscar Areas do Direito")
 	void buscar_estado_civis() {
-		List<AreaDoDireito> areasDoDireito = processoService.getAreasDoDireito();
+		List<AreaDireito> areasDoDireito = processoService.getAreasDoDireito();
 
-		assertEquals(AreaDoDireito.CIVIL, areasDoDireito.get(0));
-		assertEquals(AreaDoDireito.TRABALHISTA, areasDoDireito.get(1));
-		assertEquals(AreaDoDireito.PREVIDENCIARIO, areasDoDireito.get(2));
+		assertEquals(AreaDireito.CIVIL, areasDoDireito.get(0));
+		assertEquals(AreaDireito.TRABALHISTA, areasDoDireito.get(1));
+		assertEquals(AreaDireito.PREVIDENCIARIO, areasDoDireito.get(2));
 	}
 
 	@Test

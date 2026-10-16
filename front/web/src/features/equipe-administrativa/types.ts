@@ -4,7 +4,6 @@ import { Pessoa } from '@/types/pessoa';
 import { Usuario } from '../usuarios/types';
 
 export interface Administrativo {
-  id: number;
   pessoa: Pessoa;
   usuario: Usuario;
 }

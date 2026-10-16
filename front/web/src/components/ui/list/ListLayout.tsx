@@ -1,4 +1,4 @@
-import { Group, TextInput, Box, Button } from '@mantine/core';
+import { Group, TextInput, Box, Button, Tooltip } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 
 import { PageHeader, PageHeaderProps } from '../PageHeader';
@@ -13,6 +13,7 @@ interface ListLayoutProps extends PageHeaderProps {
     value: string;
     onChange: (value: string) => void;
     placeholder?: string;
+    tooltip?: string;
   };
   children: React.ReactNode;
 }
@@ -44,13 +45,22 @@ export function ListLayout({
 
       <Group gap="md" mb="md" align="center" justify="flex-start">
         {searchProps && (
-          <TextInput
-            placeholder={searchProps.placeholder ?? 'Buscar...'}
-            leftSection={<IconSearch size={16} />}
-            value={searchProps.value}
-            onChange={(e) => searchProps.onChange(e.target.value)}
-            maw={360}
-          />
+          <Tooltip
+            label={searchProps.tooltip}
+            position="bottom-start"
+            withArrow
+            multiline
+            w={300}
+            disabled={!searchProps.tooltip}
+          >
+            <TextInput
+              placeholder={searchProps.placeholder ?? 'Buscar...'}
+              leftSection={<IconSearch size={16} />}
+              value={searchProps.value}
+              onChange={(e) => searchProps.onChange(e.target.value)}
+              maw={360}
+            />
+          </Tooltip>
         )}
 
         {filters && <Group gap="xs">{filters}</Group>}

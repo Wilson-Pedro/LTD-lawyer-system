@@ -3,6 +3,9 @@ import { getToken, getTokenTipo } from '../storage/tokenStorage';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API,
+  paramsSerializer: {
+    indexes: null,
+  },
   timeout: 10000,
 });
 

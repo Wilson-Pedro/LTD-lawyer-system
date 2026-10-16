@@ -14,7 +14,7 @@ import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
 import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
 import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoRepository;
 import com.advocacia.estacio.modules.processos.Processo;
-import com.advocacia.estacio.modules.processos.AreaDoDireito;
+import com.advocacia.estacio.modules.processos.AreaDireito;
 import com.advocacia.estacio.modules.processos.ProcessoStatus;
 import com.advocacia.estacio.modules.processos.Tribunal;
 import com.advocacia.estacio.modules.processos.ProcessoRepository;
@@ -110,7 +110,7 @@ public class TestUtil {
 
 		return new Processo(null, assistido, numeroDoProcesso, "62354", "Seguro", "3210",
 				LocalDate.now().plusDays(2L), advogado.getNome(), advogado, estagiario, 
-				AreaDoDireito.CIVIL, Tribunal.ESTADUAL, ProcessoStatus.TRAMITANDO, "",
+				AreaDireito.CIVIL, Tribunal.ESTADUAL, ProcessoStatus.TRAMITANDO, "",
 				null, LocalDateTime.now());
 	}
 	

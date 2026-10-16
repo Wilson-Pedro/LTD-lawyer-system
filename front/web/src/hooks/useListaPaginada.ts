@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useDebouncedValue } from '@mantine/hooks';
-import type { PaginationState } from '@tanstack/react-table';
+import type { PaginationState, SortingState } from '@tanstack/react-table';
 import { PageResponse } from '@/types/pageResponse';
 
 interface UseListaPaginadaOptions<T, TFiltro extends Record<string, any>> {
   fetchFn: (
-    params: { pageIndex: number; pageSize: number } & TFiltro,
+    params: {
+      pageIndex: number;
+      pageSize: number;
+      sort?: string[];
+    } & TFiltro,
   ) => Promise<PageResponse<T>>;
   filtroInicial?: TFiltro;
   pageSizeInicial?: number;
+  sortingInicial?: SortingState;
   debounceMs?: number;
 }
 
@@ -16,6 +21,7 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
   fetchFn,
   filtroInicial = {} as TFiltro,
   pageSizeInicial = 15,
+  sortingInicial = [],
   debounceMs = 400,
 }: UseListaPaginadaOptions<T, TFiltro>) {
   const [dados, setDados] = useState<T[]>([]);
@@ -30,6 +36,7 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
     pageSize: pageSizeInicial,
   });
 
+  const [sorting, setSorting] = useState<SortingState>(sortingInicial);
   const [filtro, setFiltro] = useState<TFiltro>(filtroInicial);
   const [filtroDebounced] = useDebouncedValue(filtro, debounceMs);
 
@@ -37,15 +44,21 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
     setPagination((prev) =>
       prev.pageIndex === 0 ? prev : { ...prev, pageIndex: 0 },
     );
-  }, [filtroDebounced]);
+  }, [filtroDebounced, sorting]);
 
   useEffect(() => {
     let ativo = true; // evita "race condition": ignora resposta de uma busca antiga que chegou atrasada
 
     setIsLoading(true);
+
+    const sortStrings = sorting.map(
+      (s) => `${s.id},${s.desc ? 'desc' : 'asc'}`,
+    );
+
     fetchFn({
       pageIndex: pagination.pageIndex,
       pageSize: pagination.pageSize,
+      sort: sortStrings.length > 0 ? sortStrings : undefined,
       ...filtroDebounced,
     })
       .then((response) => {
@@ -65,6 +78,7 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
     pagination.pageIndex,
     pagination.pageSize,
     filtroDebounced,
+    sorting,
     refetchTrigger,
   ]);
 
@@ -77,5 +91,8 @@ export function useListaPaginada<T, TFiltro extends Record<string, any>>({
     setPagination,
     filtro,
     setFiltro,
+    sorting,
+    setSorting,
+    refetch,
   };
 }

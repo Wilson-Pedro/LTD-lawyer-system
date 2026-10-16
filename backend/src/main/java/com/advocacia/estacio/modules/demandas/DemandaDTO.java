@@ -42,7 +42,7 @@ public interface DemandaDTO {
             Long id,
             String descricao,
             LocalDate prazoFinal,
-            LocalDate prazoDocumentacao,
+            LocalDate prazoDocumentos,
             EtapaDemanda etapaAtual,
             Tempestividade tempestividade,
             LocalDateTime dataAbertura,
@@ -79,7 +79,7 @@ public interface DemandaDTO {
             Long id,
             String descricao,
             LocalDate prazoFinal,
-            LocalDate prazoDocumentacao,
+            LocalDate prazoDocumentos,
             String nomeAdvogado,
             String nomeEstagiario,
             String nomeProfessor,
@@ -102,6 +102,7 @@ public interface DemandaDTO {
 
     @Schema(name = "DemandaSearchFilter")
     record SearchFilter(
+            String termo,
             EtapaDemanda etapaAtual,
             Tempestividade tempestividade
     ) {}

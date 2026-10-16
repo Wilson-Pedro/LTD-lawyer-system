@@ -46,7 +46,7 @@ export default function DetalheDeamandaPage() {
   }
 
   useEffect(carregar, [id]);
-  
+
   useEffect(() => {
     if (tramitacoes === null && demanda) {
       demandasService
@@ -93,7 +93,7 @@ export default function DetalheDeamandaPage() {
         />
         <DetailField
           label="Prazo da Documentação"
-          value={formatarData(demanda.prazoDocumentacao)}
+          value={formatarData(demanda.prazoDocumentos)}
         />
 
         <DetailField

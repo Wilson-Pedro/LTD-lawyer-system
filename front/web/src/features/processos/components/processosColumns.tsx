@@ -34,7 +34,7 @@ export function getProcessosColumns({
       },
     ),
     helpers.date('prazoFinal', 'Prazo Final'),
-    helpers.text('numeroProcessoPje', 'Número do Processo PJE', {
+    helpers.text('numeroProcessoPje', 'Número PJE', {
       enableSorting: false,
     }),
 

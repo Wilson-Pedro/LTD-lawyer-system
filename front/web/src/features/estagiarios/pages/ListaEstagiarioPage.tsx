@@ -51,7 +51,8 @@ export default function ListaEstagiariosPage() {
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome ou matrícula...',
+        placeholder: 'Buscar Estagiário...',
+        tooltip: 'Busque por nome ou matrícula do estagiário.',
       }}
     >
       <DataTable
@@ -60,6 +61,7 @@ export default function ListaEstagiariosPage() {
         isLoading={isLoading}
         pagination={pagination}
         onPaginationChange={setPagination}
+
         pageCount={totalPages}
         totalElements={totalElements}
       />

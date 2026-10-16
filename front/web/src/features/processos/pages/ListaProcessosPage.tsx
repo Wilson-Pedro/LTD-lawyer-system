@@ -42,6 +42,8 @@ export default function ListaProcessosPage() {
     totalElements,
     pagination,
     setPagination,
+    sorting,
+    setSorting,
     filtro,
     setFiltro,
   } = useListaPaginada<ProcessoListItem, FiltroProcessos>({
@@ -74,7 +76,9 @@ export default function ListaProcessosPage() {
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por número do Processo...',
+        placeholder: 'Buscar Processos...',
+        tooltip:
+          'Busque por número do processo, PJe, nome do assistido, advogado ou estagiário',
       }}
       filters={
         <>
@@ -108,6 +112,8 @@ export default function ListaProcessosPage() {
         isLoading={isLoading}
         pagination={pagination}
         onPaginationChange={setPagination}
+        sorting={sorting}
+        onSortingChange={setSorting}
         pageCount={totalPages}
         totalElements={totalElements}
         // rowSelection={rowSelection}

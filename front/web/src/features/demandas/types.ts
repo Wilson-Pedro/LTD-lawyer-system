@@ -7,7 +7,7 @@ export interface Demanda {
   id: number;
   descricao: string;
   prazoFinal: string;
-  prazoDocumentacao: string;
+  prazoDocumentos: string;
   etapaAtual: EtapaDemanda;
   tempestividade: Tempestividade;
   dataAbertura: string;
@@ -24,7 +24,7 @@ export interface DemandaListItem {
   id: number;
   descricao: string;
   prazoFinal: string;
-  prazoDocumentacao: string;
+  prazoDocumentos: string;
   nomeAdvogado: string;
   nomeEstagiario: string;
   nomeProfessor: string;

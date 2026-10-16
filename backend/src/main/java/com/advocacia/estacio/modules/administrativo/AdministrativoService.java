@@ -7,6 +7,7 @@ import com.advocacia.estacio.modules.usuarios.Usuario;
 import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
 import com.advocacia.estacio.modules.usuarios.UsuarioService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +44,7 @@ public class AdministrativoService {
         Usuario usuario = usuarioService.cadastrar(req.email(), req.senha(), req.role());
         Pessoa pessoa = req.toEntity(usuario);
         pessoa = pessoaRepository.save(pessoa);
-        return new AdministrativoDTO.Response(pessoa, usuario);
+        return new AdministrativoDTO.Response(pessoa);
     }
 
     @Transactional(readOnly = true)
@@ -54,5 +55,13 @@ public class AdministrativoService {
         );
 
         return usuarioRepository.buscarPorRoles(rolesAdministrativas, pageable).map(AdministrativoDTO.ListResponse::new);
+    }
+
+    @Transactional(readOnly = true)
+    public AdministrativoDTO.Response buscarPorId(Long id) {
+        var pessoa = pessoaRepository.buscarDetalhesPorId(id)
+                .orElseThrow(() -> new EntityNotFoundException("Perfil não encontrado."));
+
+        return new AdministrativoDTO.Response(pessoa);
     }
 }

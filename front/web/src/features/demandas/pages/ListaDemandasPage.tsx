@@ -37,6 +37,8 @@ export default function ListaDemandasPage() {
     totalElements,
     pagination,
     setPagination,
+    sorting,
+    setSorting,
     filtro,
     setFiltro,
   } = useListaPaginada<DemandaListItem, FiltroDemandas>({
@@ -71,7 +73,8 @@ export default function ListaDemandasPage() {
       searchProps={{
         value: filtro.termo,
         onChange: (termo) => setFiltro({ ...filtro, termo }),
-        placeholder: 'Buscar por nome...',
+        placeholder: 'Buscar Demandas...',
+        tooltip: 'Busque por nome do advogado, professor ou estagiário.',
       }}
       filters={
         <>
@@ -102,6 +105,8 @@ export default function ListaDemandasPage() {
           isLoading={isLoading}
           pagination={pagination}
           onPaginationChange={setPagination}
+          sorting={sorting}
+          onSortingChange={setSorting}
           pageCount={totalPages}
           totalElements={totalElements}
           // rowSelection={rowSelection}

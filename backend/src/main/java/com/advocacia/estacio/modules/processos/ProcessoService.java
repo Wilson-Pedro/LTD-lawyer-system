@@ -63,36 +63,6 @@ public class ProcessoService {
 		return new ProcessoDTO.Response(processo);
 	}
 
-//	public List<Processo> findAll() {
-//		return processoRepository.findAll();
-//	}
-//
-//	public Page<Processo> findAll(int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//		return processoRepository.findAll(pageable);
-//	}
-//
-//
-//	public Page<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//        return processoRepository.buscarProcessosPorStatusDoProcesso(ProcessoStatus.toEnum(processoStatus), pageable);
-//	}
-//
-//	public Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("assunto").ascending());
-//		return processoRepository.findByNumeroDoProcessoContainingIgnoreCase(numeroDoProcesso, pageable);
-//	}
-//
-//
-//	public Processo buscarPorId(Long id) {
-//		return processoRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
-//	}
-//
-//
-//	public Processo buscarPorNumeroDoProcesso(String numeroDoProcesso) {
-//		return processoRepository.findByNumeroDoProcesso(numeroDoProcesso)
-//				.orElseThrow(EntidadeNaoEncontradaException::new);
-//	}
 //
 //
 //	public Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate) {
@@ -108,20 +78,6 @@ public class ProcessoService {
 //		return processoRepository.save(processo);
 //	}
 //
-//	private Processo dtoParaEntidade(Processo processo, ProcessoUpdate dto) {
-//		processo.setNumeroDoProcesso(dto.getNumeroDoProcesso());
-//		processo.setNumeroDoProcessoPje(dto.getNumeroDoProcessoPje());
-//		processo.setAssunto(dto.getAssunto());
-//		processo.setVara(dto.getVara());
-//		processo.setPrazoFinal(Utils.localDateToString(dto.getPrazoFinal()));
-//		processo.setResponsavel(dto.getResponsavel());
-//		processo.setAreaDoDireito(AreaDoDireito.toEnum(dto.getAreaDoDireito()));
-//		processo.setTribunal(Tribunal.toEnum(dto.getTribunal()));
-//		processo.setStatusDoProcesso(ProcessoStatus.toEnum(dto.getStatusDoProcesso()));
-//		processo.setPartesEnvolvidas(dto.getPartesEnvolvidas());
-//		return processo;
-//	}
-//
 	// ----------- MÉTODOS PRIVADOS AUXILIARES ----------------
 
 	private void validarNumeroPjeUnico(String numeroPje) {
@@ -133,19 +89,4 @@ public class ProcessoService {
 		throw new ConflitoDeDadosException("Já existe um processo cadastrado com este número de PJe.");
 	}
 }
-//
-//
-//	public List<AreaDoDireito> getAreasDoDireito() {
-//		return Arrays.stream(AreaDoDireito.values()).toList();
-//	}
-//
-//
-//	public List<Tribunal> getTribunais() {
-//		return Arrays.stream(Tribunal.values()).toList();
-//	}
-//
-//
-//	public List<ProcessoStatus> getProcessoStatus() {
-//		return Arrays.stream(ProcessoStatus.values()).toList();
-//	}
 }

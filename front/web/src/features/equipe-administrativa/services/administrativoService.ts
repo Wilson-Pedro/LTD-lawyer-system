@@ -1,6 +1,6 @@
 import { api } from '@/lib/api/axios';
 import { CriarAdministrativoRequest } from '../schema';
-import { AdministrativoListItem } from '../types';
+import { Administrativo, AdministrativoListItem } from '../types';
 import { PageResponse } from '@/types/pageResponse';
 
 interface ListarAdministrativoParams {
@@ -21,7 +21,20 @@ export const administrativoService = {
     return data;
   },
 
+  buscarPorId: async (id: number): Promise<Administrativo> => {
+    const { data } = await api.get(`/administrativos/${id}`);
+    return data;
+  },
+
   criar: async (dados: CriarAdministrativoRequest): Promise<void> => {
     await api.post('/administrativos', dados);
   },
+
+  // atualizar: async (
+  //   id: number,
+  //   dados: AtualizarAdministativoRequest,
+  // ): Promise<Professor> => {
+  //   const { data } = await api.put(`/professores/${id}`, dados);
+  //   return data;
+  // },
 };

@@ -11,7 +11,7 @@ import { administrativoService } from '../services/administrativoService';
 import { AdministrativoForm } from '../components/AdministrativoForm';
 import { Role, usuarioRoleLabel } from '@/constants/roles';
 
-export default function AdministrativoCreatePage() {
+export default function CriarAdministrativoPage() {
   const navigate = useNavigate();
 
   async function handleSalvar(dados: CriarAdministrativoRequest) {

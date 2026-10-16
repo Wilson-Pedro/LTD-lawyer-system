@@ -5,7 +5,7 @@ import com.advocacia.estacio.modules.demandas.enums.RespondidoPor;
 import com.advocacia.estacio.modules.demandas.services.DemandaService;
 import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
 import com.advocacia.estacio.modules.pessoas.EstadoCivil;
-import com.advocacia.estacio.modules.processos.AreaDoDireito;
+import com.advocacia.estacio.modules.processos.AreaDireito;
 import com.advocacia.estacio.modules.processos.ProcessoStatus;
 import com.advocacia.estacio.modules.processos.Tribunal;
 import com.advocacia.estacio.modules.usuarios.UsuarioRole;
@@ -26,13 +26,13 @@ class EnumExceptionTest {
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para AreaDoDireito por código")
 	void EnumException_AreaDireito_codigo() {
-		assertThrows(EnumException.class, () -> AreaDoDireito.toEnum(6));
+		assertThrows(EnumException.class, () -> AreaDireito.toEnum(6));
 	}
 
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para AreaDoDireito por descricao")
 	void EnumException_AreaDireito_descricao() {
-		assertThrows(EnumException.class, () -> AreaDoDireito.toEnum("error"));
+		assertThrows(EnumException.class, () -> AreaDireito.toEnum("error"));
 	}
 
 	// DEMANDA STATUS

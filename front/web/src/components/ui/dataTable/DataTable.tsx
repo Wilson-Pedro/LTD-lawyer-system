@@ -29,6 +29,8 @@ interface DataTableProps<TData extends RowData> {
   pagination: PaginationState;
   onPaginationChange: (updater: Updater<PaginationState>) => void;
   pageCount: number;
+  sorting?: SortingState;
+  onSortingChange?: (updater: Updater<SortingState>) => void;
   rowSelection?: RowSelectionState;
   onRowSelectionChange?: (updater: Updater<RowSelectionState>) => void;
 }
@@ -41,17 +43,18 @@ export function DataTable<TData extends RowData>({
   pagination,
   onPaginationChange,
   pageCount,
+  sorting = [],
+  onSortingChange,
   rowSelection = {},
   onRowSelectionChange,
 }: DataTableProps<TData>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-
   const table = useTable({
     data,
     columns,
     features: stockFeatures,
     state: { sorting, pagination, rowSelection },
-    onSortingChange: setSorting,
+    onSortingChange,
+    manualSorting: true,
     onPaginationChange,
     manualPagination: true,
     pageCount,
